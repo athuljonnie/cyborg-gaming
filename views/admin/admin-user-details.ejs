@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <%- include('../partials/admin-header.ejs') %>
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-seller-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+
+
+
+
+
+
+
+    <main >
+        
+        <section class="content-main">
+            <div class="content-header">
+                <a href="javascript:history.back()"><i class="material-icons md-arrow_back"></i> Go back </a>
+            </div>
+            <div>
+                <h2 class="content-title card-title">User Details</h2>
+
+            </div>
+            <div class="card mb-6">
+                <div class="card-header bg-light" style="height:150px">
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl col-lg flex-grow-0" style="flex-basis:230px">
+                            <div class="img-thumbnail shadow w-100 bg-ilight position-relative text-center"
+                                style="height:190px; width:200px; margin-top:-120px">
+                                <i class="fas fa-user-circle fa-5x text-secondary"></i>
+                                <!-- Use Font Awesome's "fa-user-circle" and add "text-secondary" class for grey color -->
+                            </div>
+                        </div>
+
+                        <!--  col.// -->
+                        <div class="col-xl col-lg">
+                            <h3>
+                                <%= user.username %>
+                            </h3>
+                            <p>User_ID:<%= user._id %>
+                            </p>
+                        </div> <!--  col.// -->
+                        <div class="col-xl-4 text-md-end">
+                            <select class="form-select w-auto d-inline-block">
+                                <option>Actions</option>
+                                <option>Disable shop</option>
+                                <option>Analyze</option>
+                                <option>Something</option>
+                            </select>
+
+                        </div> <!--  col.// -->
+                    </div> <!-- card-body.// -->
+                    <hr class="my-4">
+                    <div class="row g-4">
+                        
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <h6>Contacts</h6>
+                            <p>Email:
+                                <%= user.email %> <br>
+                                    <template class="__cf_email__"
+                                        data-cfemail="31585f575e715449505c415d541f525e5c">[email&#160;protected]</template>
+                                    <br>
+                                    Mobile Number :<%= user.phonenumber %>
+                            </p>
+                        </div> <!-- col.// -->
+
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <h6>Status</h6>
+                            <% if (locals.user.isActive) { %>
+                                <span class="text-success">Active</span>
+
+                                <% } else { %>
+                                    <span class="text-danger">Inactive</span>
+                                    <% } %>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <h6>Address</h6>
+                            <p>
+                                Country: California <br>
+                                Address: Ranchview Dr. Richardson <br>
+                                Postal code: 62639
+                            </p>
+                        </div> <!--  col.// -->
+
+                    </div> <!--  row.// -->
+                </div> <!--  card-body.// -->
+            </div> <!--  card.// -->
+            <div class="card  pl-20 pt-10 col-sm-6 col-lg-4 col-xl-3">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <p class="heading_8264">Wallet</p>
+                            <svg viewBox="0 0 48 48" height="36" width="36" y="0px" x="0px" xmlns="http://www.w3.org/2000/svg" class="logo">
+                            <path d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z" fill="#ff9800"></path><path d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z" fill="#d50000"></path><path d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z" fill="#ff3d00"></path>
+                            </svg>
+                            <br>
+                            <br>
+                            <p class="valid_thru">Balance Rs. </p>
+                            <p class="valid_thru">Referrals bonus Rs. </p>
+                         
+                            <p class="valid_thru">Referral link:</p>
+                        </div>
+                        
+                    </div>
+                </div>
+              </div>
+              
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i
+                                    class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+        <%- include('../partials/admin-footer.ejs') %>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-seller-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+
+</html>

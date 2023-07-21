@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Link to your custom CSS file -->
+    <link rel="stylesheet" href="/path/to/custom.css">
+<style>
+        .navbar {
+      background-color: #000000 !important;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 24px;
+    }
+
+    .navbar-toggler {
+      border-color: #fff !important;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url('https://cdn3.iconfinder.com/data/icons/mini-icon-set-web-design-device-app/91/Web_-_UI-18-512.png');
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      color: #fff !important;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #888 !important;
+    }
+</style>
+
+
+</head>
+<body class="bg-dark">
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <img src="/shop/img/ll.png">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto">
+         
+            <li class="nav-item">
+              <a class="nav-link" href="#">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Users</a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="products">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container mt-4 bg-light p-3">
+        <h2>Add Product</h2>
+        <form method="POST" action="/add-product">
+            <div class="form-group">
+                <label for="productName">Product Name</label>
+                <input type="text" class="form-control" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Product Description</label>
+                <textarea class="form-control" id="productDescription" name="productDescription" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Price</label>
+                <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="productQuantity">Quantity</label>
+                <input type="number" class="form-control" id="productQuantity" name="productQuantity" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+
+    <!-- Link to Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
