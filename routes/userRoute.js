@@ -6,15 +6,22 @@ const isLoggedIn  = require("../middlewares/sessionHandling");
 
 router.get("/", userController.homePage);
 
+router.get("/productdetails", isLoggedIn,userController.getProductDetails)
+
 router.get("/login", isLoggedIn, userController.loginPage);
 
 router.get("/signup", isLoggedIn, userController.signUpPage);
 
 router.post("/signup", userController.signUpPost);
 
+router.get("/verify",userController.getVerify);
+
+router.post("/verify",userController.postVerify);
+
 router.post("/login", isLoggedIn, userController.loginPost);
 
 router.get("/logout", userController.logOutGet);
+
 
 
 module.exports = router;

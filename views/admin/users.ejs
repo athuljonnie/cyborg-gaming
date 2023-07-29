@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Users</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    body {
+      background-color: #242424;
+      color: #ffffff;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .user-card {
+      background-color: #c4c4c4;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .user-email {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .user-info {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .user-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .btn {
+      margin-left: 5px;
+    }
+    .sidebar {
+      height: 100%;
+      width: 150px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: #000000;
+      padding-top: 20px;
+      padding-left: 20px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 16px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #333;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #000000 !important;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 24px;
+    }
+
+    .navbar-toggler {
+      border-color: #fff !important;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url('https://cdn3.iconfinder.com/data/icons/mini-icon-set-web-design-device-app/91/Web_-_UI-18-512.png');
+    }
+
+  
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #888 !important;
+    }
+  </style>
+</head>
+<body>
+
+     <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a href="/admin" class="navbar-brand">
+        <img src="/shop/img/ll.png" alt="Logo">
+       User Management
+      </a>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+     
+        <li class="nav-item">
+          <a class="nav-link" href="categories">Categories</a>
+        </li>        
+        <li class="nav-item">
+          <a class="nav-link" href="products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+<div class="container">
+  <% if (userData.length === 0) { %>
+    <p>No users found.</p>
+  <% } else { %>
+    <% userData.forEach((user) => { %>
+      <div class="user-card">
+        <div class="user-info">
+          <!-- <img class="user-avatar" src="<%= user.avatar %>" alt="User Avatar"> -->
+          <div class="user-details">
+            <div class="user-name">Username: <%= user.username %></div>
+            <div class="user-email">Email: <%= user.email %></div>
+            <div class="user-email">Contact Number: <%= user.phonenumber %></div>
+          </div>
+        </div>
+        <div class="user-actions">
+          <a href="#" class="btn btn-primary">Edit</a>
+          <% if (!user.isActive) { %>
+            <a href="/admin/unblockusers?userId=<%= user._id %>" class="btn btn-danger">
+              <i class="fas fa-lock"></i> Unblock
+            </a>
+          <% } else { %>
+            <a href="/admin/blockusers?userId=<%= user._id %>" class="btn btn-success">
+              <i class="fas fa-lock-open"></i> Block
+            </a>
+            <% } %>
+        </div>
+      </div>
+    <% }); %>
+  <% } %>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -20,15 +20,19 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   productImage: {
-    type: Array,
-     
+    type: Array,     
+  },
+  isBlocked:
+  {
+    type: Boolean,
+    default: false
   },
   
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "category",
+    ref: "Category",
   },
-  
+ 
   productStatus: {
     type: Boolean,
     default: true,
@@ -44,4 +48,6 @@ const productSchema = new mongoose.Schema({
 });
 
 
-exports.Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model('Product', productSchema )
+
+module.exports = Product;

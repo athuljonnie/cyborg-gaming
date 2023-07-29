@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #242424;
+      color: #fff;
+      padding-bottom: 100px;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+    }
+
+    .form-control {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #666;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .navbar{
+      background-color: black !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a href="/admin" class="navbar-brand">
+      <img src="/shop/img/ll.png" alt="Logo">
+      Product Management
+    </a>
+    <!-- Add any additional navbar elements you need -->
+  </nav>
+
+  <!-- Content -->
+  <div class="container">
+    <h1>Edit Product</h1>
+    <% if (productData.length === 0) { %>
+        <p>No products found.</p>
+      <% } else { %>
+        <%  %>
+    <form action="/admin/editproducts/<%= productData._id %>" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input type="text" class="form-control" id="productName" name="productName" value="<%= productData.productName %>"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="productBrand">Product Brand</label>
+        <input type="text" class="form-control" id="productBrand" name="productBrand" value="<%= productData.productBrand %>"
+          required>
+      </div>
+   
+      <div class="form-group">
+        <label for="productCategory">Product Category</label>
+        <select class="form-control" id="productCategory" name="category" required>
+          <% categoryData.forEach((category) => { %>
+            <option value="<%= category._id %>" <%= productData.category && productData.category.toString() === category._id.toString() ? 'selected' : '' %>>
+              <%= category.CategoryName %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+   
+      <div class="form-group">
+        <label for="productDescription">Product Description</label>
+        <textarea class="form-control" id="productDescription" name="productDescription" rows="4" required><%= productData.productDescription %></textarea>
+      </div>
+      
+      
+      <div class="form-group">
+        <label for="productQuantity">Product Quantity</label>
+        <input type="text" class="form-control" id="productQuantity" name="productQuantity" value="<%= productData.productQuantity %>"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="productPrice">Product Price</label>
+        <input type="number" class="form-control" id="productPrice" name="productPrice" value="<%= productData.productPrice %>"
+          required>
+      </div>
+      
+      <div class="form-group">
+        <label for="productPrice">Original Price</label>
+        <input type="number" class="form-control" id="originalPrice" name="originalPrice" value="<%= productData.originalPrice %>"
+          required>
+      </div>
+  
+<div class="form-group">
+  <label for="productDescription">Product Images</label>
+  <% for (let i = 0; i < productData.productImage.length; i++) { %>
+    <div class="d-flex align-items-center mb-3">
+      <input type="text" class="form-control mr-2" id="productImage<%= i %>" name="productImage" value="<%= productData.productImage[i] %>" required>
+      <img src="/uploads/<%= productData.productImage[i] %>" alt="Product Image" style="max-width: 200px; margin-top: 10px;">
+
+      <input type="file" class="form-control-file ml-2" name="productImageFile<%= i %>" accept="image/*" ;">
+    </div>
+  <% } %>
+</div>
+   
+     
+      <% } %>
+      <!-- Add more form fields for other product attributes as needed -->
+      <% if (productData) { %>
+   
+        <div class="text-center pt-4">
+          <button type="submit" class="btn btn-warning p-2">
+            Update
+          </button>
+        </div>
+  
+      <% } %>
+    </div>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS -->
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,90 +1,112 @@
 const mongoose = require('mongoose')
 const userHelpers = require("../helpers/userHelpers");
 const User = require('../models/userModel')
-const bcrypt = require('bcrypt')
+const Product = require('../models/productModels')
+const Category = require('../models/categoryModels')
+const bcrypt = require('bcrypt');
+const serviceSid= process.env.TWILIO_SERVICE_SID
+const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+
 module.exports = {
   homePage: async (req, res, next) => {
+    let productData =await Product.find().populate('category');
     let user = req.session.user;
-    res.render('shop/home')
-//     try {
-//       const allproducts = await Products.find();
-//       const allcategory = await Category.find();
-//       const products = await Products.find();
-      
-// } catch (error) {
-//       console.error(error);
-//       res.render("catchError", {
-//         message: err.message,
-//         user: req.session.user,
-//       });
-//     }
+    res.render('shop/home', {productData, req})
   },
 
   loginPage: async (req, res) => {
     res.render("shop/userlogin/userLogin");
   },
 
-  //signup
 
   signUpPage: (req, res) => {
     const phone = req.query.phonenumber;
     res.render("shop/userlogin/userSignup");
   },
-
   
 
-  signUpPost: (req, res) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        var oldUser = await User.findOne({ email: req.body.email });
-        var oldPhoneNumberUser = await User.findOne({
-          phonenumber: req.body.phonenumber,
+  signUpPost: async (req, res) => {
+    try {
+      const { username, email, number, password } = req.body;      
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {      
+        const error = 'Email is already in use. Please choose a different email.';
+        return res.render('shop/userlogin/userSignup', { error });
+      }  
+      const hashedPassword = await bcrypt.hash(password, 10);
+        req.session.userData = {
+        username,
+        email,
+        number,
+        password: hashedPassword
+      };  
+      res.redirect('/verify');  
+    } catch (err) {
+      console.error('Error saving user:', err);
+      res.render('error', { error: 'An error occurred while saving the user.' });
+    }
+  },
+
+
+  getVerify: async (req, res) => {
+    try {
+      const number = req.session.userData.number;  
+      if (!number) {
+        res.status(400).send('Phone number not found');
+        return;
+      }  
+      const verification = await client.verify.v2.services(serviceSid)
+        .verifications
+        .create({
+          to: `+91${number}`,
+          channel: 'sms'
+        });  
+      console.log(verification.sid, "the otp is generated ");
+      res.render('shop/userlogin/otp', { number });  
+    } catch (err) {
+      console.error('Error generating OTP:', err);
+      // Handle the error...
+    }
+  },
+
+
+  postVerify: async(req, res) =>{
+    const otp= req.body.otp;
+    const number = req.query.number;
+    console.log(number)
+    console.log(otp);
+    client.verify.v2.services(serviceSid)
+    .verificationChecks
+    .create({
+      to:'+91'+number,
+      code: otp
+    })
+    .then( async (verification)=>{
+      console.log("GET VARIFICATION");
+      console.log(verification,"otp verification status")
+      if(verification.valid === true){
+        console.log("otp valid")
+        const { username, email, number, password } = req.session.userData;       
+        const newUser = new User({
+          username,
+          email,
+          number,
+          password,
         });
-  
-        if (oldUser) {
-          resolve({ emailStatus: true, phoneNumberStatus: false, user: null });
-        } else if (oldPhoneNumberUser) {
-          resolve({ emailStatus: false, phoneNumberStatus: true, user: null });
-        } else {
-          const saltRounds = 10;
-          let password = req.body.password.toString();
-          let newpassword = await bcrypt.hash(password, saltRounds);
-          const newUser = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: newpassword,
-            phonenumber: req.body.phonenumber,
-          });
-          var savedUser = await newUser.save();
-          resolve({
-            emailStatus: false,
-            phoneNumberStatus: false,
-            user: savedUser,
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        reject(err);
+        await newUser.save();
+        req.session.user = newUser;
+        res.redirect('/');
+      }
+      else{
+        res.render('user/OTP', { email: req.session.userData.email, error: 'Invalid OTP. Please try again.' });
       }
     })
-      .then((userData) => {
-        if (userData.emailStatus) {
-          const msg = "Email already exists";
-          res.render("shop/userlogin/userSignup.ejs", { msg });
-        } else if (userData.phoneNumberStatus) {
-          const msg2 = "Phone number already exists";
-          res.render("shop/userlogin/userSignup.ejs", { msg2 });
-        } else if (userData.user) {
-          req.session.login = true;
-          req.session.User = userData.user;
-          res.redirect("/");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        // res.render("error");
-      });
+    .catch((error)=>{
+      console.log(error)
+    })
   },
+  
 
   loginPost: async (req, res) => {
     const {email, password} = req.body;
@@ -115,10 +137,27 @@ module.exports = {
     }
   },
 
+
   logOutGet: async (req,res) => {
     req.session.user =false;
     res.redirect('/');
-  } 
+  },
+
+
+  getProductDetails: async(req, res) => {
+    try{
+      const productId = req.query.productId
+      // console.log(productId);
+      const productData = await Product.findById(productId).populate('category');
+      console.log(productData);
+      const category = await Category.find()
+
+      let user = req.session.user
+      res.render('shop/productpage', {productData});
+    }catch(error) {
+      throw new Error(error);
+    }
+  }
 }
 
  

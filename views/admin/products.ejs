@@ -4,109 +4,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
+  <title>Admin Panel - Product Management</title>
   <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     body {
       background-color: #242424;
-      color: #707070;
-    }
-
-    .sidebar {
-      height: 100%;
-      width: 150px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      background-color: #000000;
-      padding-top: 20px;
-      padding-left: 20px;
-    }
-
-    .sidebar a {
-      padding: 8px 8px 8px 16px;
-      text-decoration: none;
-      font-size: 18px;
       color: #fff;
-      display: block;
     }
 
-    .sidebar a:hover {
+    .container {
+      margin-top: 50px;
+    }
+
+    .product-card {
       background-color: #333;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
     }
 
-    .content {
-      margin-left: 250px;
-      padding: 20px;
+    .product-img {
+      width: 200px;
+      height: 200px;
+      /* border-radius: 30%; */
+      object-fit: contain;
+    }
+
+    .product-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product-brand {
+      font-size: 16px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .product-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .btn {
+      margin-left: 5px;
     }
 
     .navbar {
-      background-color: #000000 !important;
+      background-color: black;
+      color: rgb(255, 255, 255) !important;
     }
-
-    .navbar-brand {
-      color: #fff !important;
-      font-size: 24px;
-    }
-
-    .navbar-toggler {
-      border-color: #fff !important;
-    }
-
-    .navbar-toggler-icon {
-      background-image: url('https://cdn3.iconfinder.com/data/icons/mini-icon-set-web-design-device-app/91/Web_-_UI-18-512.png');
-    }
-
-    .navbar-nav .nav-item .nav-link {
-      color: #fff !important;
-    }
-
-    .navbar-nav .nav-item .nav-link:hover {
-      color: #888 !important;
-    }
-    /* .img{
-        height: 100px;
-    } */
   </style>
 </head>
 
 <body>
-
- 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light">
+  <nav class="navbar navbar-expand-lg navbar-dark" id="navbar1">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a href="/admin"><img src="/shop/img/ll.png"></a> 
-    <h1>Product Management</h1>
-   <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <a href="/admin" class="navbar-brand">
+      <img src="/shop/img/ll.png" alt="Logo">
+      Product Management
+    </a>
+
+
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="addproducts">Add Products</a>
         </li>
-        
         <li class="nav-item">
           <a class="nav-link" href="logout">Logout</a>
         </li>
       </ul>
-    </div>
+
   </nav>
 
   <!-- Content -->
-  <div class="content">
+  <div class="container">
+    <h1>All Products</h1>
 
- 
+    <% if (productData.length===0) { %>
+      <p>No products found.</p>
+      <% } else { %>
+        <% productData.forEach((Product)=> { %>
+          <div class="product-card">
+            <div class="product-details">
+              <img class="product-img" src="/uploads/<%= Product.productImage[2] %>" alt="Product Image">
+              <div class="product-info">
+                <div class="product-name">Name: <%= Product.productName %>
+                </div>
+                <div class="product-brand">Brand: <%= Product.productBrand %>
+                </div>
+                <div class="product-brand">Category: <%= Product.category.CategoryName%>
+                </div>
+                <div class="product-brand">Price: <%= Product.productPrice %>
+                </div>
+                <div class="product-brand">Quantity: <%= Product.productQuantity%>
+                </div>
+                <div class="product-brand">OriginalPrice: <%= Product.originalPrice%>
+                </div>
+              </div>
+            </div>
+            <div class="product-actions">
+              <% if (Product.isBlocked) { %>
+                <a href="/admin/unblockproducts?productId=<%= Product._id %>" class="btn btn-danger">
+                  <i class="fas fa-lock"></i> Unblock
+                </a>
+                <% } else { %>
+                  <a href="/admin/blockproducts?productId=<%= Product._id %>" class="btn btn-success">
+                    <i class="fas fa-lock-open"></i> Block
+                  </a>
+                  <% } %>
+                    <a href="/admin/editproducts?productId=<%= Product._id %>" class="btn btn-primary">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="#" class="btn btn-danger">
+                      <i class="fas fa-trash"></i> Delete
+                    </a>
+            </div>
+          </div>
+          <% }); %>
+            <% } %>
   </div>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 
 </html>

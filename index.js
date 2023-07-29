@@ -9,7 +9,10 @@ const userRouter = require("./routes/userRoute");
 // const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const session = require("express-session");
 const adminRouter = require("../cyborg/routes/adminRoute");
+const multer = require("multer");
+const fs = require('fs');
 dbConnect();
+
 
 app.use(
   session({
@@ -20,13 +23,15 @@ app.use(
   })
 );
 
-app.use(function (req, res, next) {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
-  next();
-});
+// cache control
+app.use((req,res,next)=>{
+  res.header('cache-control','private,nocache,no-store')
+  res.header('expurse','-1')
+  res.header('parama','no-cache')
+  next()
+}) 
+
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -35,18 +40,19 @@ app.use(express.static(path.join(__dirname, "views")));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
 // app.use('/', authRouter);
-app.use("/admin",adminRouter);
+app.use("/admin", adminRouter);
 app.use("/", userRouter);
 
-// app.use(notFound);
-// app.use(errorHandler);
 
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
+
+// Set storage engine for uploaded images
+
+// app.use(upload.array("productImage", 3));
+
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
 });
+

@@ -9,18 +9,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .body{
-           background-color:#000000;
-         
+        .body {
+            background-color: #000000;
+
         }
 
         #navbar1 {
-            background-color: #000000 !important; /* Set the background color to pitch black */
+            background-color: #000000 !important;
+            /* Set the background color to pitch black */
             font-family: 'DotGothic16', sans-serif;
         }
 
@@ -56,18 +62,57 @@
             }
         }
 
-         .c-item{
-            height: 560px;
-         }
+        .c-item {
+            height: 100%;
+        }
 
-         .c-img{
+        .c-img {
             height: 100%;
             object-fit: cover;
-         }
+        }
+
+        .description-truncate {
+            max-height: 5em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .description-container {
+            max-height: 10em;
+            overflow: auto;
+        }
+
+
+        .heart-icon i {
+            color: black;
+            transition: color 0.3s;
+
+        }
+
+
+        .heart-icon:hover i {
+            color: red;
+        }
+
+
+        .cart-icon-link i {
+            color: black;
+            padding: 15px;
+        }
+
+        .cart-icon-link:hover i {
+            color: blue;
+
+        }
+
+        .card-body {
+            background-color: #c7c7c7;
+        }
     </style>
 </head>
 
-<body class="bg-dark" id ="hero">
+<body class="bg-dark" id="hero">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
         <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
@@ -82,15 +127,19 @@
                         <a class="nav-link" href="#">Desktop PCs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Gaming PCs</a>
+                        <a class="nav-link" href="#">4k Editing PCs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Laptops</a>
+                        <a class="nav-link" href="#">Streaming</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Gaming PCs</a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">GameZone</a>
                     </li>
-                    
+
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -103,49 +152,137 @@
                         <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="login">Sign In</a>
-                            <a class="dropdown-item" href="signup">Sign Up</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="logout">X Log Out X</a>
+                       
+                            <% if (req.session.user) { %>
+                                <a class="dropdown-item" href="">Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout">X Log Out X</a>
+                                
+                             <% } else{ %>
+                                  <a class="dropdown-item" href="login">Sign In</a>
+                                  <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="signup">Sign Up</a> <%} %>
                         </div>
                     </li>
                 </ul>
-            </nav>
-        
-                  
-                </ul>
-            </div>
-        </div>
     </nav>
 
 
-    
+    </ul>
+    </div>
+    </div>
+    </nav>
+
+
+
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active c-item">
-            <img class="d-block w-100 c-img" src="/shop/img/pc.jpg" alt="First slide">
-          </div>
-          <div class="carousel-item c-item">
-            <img class="d-block w-100 c-img" src="/shop/img/4070.jpg" alt="Second slide">
-          </div>
-          <div class="carousel-item c-item">
-            <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
-          </div>
+            <div class="carousel-item active c-item">
+                <img class="d-block w-100 c-img" src="/shop/img/pc.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item c-item">
+                <img class="d-block w-100 c-img" src="/shop/img/4070.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item c-item">
+                <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
+            </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
         </a>
         <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
         </a>
-      </div>
+    </div>
+    <div id="heading1"
+    style="background-color: rgb(0, 0, 0); height: 100%; width: 100%;  align-items: center; justify-content: center; display: flex;"><
+    img src="">
+</div>
+
+    <div id="heading"
+        style="background-color: rgb(0, 0, 0); height: 90px; width: 100%;  align-items: center; justify-content: center; display: flex;">
+        <h1
+            style="font-weight: 500;margin-top: 0.5rem;font-family: 'VT323', monospace; letter-spacing: 6cap;color:#E6970D;">
+            Featured Products</h1>
+    </div>
+
+
+
+    <section style="background-color: rgb(26, 26, 26);">
+        <div class="container py-5 ">
+            <div class="row justify-content-center">
+                <!-- Featured Products -->
+
+                <% if (!productData || productData.length===0 ) { %>
+                    <p>No products found.</p>
+                    <% } else { %>
+
+                        <% productData.forEach((product)=> { %>
+                            <% if (product.isBlocked===false) { %>
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+
+                                    <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image"
+                                        class="card-img-top" />
+
+                                    <div class="card text-black">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <h5 class="card-title">
+                                                    <%= product.productName %>
+                                                </h5>
+                                                <container class="description">
+                                                    <p class="text-muted mb-4 description-truncate">
+                                                        <%= product.productDescription %>
+                                                    </p>
+                                                </container>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Price</span><span><b>₹</b>
+                                                        <%=product._id %>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span></span><span></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Category</span><span>
+                                                        <%=product.category.CategoryName %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                                                <span>Total</span><span></span>
+                                            </div>
+                                            <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                                                <span class="heart-icon"><a href=""><i class="fas fa-heart"></i></a><a
+                                                        href="#" class="cart-icon-link"><i
+                                                            class="fas fa-shopping-cart"></i></a></span>
+                                                <span>
+                                                </span>
+                                                <span><a href="productdetails?productId=<%=product._id %>"><button type="button" class="btn btn-outline-dark">Shop
+                                                        Now</button></a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                    <% }); %>
+                                        <% } %>
+            </div>
+        </div>
+    </section>
+
+
 
 
 
