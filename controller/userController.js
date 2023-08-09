@@ -1,135 +1,144 @@
-const mongoose = require('mongoose')
-const userHelpers = require("../helpers/userHelpers");
-const User = require('../models/userModel')
-const Product = require('../models/productModels')
-const Category = require('../models/categoryModels')
-const bcrypt = require('bcrypt');
-const serviceSid= process.env.TWILIO_SERVICE_SID
-const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
+const Address = require("../models/addressModel");
+const User = require("../models/userModel");
+const Product = require("../models/productModels");
+const Category = require("../models/categoryModels");
+const bcrypt = require("bcrypt");
+const isLoggedIn = require("../middlewares/sessionHandling");
+const Cart = require("../models/cartModel");
+const mongoose = require("mongoose");
+const serviceSid = process.env.TWILIO_SERVICE_SID;
+const client = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 module.exports = {
   homePage: async (req, res, next) => {
-    let productData =await Product.find().populate('category');
+    let productData = await Product.find().populate("category");
+    const categoryData = await Category.find();
     let user = req.session.user;
-    res.render('shop/home', {productData, req})
+    res.render("shop/home", { productData, user, categoryData });
   },
 
   loginPage: async (req, res) => {
-    res.render("shop/userlogin/userLogin");
+    error = "";
+    res.render("shop/userlogin/userLogin", { error });
   },
-
 
   signUpPage: (req, res) => {
     const phone = req.query.phonenumber;
     res.render("shop/userlogin/userSignup");
   },
-  
 
   signUpPost: async (req, res) => {
     try {
-      const { username, email, number, password } = req.body;      
+      const { username, email, number, password } = req.body;
       const existingUser = await User.findOne({ email });
-      if (existingUser) {      
-        const error = 'Email is already in use. Please choose a different email.';
-        return res.render('shop/userlogin/userSignup', { error });
-      }  
+      if (existingUser) {
+        const error =
+          "Email is already in use. Please choose a different email.";
+        return res.render("shop/userlogin/userSignup", { error });
+      }
       const hashedPassword = await bcrypt.hash(password, 10);
-        req.session.userData = {
+      req.session.userData = {
         username,
         email,
         number,
-        password: hashedPassword
-      };  
-      res.redirect('/verify');  
+        password: hashedPassword,
+      };
+      res.redirect("/verify");
     } catch (err) {
-      console.error('Error saving user:', err);
-      res.render('error', { error: 'An error occurred while saving the user.' });
+      console.error("Error saving user:", err);
+      res.render("error", {
+        error: "An error occurred while saving the user.",
+      });
     }
   },
-
 
   getVerify: async (req, res) => {
     try {
-      const number = req.session.userData.number;  
+      const number = req.session.userData.number;
       if (!number) {
-        res.status(400).send('Phone number not found');
+        res.status(400).send("Phone number not found");
         return;
-      }  
-      const verification = await client.verify.v2.services(serviceSid)
-        .verifications
-        .create({
+      }
+      const verification = await client.verify.v2
+        .services(serviceSid)
+        .verifications.create({
           to: `+91${number}`,
-          channel: 'sms'
-        });  
-      console.log(verification.sid, "the otp is generated ");
-      res.render('shop/userlogin/otp', { number });  
+          channel: "sms",
+        });
+      res.render("shop/userlogin/otp", { number });
     } catch (err) {
-      console.error('Error generating OTP:', err);
-      // Handle the error...
+      console.error("Error generating OTP:", err);
     }
   },
 
-
-  postVerify: async(req, res) =>{
-    const otp= req.body.otp;
+  postVerify: async (req, res) => {
+    const otp = req.body.otp;
     const number = req.query.number;
-    console.log(number)
-    console.log(otp);
-    client.verify.v2.services(serviceSid)
-    .verificationChecks
-    .create({
-      to:'+91'+number,
-      code: otp
-    })
-    .then( async (verification)=>{
-      console.log("GET VARIFICATION");
-      console.log(verification,"otp verification status")
-      if(verification.valid === true){
-        console.log("otp valid")
-        const { username, email, number, password } = req.session.userData;       
-        const newUser = new User({
-          username,
-          email,
-          number,
-          password,
-        });
-        await newUser.save();
-        req.session.user = newUser;
-        res.redirect('/');
-      }
-      else{
-        res.render('user/OTP', { email: req.session.userData.email, error: 'Invalid OTP. Please try again.' });
-      }
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
+    client.verify.v2
+      .services(serviceSid)
+      .verificationChecks.create({
+        to: "+91" + number,
+        code: otp,
+      })
+      .then(async (verification) => {
+        if (verification.valid === true) {
+          const { username, email, number, password } = req.session.userData;
+          const newUser = new User({
+            username,
+            email,
+            number,
+            password,
+          });
+          await newUser.save();
+          req.session.user = newUser;
+          res.redirect("/");
+        } else {
+          res.render("user/OTP", {
+            email: req.session.userData.email,
+            error: "Invalid OTP. Please try again.",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
-  
 
   loginPost: async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
       const validUser = await User.findOne({ email: req.body.email });
-      console.log('hellofromloginPost');
+      if (!validUser) {
+        return res.render("shop/userlogin/userLogin", {
+          error: "Invalid email or password",
+        });
+      }
+
+      if (validUser.isBlocked) {
+        return res.render("shop/userlogin/userLogin", {
+          error: "Your account has been blocked. Please contact support.",
+        });
+      }
+
       if (validUser) {
         const isPasswordMatch = await bcrypt.compare(
           req.body.password,
           validUser.password
-          );
-          if (isPasswordMatch) {
-          req.session.user = validUser; 
+        );
+        if (isPasswordMatch) {
+          req.session.user = validUser;
           res.redirect("/");
           return { status: true, user: validUser };
         } else {
-          console.log("Invalid Password");
-          return { status: false };
+          return res.render("shop/userlogin/userLogin", {
+            error: "Invalid email or password",
+          });
         }
       } else {
-        // User with the provided email not found
-        const blockmsg = "Incorrect Password or Email...!!";
-        res.render("shop/userlogin/userLogin.ejs", { blockmsg });
+        res.render("shop/userlogin/userLogin.ejs", { error });
       }
     } catch (err) {
       console.error(err);
@@ -137,29 +146,80 @@ module.exports = {
     }
   },
 
-
-  logOutGet: async (req,res) => {
-    req.session.user =false;
-    res.redirect('/');
+  logOutGet: async (req, res) => {
+    req.session.user = false;
+    res.redirect("/");
   },
 
+  getCategoryDetails: async (req, res) => {
+    try {
+      const categoryData = await Category.find();
+      res.render("shop/category", { categoryData });
+    } catch (error) {
+      throw new error(error);
+    }
+  },
 
-  getProductDetails: async(req, res) => {
-    try{
-      const productId = req.query.productId
-      // console.log(productId);
-      const productData = await Product.findById(productId).populate('category');
-      console.log(productData);
-      const category = await Category.find()
+  getProductsByCategory: async (req, res) => {
+    try {
+      let categoryId = req.query.cat;
+      const productData = await Product.find({ category: categoryId }).populate(
+        "category"
+      );
+      const categoryData = await Category.find();
+      let user = req.session.user;
 
-      let user = req.session.user
-      res.render('shop/productpage', {productData});
-    }catch(error) {
+      res.render("shop/categorypage", { productData, user, categoryData });
+    } catch (error) {
+      throw new Error("Category Error");
+    }
+  },
+
+  getProductDetails: async (req, res) => {
+    try {
+      const productId = req.query.productId;
+      const productData = await Product.findById(productId).populate(
+        "category"
+      );
+      const categoryData = await Category.find();
+      let user = req.session.user;
+      res.render("shop/productpage", { productData, categoryData });
+    } catch (error) {
       throw new Error(error);
     }
-  }
-}
+  },
 
- 
+  precheckout: async (req, res) => {
+    try {
+      const loggedInUserId = req.session.user._id;
+      cartItems = await Cart.find({ user: loggedInUserId }).populate({
+        path: "products.productId",
+        model: "Product",
+      });;
+      const addressData = await Address.findOne({ userId: loggedInUserId });
+      res.render("shop/precheckout", { cartItems, addressData });
+      console.log(cartItems);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 
- 
+  updateDefaultAddress: async (req, res) => {
+    const addressId = req.body.addressId;
+    console.log(addressId, "adress Id");
+    try {
+      const deliveryAddress = await Address.findOne(
+        { 'addresses._id': addressId }
+        );
+        if (deliveryAddress && deliveryAddress.addresses.length > 0) {
+          const selectedAddress = deliveryAddress.addresses.find((address) => address._id.toString() === addressId);
+          if (selectedAddress) {
+            console.log(selectedAddress);  
+             
+          }
+        }
+    } catch (error) {
+      console.error("Error fetching address details:", error);
+    }
+  },
+};

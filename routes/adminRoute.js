@@ -25,7 +25,7 @@ router.get("/products", isloggedInadmin, adminController.Products);
 
 router.get("/addproducts", isloggedInadmin, adminController.AddProductsGet);
 
-router.post("/addproducts", upload.array("productImage", 3), (req, res) => {
+router.post("/addproducts", upload.array("productImage", 3),async (req, res) => {
   if (!req.files || req.files.length === 0) {
     throw new Error("No files uploaded");
   }
@@ -41,16 +41,18 @@ router.post("/addproducts", upload.array("productImage", 3), (req, res) => {
     originalPrice: req.body.originalPrice,
   });
 
-  newProduct
-    .save()
-    .then((savedProduct) => {
-      console.log("Product added to the database:", savedProduct);
-      res.redirect("addproducts");
-    })
-    .catch((err) => {
-      console.error("Error saving product:", err);
-      res.status(500).json({ error: "Failed to save product" });
-    });
+  try {
+    const savedProduct = await newProduct.save();
+    console.log("Product added to the database:", savedProduct);
+    res.json({ success: true });
+    return; 
+  } catch (err) {
+    console.error("Error saving product:", err);
+    res.status(500).json({ error: "Failed to save product" }); 
+    return; 
+  }
+
+  res.redirect('products')
 });
 
 router.get("/editproducts", isloggedInadmin, adminController.getEditProducts);

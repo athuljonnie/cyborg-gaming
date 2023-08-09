@@ -1,10 +1,31 @@
 function isLoggedIn(req, res, next) {
+  if (req.session.user) {
+    console.log('isLoggedIn');
+; // Redirect to the home page or another route
+  } else {
+    next();
+  }
+}
+  function log(req, res, next) {
     if (req.session.user) {
-      console.log('fddff');
+    res.redirect('/')
     } else {
-      next();
+    
+      next()
     }
   }
+  const checkSession = (req, res, next) => {
+    console.log("session");
+    if (req.session && req.session.user) {
+      if (req.path === '/signup' || req.path === '/login') {
+        console.log('resdirect')
+        return res.redirect('/');
+      }
+    }
+  
+    console.log("session-checked")
+    next();
+  };
   
    function isLoggedInUser(req, res, next) {
     if (req.session.user) {
@@ -26,4 +47,4 @@ function isLoggedInAdmin(req, res, next) {
       }
   }
 
-  module.exports = isLoggedIn, isLoggedInAdmin, isLoggedInUser
+  module.exports = isLoggedIn, isLoggedInAdmin, isLoggedInUser, checkSession, log

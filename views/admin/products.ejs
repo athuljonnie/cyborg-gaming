@@ -79,6 +79,7 @@
     <a href="/admin" class="navbar-brand">
       <img src="/shop/img/ll.png" alt="Logo">
       Product Management
+  
     </a>
 
 
@@ -89,6 +90,14 @@
           <a class="nav-link" href="addproducts">Add Products</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="categories">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="users">Users</a>
+        </li>
+        
+    
+        <li class="nav-item">
           <a class="nav-link" href="logout">Logout</a>
         </li>
       </ul>
@@ -98,7 +107,9 @@
   <!-- Content -->
   <div class="container">
     <h1>All Products</h1>
-
+    
+  </ul>
+    </li>
     <% if (productData.length===0) { %>
       <p>No products found.</p>
       <% } else { %>

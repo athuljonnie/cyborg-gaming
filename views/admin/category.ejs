@@ -59,6 +59,14 @@
         <li class="nav-item">
           <a class="nav-link" href="addcategories">Add Categories</a>
         </li>
+   
+        <li class="nav-item">
+          <a class="nav-link" href="users">Users</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="products">Products</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="logout">Logout</a>
         </li>
@@ -83,10 +91,7 @@
             <div class="category-description">
               <%= category.isBlocked %>
             </div>
-            <div class="category-description">
-              <%= category._id %>
-            </div>
-    
+
           <div class="product-actions">
             <% if (category.isBlocked) { %>
               <a href="/admin/unblockcategories?categoryId=<%= category._id %>" class="btn btn-danger">
@@ -99,9 +104,6 @@
                 <% } %>
                   <a href="/admin/editcategories?categoryId=<%= category._id %>" class="btn btn-primary">
                     <i class="fas fa-edit"></i> Edit
-                  </a>
-                  <a href="#" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> Delete
                   </a>
           </div>
         </div>

@@ -120,18 +120,23 @@
             <h1 style="padding-left: 95px; color:#ffd000 ;  ">Cyborg<br>Gaming</h1>
     </a>
         <h2>Welcome Back!</h2>
-        <form action="/login" method="post">
+        <p><%= error %></p>
+        <form action="/login" method="post" onsubmit="handleLoginForm(event)">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="email" placeholder="Enter your username" required>
+                <label for="username">email</label>
+                <input type="text" id="email" name="email" placeholder="Enter your username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
+            
+            <div id="errorBox" class="alert alert-danger" style="display: none;"></div>
             <div class="form-group">
                 <button type="submit">Login</button>
+
                 <div class="signup-section">
+
                     <p>Not a member? <a href="/signup" class="signup-link">Signup Here</a></p>
                 </div>
 
@@ -139,6 +144,66 @@
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function handleLoginForm(event) {
+          // Prevent form submission
+          event.preventDefault();
+      
+          // Reset error messages
+          resetErrorMessages();
+      
+          // Validate form fields
+          var emailInput = document.getElementById("email");
+          var passwordInput = document.getElementById("password");
+      
+          // Check if email is empty
+          if (emailInput.value.trim() === "") {
+            displayErrorMessage("emailError", "Please enter your email");
+            return;
+          }
+      
+          // Check if email is valid
+          var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+          if (!emailRegex.test(emailInput.value)) {
+            displayErrorMessage("emailError", "Please enter a valid email address");
+            return;
+          }
+      
+          // Check if password is empty
+          if (passwordInput.value === "") {
+            displayErrorMessage("passwordError", "Please enter a password");
+            return;
+          }
+      
+          // Submit the form if all validations pass
+          event.target.submit();
+        }
+      
+        function displayErrorMessage(elementId, errorMessage) {
+          var errorElement = document.getElementById(elementId);
+          errorElement.innerText = errorMessage;
+          errorElement.style.display = "block";
+      
+          // Display error box
+          var errorBox = document.getElementById("errorBox");
+          errorBox.innerText = errorMessage;
+          errorBox.style.display = "block";
+        }
+      
+        function resetErrorMessages() {
+          var errorElements = document.getElementsByClassName("error-text");
+          for (var i = 0; i < errorElements.length; i++) {
+            errorElements[i].innerText = "";
+            errorElements[i].style.display = "none";
+          }
+      
+          // Reset error box
+          var errorBox = document.getElementById("errorBox");
+          errorBox.innerText = "";
+          errorBox.style.display = "none";
+        }
+      </script>
+
 </body>
 
 </html>

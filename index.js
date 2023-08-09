@@ -5,14 +5,11 @@ const dbConnect = require("./config/dbConnect");
 const dotenv = require("dotenv").config();
 const PORT = 4000 || process.env.PORT;
 const userRouter = require("./routes/userRoute");
-// const authRouter = require("./routes/authRoutes");
-// const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const session = require("express-session");
 const adminRouter = require("../cyborg/routes/adminRoute");
 const multer = require("multer");
 const fs = require('fs');
 dbConnect();
-
 
 app.use(
   session({
@@ -23,14 +20,12 @@ app.use(
   })
 );
 
-// cache control
 app.use((req,res,next)=>{
   res.header('cache-control','private,nocache,no-store')
   res.header('expurse','-1')
   res.header('parama','no-cache')
-  next()
+next()
 }) 
-
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -44,13 +39,6 @@ app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
 // app.use('/', authRouter);
 app.use("/admin", adminRouter);
 app.use("/", userRouter);
-
-
-
-// Set storage engine for uploaded images
-
-// app.use(upload.array("productImage", 3));
-
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);

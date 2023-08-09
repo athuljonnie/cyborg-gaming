@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Page</title>
+  <!-- Bootstrap CSS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      padding: 20px;
+      background-color: #000000;
+      /* Dark background color */
+      color: #fff;
+      /* Light text color */
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+
+    #col1 {
+      color: #ffffff;
+  padding: 20px;
+  background-color: #232323;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(255, 231, 231, 0.1);
+  margin-top: 20px;
+}
+
+#col1 input[type="radio"]:disabled + label {
+  font-style: italic;
+}
+
+#col1 label:hover {
+  cursor: pointer;
+  background-color: #000000;
+}
+
+
+    .address-card {
+      border: 1px solid #6f6f6f;
+      border-radius: 5%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #232323;
+      max-width: 300px;
+    }
+
+    .address-card p {
+      margin: 5px;
+    }
+
+    .address-card p b {
+      color: #f90;
+      /* Custom color for bold text (e.g., Name, Residential Address, etc.) */
+    }
+
+    .btn {
+      
+      margin-right: 10px;
+      /* Add some space between buttons */
+    }
+
+    #payment {
+      border: 20px;
+      border-color: #fff;
+      align-self: auto;
+      
+    }
+
+    #buttons {
+      display: grid;
+      justify-content: center;
+     margin-top: 20px;
+     grid-gap: 10px;
+
+    }
+
+    .cart-item {
+      border: 1px solid #000000;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #2b2b2b;
+      max-width: 600px;
+    }
+
+    .cart-item p {
+      margin: 5px;
+    }
+
+    .cart-item p b {
+      color: #f90;
+    }
+
+    /* Other styles... */
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h4>Saved Addresses:</h4>
+        <!-- Sample saved addresses -->
+        <% if (!addressData) { %>
+          <h1>Add Address</h1>
+          <% } else { %>
+            <% addressData.addresses.forEach(address=> { %>
+              <div class="address-card">
+                <label>
+                  <input type="radio" name="selectedAddress" data-address-id="<%= address._id %>"
+                  <% if (address.default) { %> checked <% } %>>
+                  <p><b>Name: </b><%= address.fullname %></p>
+                  <p><b>Residential Address: </b><%= address.house %></p>
+                  <p><b>LandMark: </b><%= address.landmark %></p>
+                  <p><b>City: </b><%= address.city %></p>
+                  <p><b>State: </b><%= address.state %></p>
+                  <p><b>ZIP Code: </b><%= address.zip %></p>
+                  <a href="#" class="btn btn-outline-secondary">Edit</a>
+                </label>
+              </div>
+              <% }) %>
+                <% } %>
+      </div>
+
+      <div class="col">
+        <h4>Your Cart:</h4>
+        <% if (cartItems.length) { %>
+          <% cartItems.forEach((cart) => { %>
+            <% cart.products.forEach((item, index) => { %>
+              <div class="cart-item">
+                <p><b>Product Name:</b> <%= item.productId.productName %></p>
+                <p><b>Price:</b> <%= item.productId.productPrice %></p>
+                <p><b>Quantity:</b> <%= item.quantity %></p>
+              </div>
+
+
+            <% }); %>
+          <% }); %>
+          <% cartItems.forEach((cartItem) => { %>
+            <h4>Total Price: ₹<%= cartItem.totalAmount.toFixed(2) %></h4>
+            <% }); %>
+        <% } else { %>
+          <p>Your cart is empty.</p>
+        <% } %>
+      </div>
+
+      
+      <div class="col" id="col1">
+        <h4>Payment Options:</h4>
+        <!-- Your payment options content here -->
+        <div>
+          <label>
+            <input type="radio" name="paymentOption" value="cod">
+            Cash On Delivery
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="paymentOption" value="online" disabled>
+          Debit Card(currently unavailable)
+        </label>
+        <label>
+        </div> 
+          </div>
+      
+      
+    </div>
+  </div>
+  <div id="buttons">
+    <a href="address" class="btn btn-outline-info">Add Address</a>
+    <!-- Proceed to Payment Button -->
+    <button
+      id="orderButton"
+      type="submit"
+      class="btn btn-outline-warning"
+      onclick=placeOrderHandler()
+    >
+      Confirm Order
+    </button>
+  </div>
+
+ 
+  <!-- Bootstrap JS (Optional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  
+
+  <script>
+  $("#checkout-form").submit((e) => {
+    e.preventDefault();
+    $("#orderButton").prop("disabled", true);
+    const formData = $("#checkout-form").serializeArray();
+    $.ajax({
+      url: "/order",
+      method: "post",
+      data: formData,
+
+      success: (response) => {
+        if (response.codSuccess) {
+          console.log("Redirecting to home now");
+  
+        } 
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        console.log("Error:", errorThrown);
+      },
+    });
+  });
+
+ const radioButtons = document.querySelectorAll('input[type="radio"][name="selectedAddress"]');
+ 
+ let addressId;
+
+radioButtons.forEach(radio => {
+  radio.addEventListener('change', async () => {
+    if (radio.checked) {
+       addressId = radio.getAttribute('data-address-id');
+      console.log('///////////');
+      try {
+        const response = await fetch('/updateDefaultAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ addressId }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          console.log('Default address updated');
+        }
+      } catch (error) {
+        console.error('Error updating default address', error);
+      }
+    }
+  });
+});
+
+async function placeOrderHandler() {
+  let paymentOption;
+  const paymentOptionNodeList = document.querySelectorAll('input[type="radio"][name="paymentOption"]');
+  paymentOptionNodeList.forEach((paymentSelector) => {
+    if (paymentSelector.checked) {
+      paymentOption = paymentSelector.value;
+    }
+  });
+
+  if (paymentOption && addressId) {
+    try {
+      const response = await fetch("/order", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ addressId, paymentOption }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // You can handle the response data here
+        toastr.success('Order placed successfully!', 'Success');
+      } else {
+        throw new Error('Failed to place order');
+      }
+    } catch (error) {
+      console.error(error);
+      toastr.error('Error placing order. Please try again later.', 'Error');
+    }
+  }
+}
+
+
+
+
+
+  </script>
+</body>
+
+</html>

@@ -191,7 +191,6 @@ module.exports = {
   getEditProducts: async (req, res, next) => {
     try {
       const productId = req.query.productId;
-      console.log(productId, "😂");
       const productData = await Product.findById(productId).populate(
         "category"
       );

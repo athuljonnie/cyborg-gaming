@@ -1,14 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controller/userController");
+const cartController = require('../controller/cartController')
 const isLoggedIn  = require("../middlewares/sessionHandling");
-// const isLoggedInUser = require('../middlewares/sessionHandling');
+const checkSession  = require("../middlewares/sessionHandling");
+const log = require("../middlewares/sessionHandling");
+const accountController = require("../controller/accountController");
+const addressController = require("../controller/addressController");
+const orderController = require("../controller/orderController");
 
-router.get("/", userController.homePage);
 
-router.get("/productdetails", isLoggedIn,userController.getProductDetails)
+router.get("/",userController.homePage);
 
-router.get("/login", isLoggedIn, userController.loginPage);
+router.get("/productdetails",userController.getProductDetails)
+
+router.get('/cartload', cartController.cartLoad)
+
+router.get('/removeCart', cartController.deleteCart)
+
+router.post('/updateQuantity', cartController.postUpdateQuantity)
+
+router.get('/cart', cartController.cart)
+
+router.get("/login",isLoggedIn, userController.loginPage);
 
 router.get("/signup", isLoggedIn, userController.signUpPage);
 
@@ -18,9 +32,27 @@ router.get("/verify",userController.getVerify);
 
 router.post("/verify",userController.postVerify);
 
-router.post("/login", isLoggedIn, userController.loginPost);
+router.post("/login",  userController.loginPost);
 
 router.get("/logout", userController.logOutGet);
+
+router.get("/account", accountController.accountDetails);
+
+router.get("/address", addressController.getAddress);
+
+router.post("/address",addressController.postAddress);
+
+router.get("/precheckout",userController.precheckout);
+
+router.get("/order",orderController.placeOrder);
+
+router.get("/getTotalPrice", orderController.getTotalPrice)
+
+router.post("/updateDefaultAddress", userController.updateDefaultAddress);
+
+router.post("/order", orderController.order)
+
+router.get('/category/desktop-pcs', userController.getProductsByCategory)
 
 
 

@@ -152,11 +152,11 @@
           <div class="user-details">
             <div class="user-name">Username: <%= user.username %></div>
             <div class="user-email">Email: <%= user.email %></div>
-            <div class="user-email">Contact Number: <%= user.phonenumber %></div>
+            <div class="user-email">Contact Number: <%= user.number %></div>
           </div>
         </div>
         <div class="user-actions">
-          <a href="#" class="btn btn-primary">Edit</a>
+          
           <% if (!user.isActive) { %>
             <a href="/admin/unblockusers?userId=<%= user._id %>" class="btn btn-danger">
               <i class="fas fa-lock"></i> Unblock

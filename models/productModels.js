@@ -44,7 +44,11 @@ const productSchema = new mongoose.Schema({
   originalPrice:{
     type:Number,
     default:0
-  }
+  },
+  listed:{
+    type: Boolean,
+    default: false
+  },
 });
 
 

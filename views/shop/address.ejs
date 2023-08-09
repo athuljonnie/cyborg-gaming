@@ -1,0 +1,119 @@
+<!-- address_form.ejs -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Address</title>
+    <!-- Bootstrap CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for dark theme */
+        body {
+            background-color: #222;
+            color: #fff;
+            padding: 20px;
+        }
+        h1 {
+            color: #ffc107;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" >
+        <h1 class="text-center">Add New Address</h1>
+        <form  id="addressForm" action="address" method="post">
+            <!-- Address Input Fields -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="fullname" required>
+            </div>
+            <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" name="state" required>
+            </div>
+            <div class="mb-3">
+                <label for="house" class="form-label">House</label>
+                <input type="text" class="form-control" name="house" required>
+            </div>
+            <div class="mb-3">
+                <label for="landmark" class="form-label">Landmark</label>
+                <input type="text" class="form-control" name="landmark">
+            </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" name="city" required>
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">ZIP Code</label>
+                <input type="number" class="form-control" name="zip" required>
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">Number</label>
+                <input type="number" class="form-control" name="number" required>
+            </div>
+
+            <!-- Dropdown to Choose Address Type -->
+            <div class="mb-3">
+                <label for="addressType" class="form-label">Address Type</label>
+                <select class="form-select" name="type" required>
+                    <option value="Home">Home</option>
+                    <option value="Office">Office</option>
+                    <!-- Add more address types here if needed -->
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+                <button type="submit" onclick=addAddress() class="btn btn-primary">Save Address</button>
+            </div>
+            
+        </form>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- <script>
+        const addressForm = document.getElementById('addressForm');
+    
+        addressForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            const formData = $(this).serialize(); // Serialize the form data
+             console.log(formData);
+            // Now you can use the formData to make your fetch request or perform any other actions
+            fetch('/address', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to save address');
+                }
+            })
+            .then(data => {
+                console.log(data);
+                toastr.success('Address saved successfully!', 'Success');
+                window.location.href = '/precheckout'; // Redirect after successful address submission
+            })
+            .catch(error => {
+                console.error(error);
+                toastr.error('Error saving address. Please try again later.', 'Error');
+            });
+        });
+    </script> -->
+</body>
+</html>
