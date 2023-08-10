@@ -134,18 +134,18 @@
             </div>
             <div class="product-actions">
               <% if (Product.isBlocked) { %>
-                <a href="/admin/unblockproducts?productId=<%= Product._id %>" class="btn btn-danger">
+                <a href="/admin/unblockproducts?productId=<%= Product._id %>" class="btn btn-outline-danger">
                   <i class="fas fa-lock"></i> Unblock
                 </a>
                 <% } else { %>
-                  <a href="/admin/blockproducts?productId=<%= Product._id %>" class="btn btn-success">
+                  <a href="/admin/blockproducts?productId=<%= Product._id %>" class="btn btn-outline-success">
                     <i class="fas fa-lock-open"></i> Block
                   </a>
                   <% } %>
-                    <a href="/admin/editproducts?productId=<%= Product._id %>" class="btn btn-primary">
+                    <a href="/admin/editproducts?productId=<%= Product._id %>" class="btn btn-outline-primary">
                       <i class="fas fa-edit"></i> Edit
                     </a>
-                    <a href="#" class="btn btn-danger">
+                    <a href="#" class="btn btn-outline-danger">
                       <i class="fas fa-trash"></i> Delete
                     </a>
             </div>

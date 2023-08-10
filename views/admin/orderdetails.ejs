@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #242424;
+      color: #707070;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 150px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: #000000;
+      padding-top: 20px;
+      padding-left: 20px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 16px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #333;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #000000 !important;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 24px;
+    }
+
+    .navbar-toggler {
+      border-color: #fff !important;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url('https://cdn3.iconfinder.com/data/icons/mini-icon-set-web-design-device-app/91/Web_-_UI-18-512.png');
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      color: #fff !important;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #888 !important;
+    }
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #2c2c2c;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+    .card{
+      background-color: #2d2d2d;
+      color: #fff !important;
+    }
+
+  </style>
+</head>
+
+<body>
+
+ 
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a href="/admin"><img src="/shop/img/ll.png"></a> 
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+     
+        <li class="nav-item">
+          <a class="nav-link" href="categories">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="users">Users</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <section class="content-main">
+    <div class="content-header">
+        <div>
+            
+            <h3>Details for Order ID: 64d331f607fa3096373bd809</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <header class="card-header">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 mb-lg-0 mb-15 ">
+                    <span>
+                        <i class="material-icons md-calendar_today"></i> <b>
+                            Tue Aug 01 2023 00:00:00 GMT+0000 (Coordinated Universal Time)
+                        </b>
+                    </span> <br>
+                    <p>Order ID: 64d331f607fa3096373bd809</p>
+                </div>
+                <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                   
+                </div>
+            </div>
+        </header>
+
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Customer</h6>
+                            <p class="card-text">
+                                Username: athuljonnie <br>
+                                Email: <a href="mailto:athuljonnie93@gmail.com">athuljonnie93@gmail.com</a><br>
+                                Phone: +91 9400251334
+                            </p>
+                            <a href="#" class="btn btn-link">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Order Info</h6>
+                            <p class="card-text">
+                                Shipping: Fargo Express <br>
+                                Payment Method: COD <br>
+                                Status: Delivered
+                            </p>
+                            <a href="#" class="btn btn-link">Download Info</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Deliver To</h6>
+                            <p class="card-text">
+                                Name: Athul Johney <br>
+                                Address: 123 Main St, Ernakulam <br>
+                                House: Edezhath House, Block A, House 999 <br>
+                                ZIP Code: 682007 <br>
+                                State: Kerala
+                            </p>
+                            <a href="#" class="btn btn-link">View Address</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Product</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="/uploads/ced90282f0956b0cf9e8f835431a579e.jpg"
+                                                width="40" height="40" class="img-xs" alt="Item">
+                                            <span class="ms-3">LAVANYA LABEL</span>
+                                        </div>
+                                    </td>
+                                    <td>Rs. 3562</td>
+                                    <td>23</td>
+                                    <td class="text-end">Rs. 81926</td>
+                                </tr>
+                                <!-- Add more product rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+           
+
+
+
+      <!-- Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    </body>
+    
+    </html>
+    

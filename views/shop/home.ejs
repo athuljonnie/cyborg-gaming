@@ -39,7 +39,7 @@
         }
 
         .navbar-brand:hover {
-            color: white;
+            color: rgb(0, 0, 0);
         }
 
         .navbar-nav {
@@ -163,10 +163,10 @@
                   </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                       <% if (user) { %>
-                        <a class="dropdown-item" href=""><%= user.username %></a>
+                        <a class="dropdown-item" href="account"><%= user.username %></a>
                         <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="">Profile</a>
-                      <div class="dropdown-divider"></div>
+            
+                   
                       <a class="dropdown-item" href="logout">X Log Out X</a>
                       <% } else { %>
                       <a class="dropdown-item" href="login">Sign In</a>

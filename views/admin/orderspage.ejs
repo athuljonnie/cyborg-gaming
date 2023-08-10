@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #242424;
+      color: #707070;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 150px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: #000000;
+      padding-top: 20px;
+      padding-left: 20px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 16px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #333;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #000000 !important;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 24px;
+    }
+
+    .navbar-toggler {
+      border-color: #fff !important;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url('https://cdn3.iconfinder.com/data/icons/mini-icon-set-web-design-device-app/91/Web_-_UI-18-512.png');
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      color: #fff !important;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #888 !important;
+    }
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #2c2c2c;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+ 
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a href="/admin"><img src="/shop/img/ll.png"></a> 
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+     
+        <li class="nav-item">
+          <a class="nav-link" href="categories">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="users">Users</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>All Products</h1>
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+              
+                <th>Payment Method</th>
+                <th>Delivery Status</th>
+                <th>Price</th>
+                <th>Date</th>
+           
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (userOrders.length === 0) { %>
+                <tr>
+                    <td colspan="6">No products found.</td>
+                </tr>
+            <% } else { %>
+                <% userOrders.forEach((order) => { %>
+                    <tr>
+                        <td><%=order._id %></td>
+                        <!-- <td><%#=order.userId.username %></td> -->
+                        <td><%=order.paymentMethod %></td>
+                        <form id="form-<%= order._id %>" action="update-deliverystatus/<%= order._id %>" method="POST">
+                            <!-- Dropdown for deliverystatus -->
+                            <td>
+                                <select name="deliverystatus" id="deliverystatus-<%= order._id %>" onchange="submitForm('<%= order._id %>')">
+                                    <option value="pending" <%= order.deliverystatus === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="shipped" <%= order.deliverystatus === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                                    <option value="delivered" <%= order.deliverystatus === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                                </select>
+                            </td>
+                        </form>
+                        
+                        <td><%=order.totalAmount %></td>
+                        <td><%= order.createdAt.toDateString() %></td>
+           
+                        <td>
+                           
+                            <a href="/admin/orderdetails?orderId=<%= order._id %>" class="btn btn-outline-primary">
+                                <i class="fas fa-edit"></i>Details
+                            </a>
+                          
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+function submitForm(orderId) {
+    const selectElement = document.getElementById(`deliverystatus-${orderId}`);
+    const newStatus = selectElement.value;
+    console.log(newStatus);
+
+    const form = document.getElementById(`form-${orderId}`);
+    form.submit();
+}</script>
+    
+      <!-- Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    </body>
+    
+    </html>
+    

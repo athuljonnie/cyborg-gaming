@@ -46,7 +46,6 @@ module.exports = {
     let totalAmount = cart.totalAmount;
     console.log(orderProducts, "product");
 
-    res.json({ hello: "world" });
 
     try {
       const deliveryAddress = await Address.findOne({
@@ -78,27 +77,30 @@ module.exports = {
           deliverystatus: "pending",
         });
         await newOrder.save();
-      }
 
+       let cartDelete =  await Cart.deleteOne({user: userId})
+        console.log(cartDelete);
+      }
       res.json({success:true})
     } catch (error) {
       console.log(error);
     }
   },
+
+  deleteOrder: async (req, res) => {
+    try {
+        let orderId = req.query.orderId;
+        console.log(orderId);
+        let result = await Order.deleteOne({ _id: orderId });
+
+        if (result.deletedCount > 0) {
+            res.redirect('account')
+        } else {
+            res.status(400).json({ success: false, message: 'Order not found or could not be deleted' });
+        }
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        res.status(500).json({ success: false, message: 'Error deleting order' });
+    }
+}
 };
-
-// async function orderCreate(){
-//     try {
-//         const deliveryAddress = await Address.findOne(
-//           { 'addresses._id': addressId }
-//           );
-//           if (deliveryAddress && deliveryAddress.addresses.length > 0) {
-//             const selectedAddress = deliveryAddress.addresses.find((address) => address._id.toString() === addressId);
-//             if (selectedAddress) {
-//               console.log(selectedAddress);
-
-//             }
-//           }
-// }catch(error) {
-//     console.log(error);
-// }}

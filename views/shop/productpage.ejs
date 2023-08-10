@@ -189,8 +189,8 @@
       
           <div class="btn-group">
             <a href="#" onclick="addToCart('<%= productData._id %>')"><button class="btn btn-outline-primary" ><i class="fas fa-shopping-cart"  ></i> Add to Cart</button></a>
-            <button class="btn btn-outline-light"><i class="fas fa-heart"></i> Wishlist</button>
-            <button class="btn btn-outline-warning">Buy Now</button>
+          <a>  <button class="btn btn-outline-light"><i class="fas fa-heart"></i> Wishlist</button></a>
+           <a href="#" onclick="buyNow('<%= productData._id %>')"> <button class="btn btn-outline-warning" >Buy Now</button></a>
           </div>
        
         <div class="product-description description-scroll">
@@ -253,6 +253,46 @@
           toastr.success("Product added to cart!", "Success", {
             progressBar: true,
           });
+        } else {
+          // If there was an error adding the product to the cart, show Toastr error message
+          toastr.options = {
+            closeButton: true,
+            positionClass: "toast-bottom-right",
+            timeOut: 3000,
+            // Add the class for error message
+            toastClass: "toast-error"
+          };
+          toastr.error("Failed to add product to cart. Please try again.", "Error", {
+            progressBar: true,
+          });
+        }
+      },
+      error: function (error) {
+        // If there was an error with the AJAX request, show Toastr error message
+        toastr.options = {
+          closeButton: true,
+          positionClass: "toast-bottom-right",
+          timeOut: 3000,
+          // Add the class for error message
+          toastClass: "toast-error"
+        };
+        toastr.error("Failed to add product to cart. Please try again.", "Error", {
+          progressBar: true,
+        });
+      }
+    });
+  }
+
+
+  function buyNow(productId) {
+   console.log("hi",productId);
+    $.ajax({
+      url: `/cartload?productId=${productId}`,
+      type: 'GET',
+      success: function (response) {
+        if (response.success) {
+          // If product was successfully added to the cart, show Toastr success message
+          window.location.href = 'precheckout';
         } else {
           // If there was an error adding the product to the cart, show Toastr error message
           toastr.options = {

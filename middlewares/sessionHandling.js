@@ -1,11 +1,21 @@
 function isLoggedIn(req, res, next) {
   if (req.session.user) {
     console.log('isLoggedIn');
-; // Redirect to the home page or another route
+
   } else {
     next();
   }
 }
+
+function foracc(req, res ,next) {
+  if(req.session.user) {
+next()
+  }else{
+    res.redirect('/')
+  }
+}
+
+
   function log(req, res, next) {
     if (req.session.user) {
     res.redirect('/')
@@ -47,4 +57,4 @@ function isLoggedInAdmin(req, res, next) {
       }
   }
 
-  module.exports = isLoggedIn, isLoggedInAdmin, isLoggedInUser, checkSession, log
+  module.exports = isLoggedIn, isLoggedInAdmin, isLoggedInUser, foracc

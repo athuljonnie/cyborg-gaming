@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- <title>User Profile - <%#= username %></title> -->
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,13 +13,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-<!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* Custom CSS for dark theme */
@@ -128,9 +123,7 @@
 
         }
 
-        .card-body {
-            background-color: #c7c7c7;
-        }
+      
 
         #heading1{
              background-image: url('/shop/img/8481.jpg');
@@ -144,6 +137,41 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+
+        .custom-card {
+        background-color: #212121;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+   
+    }
+
+    .custom-card h2 {
+        color: #ffc107;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .custom-card ul {
+        padding-left: 20px;
+    }
+
+    .custom-card li {
+        margin-bottom: 10px;
+    }
+
+    .custom-card .card-link {
+        color: #ffc107;
+    }
+
+    .custom-card .card-link:hover {
+        text-decoration: none;
+    }
+    .card-body{
+        background-color: #343a40;
+    }
     </style>
 </head>
 <body>
@@ -205,59 +233,93 @@
 
     <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
-    <h2>Personal Information:</h2>
-    <ul>
-        <li><strong>Username: </strong> <%= userData.username %></li>
-        <li><strong>Email: </strong> <%= userData.email %></li>
-        
-        <li><strong>Phone Number:</strong> <%= userData.number %></li>
-        <!-- <li><strong>Address:</strong> <%#= address %></li> -->
-    </ul>
+    <% if (!userOrders) { %>
+        <h4>No orders </h4>
+        <% }  else {%>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Orders:</h2>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Product Details</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                    </thead>
+                    <tbody>
+                <% userOrders.forEach(order => { %>
+                    <tr>
+                        <td><%= order._id %></td>
+                        <td><%= order.createdAt.toDateString() %></td>
+                        <td><%= order.totalAmount %></td>
+                        <td>
+                            <% order.products.forEach((product) => { %>
+                                <%= product.name %><br>
+                            <% }) %>
+                        </td>
+                        <td>
+                            <% order.products.forEach(product => { %>
+                                <%= product.quantity %><br>
+                            <% }) %>
+                        </td>
+                        <td><%= order.deliverystatus %></td>
+                        <td> <a href="deleteOrder?orderId=<%= order._id %>" class="btn btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                          </a></td>
+                    </tr>
+                <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    
 
-    <h2>Order History:</h2>
-    <table class="table table-dark table-striped">
-        <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-        </tr>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Saved Addresses:</h2>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>State</th>
+                    <th>House</th>
+                    <th>Landmark</th>
+                    <th>City</th>
+                    <th>ZIP Code</th>
+                    <th>Email</th>
+                    <th>Number</th>
+                    <th>Address Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% addressData.addresses.forEach((address) => { %>
+                    <tr>
+                        <td><%= address.fullname %></td>
+                        <td><%= address.state %></td>
+                        <td><%= address.house %></td>
+                        <td><%= address.landmark %></td>
+                        <td><%= address.city %></td>
+                        <td><%= address.zip %></td>
+                        <td><%= address.email %></td>
+                        <td><%= address.number %></td>
+                        <td><%= address.type %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 
-    </table>
 
-    <h2>Saved Payment Methods:</h2>
-    <table class="table table-dark table-striped">
-        <tr>
-            <th>Card Type</th>
-            <th>Card Number</th>
-            <th>Expiry Date</th>
- 
-    </table>
 
-    <h2>Saved Addresses:</h2>
-    <table class="table table-dark table-striped">
-        <tr>
-            <th>Address Type</th>
-            <th>Address</th>
-            <th>Default Shipping</th>
-            <th>Default Billing</th>
-        </tr>
+
+
+
   
-    <h2>Account Settings:</h2>
-    <ul>
-        <li><a href="/change_password">Change Password</a></li>
-        <li><a href="/email_preferences">Email Preferences</a></li>
-        <li><a href="/communication_preferences">Communication Preferences</a></li>
-    </ul>
 
-    <a href="/logout">Log Out</a>
 
-    <p>Feel free to explore our website and continue shopping!</p>
-    <p>If you have any questions or need assistance, please don't hesitate to contact our customer support team.</p>
-
-    <p>Happy Shopping!</p>
-
-    <p>[Your E-commerce Website Name] Team</p>
 
     <!-- Bootstrap JS -->
        <!-- Bootstrap JS -->
@@ -268,5 +330,20 @@
        <!-- Then add the toastr.js script -->
        <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Toggle sidebar when the button is clicked
+    document.getElementById('toggleSidebar').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        
+        sidebar.classList.toggle('show');
+        content.classList.toggle('sidebar-show');
+    });
+</script>
+
 </body>
 </html>

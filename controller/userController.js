@@ -182,7 +182,7 @@ module.exports = {
         "category"
       );
       const categoryData = await Category.find();
-      let user = req.session.user;
+
       res.render("shop/productpage", { productData, categoryData });
     } catch (error) {
       throw new Error(error);

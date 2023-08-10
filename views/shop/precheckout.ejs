@@ -266,6 +266,7 @@ async function placeOrderHandler() {
         const data = await response.json();
         console.log(data); // You can handle the response data here
         toastr.success('Order placed successfully!', 'Success');
+        window.location.href = '/';
       } else {
         throw new Error('Failed to place order');
       }

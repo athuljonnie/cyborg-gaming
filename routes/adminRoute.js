@@ -4,6 +4,7 @@ const adminController = require("../controller/adminController");
 const isloggedInadmin = require("../middlewares/sessionHandling");
 const multer = require("multer");
 const Product = require("../models/productModels");
+const adminOrderController = require("../controller/adminOrderController");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, "./public/uploads");
@@ -113,6 +114,11 @@ router.get("/blockusers", isloggedInadmin, adminController.getBlockUsers);
 
 router.get("/unblockusers", isloggedInadmin, adminController.getUnblockUsers);
 
+router.get('/getorders', adminOrderController.getOrders);
+
+router.post('/update-deliverystatus/:orderId', adminOrderController.updateOrderStatus);
+
+router.get('/orderdetails', adminOrderController.getOrderDetails);
 
 router.get("/users", isloggedInadmin, adminController.getAllUsers);
 
