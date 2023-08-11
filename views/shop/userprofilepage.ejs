@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,22 +25,30 @@
             color: #fff;
             /* padding: 20px; */
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'DotGothic16', sans-serif;
             color: #ffc107;
         }
+
         table {
             color: #fff;
         }
+
         th {
             background-color: #343a40;
         }
+
         a {
             color: #ffc107;
         }
 
         .body {
+
             background-color: #000000;
-            }
+        }
 
         #navbar1 {
             background-color: #000000 !important;
@@ -79,271 +88,251 @@
             }
         }
 
-        .c-item {
-            height: 100%;
-        }
-
-        .c-img {
-            height: 100vh;
-            object-fit: cover;
-        }
-
-        .description-truncate {
-            max-height: 5em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
-
-        .description-container {
-            max-height: 10em;
-            overflow: auto;
-        }
-
-
-        .heart-icon i {
-            color: black;
-            transition: color 0.3s;
-
-        }
-
-
-        .heart-icon:hover i {
-            color: red;
-        }
-
-
-        .cart-icon-link i {
-            color: black;
-            padding: 15px;
-        }
-
-        .cart-icon-link:hover i {
-            color: blue;
-
-        }
-
-      
-
-        #heading1{
-             background-image: url('/shop/img/8481.jpg');
-             font-family: 'DotGothic16', sans-serif;
-            background-color: #333;
-            color: #000000;
-            display: flex;
-          
-            height: 100vh;
-            margin: 0;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
+    
         .custom-card {
-        background-color: #212121;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-   
-    }
+            
+            background-color: #212121;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
 
-    .custom-card h2 {
-        color: #ffc107;
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
+        }
 
-    .custom-card ul {
-        padding-left: 20px;
-    }
+        .custom-card h2 {
+            color: #ffc107;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
 
-    .custom-card li {
-        margin-bottom: 10px;
-    }
+        .custom-card ul {
+            padding-left: 20px;
+        }
 
-    .custom-card .card-link {
-        color: #ffc107;
-    }
+        .custom-card li {
+            margin-bottom: 10px;
+        }
 
-    .custom-card .card-link:hover {
-        text-decoration: none;
-    }
-    .card-body{
-        background-color: #343a40;
-    }
+        .custom-card .card-link {
+            color: #ffc107;
+        }
+
+        .custom-card .card-link:hover {
+            text-decoration: none;
+        }
+
+        .card-body {
+            
+            background-color: #343a40;
+        }
     </style>
 </head>
+
 <body>
+
     <body id="hero">
-        <!-- Navbar -->
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
-      <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
-      <div class="container">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                  <% categoryData.forEach((category)=>{ %>
-                  <li class="nav-item">
-                      <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
-                  </li>
-                  <% }) %>
-              </ul>
-              <ul class="navbar-nav ml-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                  </li>
-                  <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-user"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                          <% if (userData) { %>
-                            <a class="dropdown-item" href=""><%= userData.username %></a>
-                            <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="">Profile</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="logout">X Log Out X</a>
-                          <% } else { %>
-                          <a class="dropdown-item" href="login">Sign In</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="signup">Create an Account</a>
-                          <% } %>
-                      </div>
-                  </li>
-              </ul>
-          </div>
-      </div>
-    </nav>
-    
-    
-     
 
 
-    <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
-
-    <% if (!userOrders) { %>
-        <h4>No orders </h4>
-        <% }  else {%>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Orders:</h2>
-        <table class="table table-dark table-striped">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Total Amount</th>
-                    <th>Product Details</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                    </thead>
-                    <tbody>
-                <% userOrders.forEach(order => { %>
-                    <tr>
-                        <td><%= order._id %></td>
-                        <td><%= order.createdAt.toDateString() %></td>
-                        <td><%= order.totalAmount %></td>
-                        <td>
-                            <% order.products.forEach((product) => { %>
-                                <%= product.name %><br>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
+            <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <% categoryData.forEach((category)=>{ %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                    <%= category.CategoryName %>
+                                </a>
+                            </li> 
                             <% }) %>
-                        </td>
-                        <td>
-                            <% order.products.forEach(product => { %>
-                                <%= product.quantity %><br>
-                            <% }) %>
-                        </td>
-                        <td><%= order.deliverystatus %></td>
-                        <td> <a href="deleteOrder?orderId=<%= order._id %>" class="btn btn-outline-danger">
-                            <i class="fas fa-trash"></i>
-                          </a></td>
-                    </tr>
-                <% }) %>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-    
-
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Saved Addresses:</h2>
-        <table class="table table-dark table-striped">
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>State</th>
-                    <th>House</th>
-                    <th>Landmark</th>
-                    <th>City</th>
-                    <th>ZIP Code</th>
-                    <th>Email</th>
-                    <th>Number</th>
-                    <th>Address Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% addressData.addresses.forEach((address) => { %>
-                    <tr>
-                        <td><%= address.fullname %></td>
-                        <td><%= address.state %></td>
-                        <td><%= address.house %></td>
-                        <td><%= address.landmark %></td>
-                        <td><%= address.city %></td>
-                        <td><%= address.zip %></td>
-                        <td><%= address.email %></td>
-                        <td><%= address.number %></td>
-                        <td><%= address.type %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    </div>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <% if (userData) { %>
+                                    <a class="dropdown-item" href="">
+                                        <%= userData.username %>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="">Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="logout">X Log Out X</a>
+                                    <% } else { %>
+                                        <a class="dropdown-item" href="login">Sign In</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="signup">Create an Account</a>
+                                        <% } %>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
 
 
 
 
+        <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
-  
+        <% if (!userOrders) { %>
+            <h4>No orders </h4>
+            <% } else {%>
+                <div class="container mt-5">
+                    <h2 class="text-center mb-4">Orders:</h2>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                <th>Product Details</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% userOrders.forEach(order=> { %>
+                                <tr>
+                                    <td>
+                                        <%= order._id %>
+                                    </td>
+                                    <td>
+                                        <%= order.createdAt.toDateString() %>
+                                    </td>
+                                    <td>
+                                        <%= order.totalAmount %>
+                                    </td>
+                                    <td>
+                                        <% order.products.forEach((product)=> { %>
+                                            <%= product.name %><br>
+                                                <% }) %>
+                                    </td>
+                                    <td>
+                                        <% order.products.forEach(product=> { %>
+                                            <%= product.quantity %><br>
+                                                <% }) %>
+                                    </td>
+                                    <td>
+                                        <%= order.deliverystatus %>
+                                    </td>
+                                    <td> <a href="deleteOrder?orderId=<%= order._id %>" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a></td>
+                                </tr>
+                                <% }) %>
+                                    <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="container mt-5">
+                    <h2 class="text-center mb-4">Saved Addresses:</h2>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>State</th>
+                                <th>House</th>
+                                <th>Landmark</th>
+                                <th>City</th>
+                                <th>ZIP Code</th>
+                                <th>Email</th>
+                                <th>Number</th>
+                                <th>Address Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% addressData.addresses.forEach((address)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= address.fullname %>
+                                    </td>
+                                    <td>
+                                        <%= address.state %>
+                                    </td>
+                                    <td>
+                                        <%= address.house %>
+                                    </td>
+                                    <td>
+                                        <%= address.landmark %>
+                                    </td>
+                                    <td>
+                                        <%= address.city %>
+                                    </td>
+                                    <td>
+                                        <%= address.zip %>
+                                    </td>
+                                    <td>
+                                        <%= address.email %>
+                                    </td>
+                                    <td>
+                                        <%= address.number %>
+                                    </td>
+                                    <td>
+                                        <%= address.type %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
 
 
 
-    <!-- Bootstrap JS -->
-       <!-- Bootstrap JS -->
-       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-       <!-- Then add the toastr.js script -->
-       <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-    // Toggle sidebar when the button is clicked
-    document.getElementById('toggleSidebar').addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-        
-        sidebar.classList.toggle('show');
-        content.classList.toggle('sidebar-show');
-    });
-</script>
 
-</body>
+
+
+
+
+
+                <!-- Bootstrap JS -->
+                <!-- Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+                    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+                    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <!-- Then add the toastr.js script -->
+                <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+                <script>
+                    // Toggle sidebar when the button is clicked
+                    document.getElementById('toggleSidebar').addEventListener('click', function () {
+                        const sidebar = document.getElementById('sidebar');
+                        const content = document.getElementById('content');
+
+                        sidebar.classList.toggle('show');
+                        content.classList.toggle('sidebar-show');
+                    });
+                </script>
+
+    </body>
+
 </html>

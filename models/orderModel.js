@@ -12,7 +12,10 @@ const orderSchema = new mongoose.Schema({
     email: { type: String, required: true },
     type: { type: String, required: true },
   },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  
+  userId: { type: mongoose.Schema.Types.ObjectId, 
+          ref: "User" },
+
   paymentMethod: { type: String, required: true },
   products: [
     {

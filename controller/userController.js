@@ -195,9 +195,11 @@ module.exports = {
       cartItems = await Cart.find({ user: loggedInUserId }).populate({
         path: "products.productId",
         model: "Product",
-      });;
+      });
+      const user =await User.findById({_id: loggedInUserId})
+      const categoryData = await Category.find();
       const addressData = await Address.findOne({ userId: loggedInUserId });
-      res.render("shop/precheckout", { cartItems, addressData });
+      res.render("shop/precheckout", { cartItems, addressData,  categoryData, user });
       console.log(cartItems);
     } catch (error) {
       console.log(error.message);

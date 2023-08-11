@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Gaming</title>
+    <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .body {
+            background-color: #000000;
+
+        }
+
+        #navbar1 {
+            background-color: #000000 !important;
+            /* Set the background color to pitch black */
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-weight: 900;
+        }
+
+        .navbar-brand:hover {
+            color: rgb(0, 0, 0);
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-item {
+            padding: 0 15px;
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            background-color: rgb(0, 0, 0);
+        }
+
+        @media (max-width: 767px) {
+            .navbar-collapse {
+                justify-content: center;
+            }
+        }
+
+        .c-item {
+            height: 100%;
+        }
+
+        .c-img {
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        .description-truncate {
+            max-height: 5em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .description-container {
+            max-height: 10em;
+            overflow: auto;
+        }
+
+
+        .heart-icon i {
+            color: black;
+            transition: color 0.3s;
+
+        }
+
+
+        .heart-icon:hover i {
+            color: red;
+        }
+
+
+        .cart-icon-link i {
+            color: black;
+            padding: 15px;
+        }
+
+        .cart-icon-link:hover i {
+            color: blue;
+
+        }
+
+        .card-body {
+            background-color: #c7c7c7;
+        }
+
+        #heading1{
+             background-image: url('/shop/img/8481.jpg');
+             font-family: 'DotGothic16', sans-serif;
+            background-color: #333;
+            color: #000000;
+            display: flex;
+          
+            height: 100vh;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="bg-dark" id="hero">
+    <!-- Navbar -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
+  <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
+  <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+              <% categoryData.forEach((category)=>{ %>
+              <li class="nav-item">
+                  <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
+              </li>
+              <% }) %>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-user"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                      <% if (user) { %>
+                        <a class="dropdown-item" href="account"><%= user.username %></a>
+                        <div class="dropdown-divider"></div>
+            
+                   
+                      <a class="dropdown-item" href="logout">X Log Out X</a>
+                      <% } else { %>
+                      <a class="dropdown-item" href="login">Sign In</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="signup">Create an Account</a>
+                      <% } %>
+                  </div>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>

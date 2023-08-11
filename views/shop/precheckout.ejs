@@ -5,19 +5,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout Page</title>
+  <meta charset="UTF-8">
+
   <!-- Bootstrap CSS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <!-- Custom CSS -->
+  
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
   <style>
     body {
-      padding: 20px;
-      background-color: #000000;
-      /* Dark background color */
+ 
+      background-image: url('/shop/img/8481.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+   
       color: #fff;
-      /* Light text color */
+
     }
+
+
+    
+
+    #navbar1 {
+            background-color: #000000 !important;
+          
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-weight: 900;
+        }
+
+        .navbar-brand:hover {
+            color: white;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-item {
+            padding: 0 15px;
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            background-color: rgb(0, 0, 0);
+        }
+
+        @media (max-width: 767px) {
+            .navbar-collapse {
+                justify-content: center;
+            }
+        }
 
     .row {
       display: flex;
@@ -28,11 +85,14 @@
 
     #col1 {
       color: #ffffff;
-  padding: 20px;
+  padding: 50px;
   background-color: #232323;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(255, 231, 231, 0.1);
-  margin-top: 20px;
+
+  margin-bottom: 20px;
+ 
+  
 }
 
 #col1 input[type="radio"]:disabled + label {
@@ -41,7 +101,7 @@
 
 #col1 label:hover {
   cursor: pointer;
-  background-color: #000000;
+
 }
 
 
@@ -52,6 +112,7 @@
       margin-bottom: 10px;
       background-color: #232323;
       max-width: 300px;
+  
     }
 
     .address-card p {
@@ -70,6 +131,7 @@
     }
 
     #payment {
+   
       border: 20px;
       border-color: #fff;
       align-self: auto;
@@ -85,7 +147,7 @@
     }
 
     .cart-item {
-      border: 1px solid #000000;
+
       padding: 10px;
       margin-bottom: 10px;
       background-color: #2b2b2b;
@@ -99,96 +161,141 @@
     .cart-item p b {
       color: #f90;
     }
+.payment{
+  margin:50px;
+}
+  
 
     /* Other styles... */
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <h4>Saved Addresses:</h4>
-        <!-- Sample saved addresses -->
-        <% if (!addressData) { %>
-          <h1>Add Address</h1>
-          <% } else { %>
-            <% addressData.addresses.forEach(address=> { %>
-              <div class="address-card">
-                <label>
-                  <input type="radio" name="selectedAddress" data-address-id="<%= address._id %>"
-                  <% if (address.default) { %> checked <% } %>>
-                  <p><b>Name: </b><%= address.fullname %></p>
-                  <p><b>Residential Address: </b><%= address.house %></p>
-                  <p><b>LandMark: </b><%= address.landmark %></p>
-                  <p><b>City: </b><%= address.city %></p>
-                  <p><b>State: </b><%= address.state %></p>
-                  <p><b>ZIP Code: </b><%= address.zip %></p>
-                  <a href="#" class="btn btn-outline-secondary">Edit</a>
-                </label>
-              </div>
-              <% }) %>
-                <% } %>
-      </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
+    <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <% categoryData.forEach((category)=>{ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
+                </li>
+                <% }) %>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <% if (user) { %>
+                          <a class="dropdown-item" href="account"><%= user.username %></a>
+                          <div class="dropdown-divider"></div>
+              
+                     
+                        <a class="dropdown-item" href="logout">X Log Out X</a>
+                        <% } else { %>
+                        <a class="dropdown-item" href="login">Sign In</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="signup">Create an Account</a>
+                        <% } %>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+  </nav>
 
-      <div class="col">
-        <h4>Your Cart:</h4>
-        <% if (cartItems.length) { %>
-          <% cartItems.forEach((cart) => { %>
-            <% cart.products.forEach((item, index) => { %>
-              <div class="cart-item">
-                <p><b>Product Name:</b> <%= item.productId.productName %></p>
-                <p><b>Price:</b> <%= item.productId.productPrice %></p>
-                <p><b>Quantity:</b> <%= item.quantity %></p>
-              </div>
 
 
-            <% }); %>
-          <% }); %>
-          <% cartItems.forEach((cartItem) => { %>
-            <h4>Total Price: ₹<%= cartItem.totalAmount.toFixed(2) %></h4>
-            <% }); %>
-        <% } else { %>
-          <p>Your cart is empty.</p>
-        <% } %>
-      </div>
-
-      
-      <div class="col" id="col1">
-        <h4>Payment Options:</h4>
-        <!-- Your payment options content here -->
-        <div>
-          <label>
-            <input type="radio" name="paymentOption" value="cod">
-            Cash On Delivery
+  <div class="col" id="col1" style="opacity: .9">
+    <h4 class="mb-3" style="font-family: 'DotGothic16', sans-serif; color: #f90;">Saved Addresses:</h4>
+    
+    <% if (!addressData) { %>
+      <h1 style="font-family: 'DotGothic16', sans-serif; color: #f90;">Add Address</h1>
+    <% } else { %>
+      <% addressData.addresses.forEach(address => { %>
+        <div class="address-card mb-3">
+          <label class="d-flex align-items-start">
+            <input type="radio" name="selectedAddress" data-address-id="<%= address._id %>"<%= address.default ? ' checked' : '' %>>
+            <div class="ms-2">
+              <p><b>Name:</b> <%= address.fullname %></p>
+              <p><b>Residential Address:</b> <%= address.house %></p>
+              <p><b>LandMark:</b> <%= address.landmark %></p>
+              <p><b>City:</b> <%= address.city %></p>
+              <p><b>State:</b> <%= address.state %></p>
+              <p><b>ZIP Code:</b> <%= address.zip %></p>
+              <a href="#" class="btn btn-outline-secondary">Edit</a>
+            </div>
           </label>
         </div>
-        <div>
-          <input type="radio" name="paymentOption" value="online" disabled>
-          Debit Card(currently unavailable)
-        </label>
-        <label>
-        </div> 
-          </div>
-      
-      
+      <% }); %>
+    <% } %>
+    <div class="payment">
+    <h4 class="mb-3">Payment Options:</h4>
+    <!-- Your payment options content here -->
+    <div class="mb-3">
+      <label class="d-flex align-items-center">
+        <input type="radio" name="paymentOption" value="cod">
+        <span class="ms-2">Cash On Delivery</span>
+      </label>
+    </div>
+    <div class="mb-3">
+      <label class="d-flex align-items-center">
+        <input type="radio" name="paymentOption" value="online" disabled>
+        <span class="ms-2">Debit Card (currently unavailable)</span>
+      </label>
     </div>
   </div>
-  <div id="buttons">
-    <a href="address" class="btn btn-outline-info">Add Address</a>
-    <!-- Proceed to Payment Button -->
-    <button
-      id="orderButton"
-      type="submit"
-      class="btn btn-outline-warning"
-      onclick=placeOrderHandler()
-    >
-      Confirm Order
-    </button>
+    <h4 class="mb-3" style="font-family: 'DotGothic16', sans-serif; color: #f90;">Your Cart:</h4>
+    <% if (cartItems.length) { %>
+      <% cartItems.forEach((cart) => { %>
+        <% cart.products.forEach((item, index) => { %>
+          <div class="cart-item">
+            <p><b>Product Name:</b> <%= item.productId.productName %></p>
+            <p><b>Price:</b> <%= item.productId.productPrice %></p>
+            <p><b>Quantity:</b> <%= item.quantity %></p>
+          </div>
+        <% }); %>
+      <% }); %>
+      <% cartItems.forEach((cartItem) => { %>
+        <h4>Total Price: ₹<%= cartItem.totalAmount.toFixed(2) %></h4>
+      <% }); %>
+    <% } else { %>
+      <p>Your cart is empty.</p>
+    <% } %>
+  
+    <div id="buttons" class="mt-4">
+      <a href="address" class="btn btn-info me-3">Add Address</a>
+      <!-- Proceed to Payment Button -->
+      <button id="orderButton" type="submit" class="btn btn-warning" onclick="placeOrderHandler()">
+        Confirm Order
+      </button>
+    </div>
   </div>
-
+  
  
   <!-- Bootstrap JS (Optional) -->
+    <!-- Bootstrap JS (optional if you need to add JavaScript functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   

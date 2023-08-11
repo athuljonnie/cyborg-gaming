@@ -38,9 +38,6 @@
       gap: 10px;
     }
 
-    .product-description {
-      margin-top: 20px;
-    }
     
 
         #navbar1 {
@@ -156,6 +153,10 @@
         .total-price {
             font-weight: bold;
         }
+        h1, p{
+            font-family: 'DotGothic16', sans-serif;
+            color: #f3af02;
+        }
     </style>
 </head>
 
@@ -195,7 +196,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <% if (user) { %>
-                            <a class="dropdown-item" href="">Profile</a>
+                            <a class="dropdown-item" href=""><%= user.username %></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="logout">X Log Out X</a>
                             <% } else { %>
@@ -264,7 +265,7 @@
                 
                 
                 <div class="text-center mt-4">
-                    <a href="/precheckout" class="btn btn-primary">Checkout</a>
+                    <a href="/precheckout" class="btn btn-outline-warning" style="font-family: 'DotGothic16', sans-serif;">Checkout</a>
                 </div>
             </div>
             </div>
