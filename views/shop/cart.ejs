@@ -242,7 +242,7 @@
                             <td class="description-scroll"><%= item.productId.productBrand %></td>
                             <td id="price<%= item._id %>"><%= item.productId.productPrice %></td>
                             <td>
-                                <input type="number" class="form-control quantity-input" value="<%= item.quantity %>" min="1" max="<%= item.productId.productQuantity %>" id="quantityInput<%= item._id %>">
+                                <input type="number" class="form-control quantity-input" value="<%= item.quantity %>" min="1" max="<%= item.productId.productQuantity %>" id="quantityInput<%= item._id %>" >
                             </td>
                            
                                 <input id="idInput<%= item._id %>"value="<%= item._id %>" hidden>
@@ -251,14 +251,13 @@
                             
                             <td>
                                 <a href="/removeCart?productId=<%= item.productId._id%>&index=<%= index %>"><i class="fas fa-trash-alt delete-btn"></i></a>
-                                
                             </td>
                         </tr>
                     <% }); %>              
                 <% }); %>
             </tbody>
         </table>
-        <p class="text-right total-price" id="cartTotalPrice"></p>
+        <p class="text-right total-price" id="cartTotalPrice">Total price:</p>
         <div class="row">
             <div class="col-md-4 offset-md-8">
             
@@ -305,9 +304,9 @@
       toastr.success("Quantity updated successfully!", "Success");
     }
   </script>
+
+
 <script>
-    
-  
   function updateTotalAmount(productId) {
   const quantityInput = document.getElementById(`quantityInput${productId}`);
   const totalAmountCell = document.getElementById(`totalAmount${productId}`);
@@ -315,17 +314,16 @@
   const idInput = document.getElementById(`idInput${productId}`);
   var id = idInput.value
   const priceText = productPrice.textContent.trim();
-  const price = parseFloat(priceText.replace(' '));
+  const price = parseFloat(priceText.replace(' ')).toFixed(2);
 
-
-    var quantity = quantityInput.value
-      let number = quantityInput.value *price
+      var quantity = quantityInput.value
+      let number = quantityInput.value * price
       number = number.toFixed(2);
       totalAmountCell.textContent = `₹${number}`;
-      updateQuantityInDatabase(id , quantity)
-    }
-   
-    
+      updateQuantityInDatabase(id, quantity)
+  }
+
+
     const quantityInputs = document.querySelectorAll('.quantity-input');
     quantityInputs.forEach((input) => {
       input.addEventListener('input', () => {
@@ -360,7 +358,7 @@
     }
 
   function updateCartTotalPrice() {
-        let totalAmount = 0;
+        let totalAmount = 0
         const cartRows = document.querySelectorAll(".table tbody tr");
 
         cartRows.forEach((row) => {

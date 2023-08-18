@@ -196,11 +196,21 @@ module.exports = {
         path: "products.productId",
         model: "Product",
       });
+      let totalPrice = 0;
+cartItems.forEach((cartItem) => {
+    cartItem.products.forEach((product) => {
+        totalPrice += product.productId.productPrice * product.quantity;
+    });
+}   );
+totalPrice = totalPrice.toFixed(2);
+cartItems.totalAmount = totalPrice
+await Promise.all(cartItems.map((cartItem) => cartItem.save()));
+   console.log("Total Price:", cartItems.totalAmount, cartItems);
+     
       const user =await User.findById({_id: loggedInUserId})
       const categoryData = await Category.find();
       const addressData = await Address.findOne({ userId: loggedInUserId });
       res.render("shop/precheckout", { cartItems, addressData,  categoryData, user });
-      console.log(cartItems);
     } catch (error) {
       console.log(error.message);
     }
@@ -208,7 +218,7 @@ module.exports = {
 
   updateDefaultAddress: async (req, res) => {
     const addressId = req.body.addressId;
-    console.log(addressId, "adress Id");
+    console.log(addressId, "address Id");
     try {
       const deliveryAddress = await Address.findOne(
         { 'addresses._id': addressId }
