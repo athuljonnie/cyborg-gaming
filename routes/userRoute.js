@@ -51,6 +51,8 @@ router.post("/updateDefaultAddress", userController.updateDefaultAddress);
 
 router.post("/order", orderController.order);
 
+router.post("/verify-payment", orderController.verifyPayment);
+
 router.get('/category/desktop-pcs', userController.getProductsByCategory);
 
 router.get('/deleteOrder', orderController.deleteOrder);

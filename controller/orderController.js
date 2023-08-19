@@ -3,6 +3,7 @@ const Address = require("../models/addressModel");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModels");
 const Razorpay = require('razorpay');
+const { log } = require("util");
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -32,32 +33,34 @@ module.exports = {
     const cart = await Cart.find({ user: loggedInUserId });
   },
 
-  order: async (req, res) => {
+  
+  order:async (req, res) => {
     let { addressId, paymentMethod } = req.body;
     console.log(paymentMethod, "--payment method");
     let userId = req.session.user._id;
-    let cart = await Cart.findOne({ user: userId }).populate({
-      path: "products.productId",
-      model: "Product",
-    });
-    const orderProducts = cart.products.map((product) => {
-      return {
+  
+    try {
+      let cart = await Cart.findOne({ user: userId }).populate({
+        path: "products.productId",
+        model: "Product",
+      });
+  
+      const orderProducts = cart.products.map((product) => ({
         name: product.productId.productName,
         quantity: product.quantity,
-      };
-    });
-    let totalAmount = cart.totalAmount;
-
-    try {
+      }));
+       console.log(orderProducts,"products 🫂💕😑💕🫂😊");
+      let totalAmount = cart.totalAmount;
+  
       const deliveryAddress = await Address.findOne({
         "addresses._id": addressId,
       });
-      let selectedAddress;
+  
       if (deliveryAddress && deliveryAddress.addresses.length > 0) {
-        selectedAddress = deliveryAddress.addresses.find(
+        const selectedAddress = deliveryAddress.addresses.find(
           (address) => address._id.toString() === addressId
         );
-
+  
         let newOrder = new Order({
           deliveryDetails: {
             Fullname: selectedAddress.fullname,
@@ -71,45 +74,45 @@ module.exports = {
             type: selectedAddress.type,
           },
           userId: userId,
-          paymentMethod: req.body["paymentMethod"],
+          paymentMethod: paymentMethod,
           products: orderProducts,
           totalAmount: totalAmount,
-          paymentstatus: "cod",
+          paymentstatus: paymentMethod === "cod" ? "cod" : "pending",
           deliverystatus: "pending",
         });
-        await newOrder.save();
-
-        let orderId = newOrder._id;
-        let orderIdString = orderId.toString();
-
-        if (["paymentMethod"] === "cod") {
-          console.log("cod", ["paymentMethod"]);
-        } 
-        
-        else if (["paymentMethod"] === "razorpay") {
-          // console.log(newOrder._id,"razorpay"); 
+  
+        if (paymentMethod === "cod") {
+          await newOrder.save();
+          await Cart.deleteOne({ user: userId });
+          res.json({ success: true });
+        } else if (paymentMethod === "razorpay") {
           var options = {
-            amount: newOrder.totalAmount * 100,
+            amount: totalAmount * 100,
             currency: "INR",
-            receipt: orderIdString,
+            receipt: newOrder._id.toString(),
           };
-
-          // console.log(options);
+  
           instance.orders.create(options, function (err, order) {
             if (err) {
               console.error(err);
               res.status(500).json({ error: "Error creating Razorpay order" });
             } else {
-              res.json({ order: order, newOrder: newOrder, price: totalPrice }); // Send the order as a JSON response
+              res.json({
+                order: order,
+                newOrder: newOrder,
+                price: totalAmount,
+              });
             }
           });
+        } else {
+          console.log("error occured😒😒😒😒😒😒😒😒😒😒😒😒😒😒😒😒");
         }
-        await Cart.deleteOne({ user: userId });
-        
+      } else {
+        res.json({ success: false, error: "Invalid address ID" });
       }
-      res.json({ success: true });
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Error processing order" });
     }
   },
 
@@ -130,7 +133,6 @@ module.exports = {
         currentObject[nestedKeys[nestedKeys.length - 1]] = req.body[key];
       }
     }
-    console.log(newOrder, "--------------------------------------------------------------------------------------------");
     try {
       const cart = await Cart.findOne({ userId: loggedInUserId });
       const orderProducts = cart.products.map((product) => {
@@ -168,15 +170,8 @@ module.exports = {
         totalAmount: newOrder.totalAmount,
         paymentstatus: newOrder.paymentstatus,
         deliverystatus: newOrder.deliverystatus,
-        deliverySubtracted: newOrder.deliverySubtracted,
-        discount: newOrder.discount,
-        deliveryDate: newOrder.deliveryDate,
-        returnDate: newOrder.returnDate,
-        reason: newOrder.reason,
-        discount: newOrder.discount,
         createdAt: newOrder.createdAt
       });
-      console.log(newoder, "😉😉😉😉😉😉😉😉😉😉😉");
       let details = req.body;
       console.log(details, "detail");
       const crypto = require("crypto");

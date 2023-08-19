@@ -324,6 +324,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
   <script>
@@ -394,12 +395,19 @@
             body: JSON.stringify({ addressId, paymentMethod }),
           });
 
+          const responseData = await response.json(); // Parse response JSON data
+          console.log(responseData, "😊");
+          console.log(paymentMethod, 'awefasdiuyftaisudyfs');
+          console.log(responseData.order, "❤️❤️❤️❤️❤️❤️---> order", responseData.newOrder, "🫂🫂🫂🫂------------> new order we created");
+
+          if (paymentMethod === "razorpay") {
+            razorpayPayment(responseData.order, responseData.newOrder, responseData.price);
+          }
+
           if (response.ok) {
-            const data = await response.json();
-             toastr.success('Order placed successfully!', 'Success');
-            window.location.href = '/';
+            toastr.success('Order placed successfully!', 'Success');
           } else {
-            razorpayPayment(response.order, response.newOrder, response.price);
+            toastr.error('Error placing order. Please try again later.', 'Error');
           }
         } catch (error) {
           console.error(error);
@@ -407,67 +415,75 @@
         }
       }
 
-      
     }
 
 
     function razorpayPayment(order, newOrder, price) {
-    
-    var options = {
-      key: "rzp_test_REtCvvrJoFU8zA",
-      amount: order.amount,
-      currency: "INR",
-      name: "BROCODE",
-      description: "Test Transaction",
-      image: "https://example.com/your_logo",
-      order_id: order.id,
-      handler: function (response) {
-        verifyPayment(response, order, newOrder, price);
-      },
-      prefill: {
-        name: "User",
-        email: "user@example.com",
-        contact:"000000000",
-      },
-      notes: {
-        address: "Razorpay Corporate Office",
-      },
-      theme: {
-        color: "#243247",
-      },
-    };
+      console.log(order, newOrder, price, "--------------------------------------------------->>>>>😁");
+      console.log("razor function");
+      var options = {
+        key: "rzp_test_T7Y9hT7EceVVNL",
+        amount: order.amount,
+        currency: "INR",
+        name: "Cyborg Gaming",
+        description: "Test Transaction",
+        image: "https://example.com/your_logo",
+        order_id: order.id,
+        handler: function (response) {
+          console.log("Handler function executed");
+          console.log("Response:", response);
 
-    var rzp1 = new Razorpay(options);
+          try {
+            verifyPayment(response, order, newOrder, price);
+          } catch (error) {
+            console.error("Error in verifyPayment:", error);
+          }
+        },
 
-    rzp1.on("payment.failed", function (response) {
-      verifyPayment(response, order);
-    });
+        prefill: {
+          name: "User",
+          email: "user@example.com",
+          contact: "000000000",
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#243247",
+        },
+      };
+      console.log(options, "🤷‍♀️🤷‍♀️🤷‍♀️");
+      var rzp1 = new Razorpay(options);
 
-    rzp1.open();
-    console.log("razorpayPayment function");
-  }
+      rzp1.on("payment.failed", function (response) {
+        console.log("💕💕💕💕💕");
+        console.log(response);
+        verifyPayment(response, order);
+      });
+      rzp1.open();
+    }
 
-  function verifyPayment(payment, order, newOrder, price) {
-    console.log("verifying payment");
-    console.log(newOrder, price);
-    $.ajax({
-      url: "/verify-payment",
-      data: {
-        payment,
-        order,
-        newOrder,
-        price,
-      },
-      method: "post",
-      success: (response) => {
-        if (response.status) {
-          toastr.success('paid successfully!', 'Success');
-         } else {
-          toastr.error('payment failed. Please try again later.', 'Error');
-        }
-      },
-    });
-  }
+    function verifyPayment(payment, order, newOrder, price) {
+      console.log("verifying payment" , payment , order , newOrder ,price);
+      console.log(newOrder, price);
+      $.ajax({
+        url: "/verify-payment",
+        data: {
+          payment,
+          order,
+          newOrder,
+          price,
+        },
+        method: "post",
+        success: (response) => {
+          if (response.status) {
+            toastr.success('paid successfully!', 'Success');
+          } else {
+            toastr.error('payment failed. Please try again later.', 'Error');
+          }
+        },
+      });
+    }
 
 
   </script>
