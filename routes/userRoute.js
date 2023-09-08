@@ -3,13 +3,19 @@ const router = express.Router();
 const userController = require("../controller/userController");
 const cartController = require('../controller/cartController')
 const isLoggedIn  = require("../middlewares/sessionHandling");
-const foracc  = require("../middlewares/sessionHandling")
+const productController = require('../controller/productController')
 const accountController = require("../controller/accountController");
 const addressController = require("../controller/addressController");
 const orderController = require("../controller/orderController");
 
 
 router.get("/",userController.homePage);
+
+router.get('/allproducts', productController.getAllProducts);
+
+router.post('/allproducts', productController.getAllProducts);  
+
+router.get('/search', productController.getSearch);
 
 router.get("/productdetails",userController.getProductDetails);
 

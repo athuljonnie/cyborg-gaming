@@ -2,332 +2,500 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyborg Gaming</title>
-    <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-<!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .body {
-            background-color: #000000;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyborg Gaming</title>
+  <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <!-- Toastr CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .body {
+      background-color: #000000;
+    }
 
-        }
+    #navbar1 {
+      background-color: #000000 !important;
+      /* Set the background color to pitch black */
+      font-family: 'DotGothic16', sans-serif;
+    }
 
-        #navbar1 {
-            background-color: #000000 !important;
-            /* Set the background color to pitch black */
-            font-family: 'DotGothic16', sans-serif;
-        }
+    .navbar-brand {
+      color: white;
+      font-weight: 900;
+    }
 
-        .navbar-brand {
-            color: white;
-            font-weight: 900;
-        }
+    .navbar-brand:hover {
+      color: rgb(0, 0, 0);
+    }
 
-        .navbar-brand:hover {
-            color: rgb(0, 0, 0);
-        }
+    .navbar-nav {
+      margin-left: auto;
+    }
 
-        .navbar-nav {
-            margin-left: auto;
-        }
+    .nav-item {
+      padding: 0 15px;
+    }
 
-        .nav-item {
-            padding: 0 15px;
-        }
+    .navbar-toggler {
+      border: none;
+      outline: none;
+    }
 
-        .navbar-toggler {
-            border: none;
-            outline: none;
-        }
+    .navbar-toggler-icon {
+      background-color: rgb(173, 168, 168);
+    }
 
-        .navbar-toggler-icon {
-            background-color: rgb(0, 0, 0);
-        }
+    @media (max-width: 767px) {
+      .navbar-collapse {
+        justify-content: center;
+      }
+    }
 
-        @media (max-width: 767px) {
-            .navbar-collapse {
-                justify-content: center;
-            }
-        }
+    .c-item {
+      height: 100%;
+    }
 
-        .c-item {
-            height: 100%;
-        }
+    .c-img {
+      height: 80vh;
+      object-fit: cover;
+    }
 
-        .c-img {
-            height: 100vh;
-            object-fit: cover;
-        }
+    .description-truncate {
+      max-height: 5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
 
-        .description-truncate {
-            max-height: 5em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
-
-        .description-container {
-            max-height: 10em;
-            overflow: auto;
-        }
-
-
-        .heart-icon i {
-            color: black;
-            transition: color 0.3s;
-
-        }
+    .description-container {
+      max-height: 10em;
+      overflow: auto;
+    }
 
 
-        .heart-icon:hover i {
-            color: red;
-        }
+    .heart-icon i {
+      color: black;
+      transition: color 0.3s;
+
+    }
 
 
-        .cart-icon-link i {
-            color: black;
-            padding: 15px;
-        }
+    .heart-icon:hover i {
+      color: red;
+    }
 
-        .cart-icon-link:hover i {
-            color: blue;
 
-        }
+    .cart-icon-link i {
+      color: black;
+      padding: 15px;
+    }
 
-        .card-body {
-            background-color: #c7c7c7;
-        }
+    .cart-icon-link:hover i {
+      color: blue;
 
-        #heading1{
-             background-image: url('/shop/img/8481.jpg');
-             font-family: 'DotGothic16', sans-serif;
-            background-color: #333;
-            color: #000000;
-            display: flex;
-          
-            height: 100vh;
-            margin: 0;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
+    }
+
+    .card-body {
+      background-color: #c7c7c7;
+    }
+
+    #heading1 {
+      background-image: url('/shop/img/8481.jpg');
+      font-family: 'DotGothic16', sans-serif;
+      background-color: #333;
+      color: #000000;
+      display: flex;
+
+      height: 100vh;
+      margin: 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .search-input {
+      color: #c7c7c7;
+      background-color: #2c2c2c;
+      width: 150px;
+      height: 40px;
+      padding: 10px;
+      transition: 0.2s linear;
+      border: 1px solid rgb(58, 58, 58);
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border: 0.5px solid rgb(255, 234, 0);
+      box-shadow: -5px -5px 0px black;
+    }
+
+    .input-container:hover>.icon {
+      animation: anim 1s linear infinite;
+    }
+
+    @keyframes anim {
+
+      0%,
+      100% {
+        transform: translateY(calc(-50% - 5px)) scale(1);
+      }
+
+      50% {
+        transform: translateY(calc(-50% - 5px)) scale(1.1);
+      }
+    }
+
+
+
+    .dropdown-toggle {
+      color: #c7c7c7;
+
+    }
+
+    .quick-links a {
+      color: rgb(0, 179, 255);
+      
+    }
+    h3{
+      color: #E6970D;
+    }
+
+    .footer{
+      background-color: #2c2c2c;
+    }
+
+    #carouselExampleControls a{
+      color: #c7c7c7;
+    }
+
+    #carouselExampleControls a:hover{
+     color: #fffb04;
+    }
+  </style>
 </head>
 
 <body class="bg-dark" id="hero">
-    <!-- Navbar -->
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
-  <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
-  <div class="container">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-              <% categoryData.forEach((category)=>{ %>
-              <li class="nav-item">
-                  <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
-              </li>
-              <% }) %>
-          </ul>
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-user"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                      <% if (user) { %>
-                        <a class="dropdown-item" href="account"><%= user.username %></a>
-                        <div class="dropdown-divider"></div>
-            
-                   
-                      <a class="dropdown-item" href="logout">X Log Out X</a>
-                      <% } else { %>
-                      <a class="dropdown-item" href="login">Sign In</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="signup">Create an Account</a>
-                      <% } %>
-                  </div>
-              </li>
-          </ul>
+  <!-- Navbar -->
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
+    <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <form action="/search" method="GET"> <!-- Add the form element -->
+            <div class="input-container">
+              <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
+                placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <form id="product-search-form" class="search-form" action="/search" method="GET"><!-- Add the form element -->
+            <div class="input-group-append">
+              <button class="btn btn-outline-warning" type="submit">Search</button>
+            </div>
+          </form>
+        </div>
       </div>
-  </div>
-</nav>
-
-
-
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active c-item">
-                <img class="d-block w-100 c-img" src="/shop/img/pc.jpg" alt="First slide">
-            </div>
-            <div class="carousel-item c-item">
-                <img class="d-block w-100 c-img" src="/shop/img/carousel.jpeg" alt="Second slide">
-            </div>
-            <div class="carousel-item c-item">
-                <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-
-
-    <div id="heading"
-        style="background-color: rgb(0, 0, 0); height: 90px; width: 100%;  align-items: center; justify-content: center; display: flex;">
-        <h1
-            style="font-weight: 500;margin-top: 0.5rem;font-family: 'VT323', monospace; letter-spacing: 6cap;color:#E6970D;">
-            Featured Products</h1>
     </div>
 
 
 
-    <section style="background-color: rgb(26, 26, 26);">
-        <div class="container py-5">
-          <div class="row justify-content-center">
-            <!-- Featured Products -->
-      
-            <% if (!productData || productData.length===0 ) { %>
-              <p>No products found.</p>
-            <% } else { %>
-      
-              <% productData.forEach((product, index) => { %>
-                <% if (product.listed === true) { %>
-                  <% if (index % 3 === 0) { %>
-                    </div><div class="row justify-content-center">
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+
+            </li>
+
+          </ul>
+        </ul>
+
+
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <div class="dropdown show">
+              <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                aria-expanded="false">
+                Categories
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/allproducts">All Products</a>
+                <div class="dropdown-divider"></div>
+                <% categoryData.forEach((category)=>{ %>
+                  <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                    <%= category.CategoryName %>
+                  </a>
+                  <% }) %>
+
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user"></i>
+            </a>
+
+
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+              <% if (user) { %>
+                <a class="dropdown-item" href="account">
+                  <%= user.username %>
+                </a>
+                <div class="dropdown-divider"></div>
+
+
+                <a class="dropdown-item" href="logout">X Log Out X</a>
+                <% } else { %>
+                  <a class="dropdown-item" href="login">Sign In</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="signup">Create an Account</a>
                   <% } %>
-                  <div class="col-md-4 col-lg-4 col-xl-4 my-5">
-                    <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
-                    <div class="card text-black">
-                      <div class="card-body">
-                        <div class="text-center">
-                          <h5 class="card-title">
-                            <%= product.productName %>
-                          </h5>
-                          <container class="description">
-                            <p class="text-muted mb-4 description-truncate">
-                              <%= product.productDescription %>
-                            </p>
-                          </container>
-                        </div>
-                        <div>
-                          <div class="d-flex justify-content-between">
-                            <span>Price</span><span><b>₹</b><%= product.productPrice %></span>
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <span></span><span></span>
-                          </div>
-                          <div class="d-flex justify-content-between">
-                            <span>Category</span><span><%= product.category.CategoryName %></span>
-                          </div>
-                        </div>
-                        <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                          <span>Total</span><span></span>
-                        </div>
-                        <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                          <span class="heart-icon">
-                            <a href=""><i class="fas fa-heart"></i></a>
-                            <a href="#" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
-                          </span>
-                          <span></span>
-                          <span>
-                            <a href="productdetails?productId=<%= product._id %>">
-                              <button type="button" class="btn btn-outline-dark">Shop Now</button>
-                            </a>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <% } %>
-              <% }); %>
-            <% } %>
-          </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </nav>
+
+
+
+  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
+    style="font-family: 'DotGothic16', sans-serif;">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+      <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active c-item">
+        <img class="d-block w-100 c-img" src="/shop/img/pc.jpg" alt="First slide">
+        <div class="carousel-caption top-0 mt-4 d-none d-md-block">
+          <h1 class="mt-5">Streaming Machines</h1>
+          <a href="/category/desktop-pcs?cat=64bf8f425b894e67f9366cf7"><p>Shop Now</p></a>
         </div>
+      </div>
+      <div class="carousel-item c-item">
+        <img class="d-block w-100 c-img" src="/shop/img/carousel.jpeg" alt="Second slide">
+      </div>
+      <div class="carousel-item c-item">
+        <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+
+  <div id="heading"
+    style="background-color: rgb(0, 0, 0); height: 90px; width: 100%;  align-items: center; justify-content: center; display: flex;">
+    <h1
+      style="font-weight: 500;margin-top: 0.5rem;font-family: 'VT323', monospace; letter-spacing: 6cap;color:#E6970D;">
+      Featured Products</h1>
+  </div>
+
+
+
+  <section style="background-color: rgb(26, 26, 26);">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <!-- Featured Products -->
+
+        <% if (!productData || productData.length===0 ) { %>
+          <p>No products found.</p>
+          <% } else { %>
+
+            <% productData.forEach((product, index)=> { %>
+              <% if (product.listed===true) { %>
+                <% if (index % 3===0) { %>
+      </div>
+      <div class="row justify-content-center">
+        <% } %>
+          <div class="col-md-4 col-lg-4 col-xl-4 my-5">
+            <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
+            <div class="card text-black">
+              <div class="card-body">
+                <div class="text-center">
+                  <h5 class="card-title">
+                    <%= product.productName %>
+                  </h5>
+                  <container class="description">
+                    <p class="text-muted mb-4 description-truncate">
+                      <%= product.productDescription %>
+                    </p>
+                  </container>
+                </div>
+                <div>
+                  <div class="d-flex justify-content-between">
+                    <span>Price</span><span><b>₹</b>
+                      <%= product.productPrice %>
+                    </span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span></span><span></span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Category</span><span>
+                      <%= product.category.CategoryName %>
+                    </span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                  <span>Total</span><span></span>
+                </div>
+                <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                  <span class="heart-icon">
+                    <a href=""><i class="fas fa-heart"></i></a>
+                    <a href="#" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
+                  </span>
+                  <span></span>
+                  <span>
+                    <a href="productdetails?productId=<%= product._id %>">
+                      <button type="button" class="btn btn-outline-dark">Shop Now</button>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+            <% }); %>
+              <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer text-white py-4">
+    <div class="container" style="  font-family: 'DotGothic16', sans-serif;">
+
+      <div class="row">
+        <div class="col-md-6">
+
+          <h3>Cyborg Gaming</h3>
+    <p>At Cyborg Gaming, we are dedicated to providing you with the most cutting-edge prebuilt gaming PCs and immersive gaming experiences. Our mission is simple: to fuel your passion for gaming by offering top-notch hardware and the latest games at your fingertips.</p>
+           </div>
+        <div class="col-md-3">
+          <h3>Quick Links</h3>
+          <ul class="list-unstyled quick-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Portfolio</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h3>Contact Info</h3>
+          <address>
+            <p><i class="fa fa-map-marker"></i>404 WallStreet, NYC, Manhattan</p>
+            <p><i class="fa fa-envelope"></i> support@cyborg.com</p>
+            <p><i class="fa fa-phone"></i> +1 653 4823</p>
+          </address>
+        </div>
+
+      </div>
+
+      <section class="mb-4 text-center">
+        <!-- Facebook -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#" role="button"><i
+            class="fab fa-facebook-f"></i></a>
+
+        <!-- Twitter -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
+
+        <!-- Google -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
+
+        <!-- Instagram -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
+
+        <!-- Linkedin -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i
+            class="fab fa-linkedin-in"></i></a>
+
+        <!-- Github -->
+        <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
       </section>
-      
-      <!-- <div id="heading1">
-        <h1></h1>
-</div> -->
+      <!-- Section: Social media -->
+    </div>
+    <section class="">
+      <form action="/signup" method="get">
+        <p class="d-flex justify-content-center align-items-center">
+          <span style="  font-family: 'DotGothic16', sans-serif;">Register for free--<br></span>
+          <button type="submit" class="btn btn-outline-warning btn-rounded">
+            Sign up!
+          </button>
+      </form>
+      </p>
+    </section>
+    </div>
+  </footer>
+  <!-- Footer -->
 
 
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Then add the toastr.js script -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Then add the toastr.js script -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    
-  <!-- Your other script includes -->
-
-  <!-- <script>
-    $(document).ready(function() {
-      $('.cart-icon-link').click(function(e) {
-        e.preventDefault(); // Prevent default link behavior
-      
-        // Show the Toastr message
-        toastr.options = {
-          closeButton: true,
-          positionClass: "toast-bottom-right", // You can change the position as per your preference
-          timeOut: 3000 // How long the message will be shown, in milliseconds
-        };
-        
-        toastr.info("Product added to cart!", "Success", {
-          progressBar: true,
-        });
-      });
-    });
-  </script> -->
   <style>
     /* Success message */
     .toast-success {
       background-color: #4caf50;
     }
-  
+
     /* Error message */
     .toast-error {
       background-color: #f44336;
     }
   </style>
-  
+
   <script>
 
     function addToCart(productId) {
-     console.log("hi",productId);
+      console.log("hi", productId);
       $.ajax({
         url: `/cartload?productId=${productId}`,
         type: 'GET',
@@ -374,8 +542,26 @@
       });
     }
   </script>
-  
+  <script>
+    document.getElementById("product-search-form").addEventListener("submit", function (e) {
+      var searchTerm = document.getElementById("search-input").value.trim(); // Get the search term
 
+      // Redirect to the search results page with the search term as a query parameter
+      if (!searchTerm) {
+        e.preventDefault(); // Prevent form submission if search term is empty
+      }
+    });
+  </script>
+  <script>
+    document.getElementById("product-search-form").addEventListener("submit", function (e) {
+      var searchTerm = document.getElementById("search-input").value.trim(); // Get the search term
+      console.log(searchTerm);
+      // Redirect to the search results page with the search term as a query parameter
+      if (!searchTerm) {
+        e.preventDefault(); // Prevent form submission if search term is empty
+      }
+    });
+  </script>
 </body>
 
 </html>

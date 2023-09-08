@@ -268,12 +268,10 @@
         }
       },
       error: function (error) {
-        // If there was an error with the AJAX request, show Toastr error message
         toastr.options = {
           closeButton: true,
           positionClass: "toast-bottom-right",
           timeOut: 3000,
-          // Add the class for error message
           toastClass: "toast-error"
         };
         toastr.error("Failed to add product to cart. Please try again.", "Error", {
@@ -291,15 +289,15 @@
       type: 'GET',
       success: function (response) {
         if (response.success) {
-          // If product was successfully added to the cart, show Toastr success message
+
           window.location.href = 'precheckout';
         } else {
-          // If there was an error adding the product to the cart, show Toastr error message
+ 
           toastr.options = {
             closeButton: true,
             positionClass: "toast-bottom-right",
             timeOut: 3000,
-            // Add the class for error message
+   
             toastClass: "toast-error"
           };
           toastr.error("Failed to add product to cart. Please try again.", "Error", {
@@ -308,12 +306,12 @@
         }
       },
       error: function (error) {
-        // If there was an error with the AJAX request, show Toastr error message
+     
         toastr.options = {
           closeButton: true,
           positionClass: "toast-bottom-right",
           timeOut: 3000,
-          // Add the class for error message
+         
           toastClass: "toast-error"
         };
         toastr.error("Failed to add product to cart. Please try again.", "Error", {

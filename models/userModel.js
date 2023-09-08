@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
    number: {
       type: String,
       required: true,
-      unique:true,
+      // unique:true,
       // sparse: true,
     },
     isActive: {

@@ -71,7 +71,7 @@ module.exports = {
           (product) => product.productQuantity !== 0
         );
       }
-      //   const cartItems = cart.filter((cartItem) => cartItem.products.length > 0);
+      //   const cartItems = cart.filter((cartItem) => cartItem. products.length > 0);
       const categoryData = await Category.find();
       if (!loggedInUserId) {
         res.redirect('/login')

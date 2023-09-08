@@ -28,6 +28,7 @@ next()
 }) 
 
 
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.set("views", path.join(__dirname, "views"));
@@ -39,6 +40,13 @@ app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
 // app.use('/', authRouter);
 app.use("/admin", adminRouter);
 app.use("/", userRouter);
+
+
+app.use((req, res, next) => {
+  res.status(404);
+  res.render('shop/404'); 
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);

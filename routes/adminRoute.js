@@ -13,7 +13,12 @@ const storage = multer.diskStorage({
     return cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage });
+
+const upload = multer({ storage }); 
+
+
+
+
 router.get("/", isloggedInadmin, adminController.AdminHomePage);
 
 router.get("/login", isloggedInadmin, adminController.AdminloginPage);

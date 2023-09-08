@@ -103,9 +103,10 @@ module.exports = {
                 price: totalAmount,
               });
             }
-          });
+          }); 
+          await newOrder.save()
         } else {
-          console.log("error occured😒😒😒😒😒😒😒😒😒😒😒😒😒😒😒😒");
+          console.log("error occured");
         }
       } else {
         res.json({ success: false, error: "Invalid address ID" });
@@ -118,7 +119,7 @@ module.exports = {
 
   verifyPayment: async (req, res) => {
     const loggedInUserId = req.session.user;
-    console.log(req.body.price);
+    console.log(req.body.price, "🐲🐲🐲");
     const newOrder = {};
     for (const key in req.body) {
       if (key.startsWith('newOrder[')) {

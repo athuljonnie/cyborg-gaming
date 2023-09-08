@@ -38,7 +38,7 @@
     }
 
     .content {
-      margin-left: 250px;
+
       padding: 20px;
     }
 
@@ -106,13 +106,45 @@
     </div>
   </nav>
 
-  <!-- Content -->
-  <div class="content">
-    <h1>Welcome to Admin Panel</h1>
- 
-  </div>
+  
+    <div class="col-8 offset-2 my-5">
+      <div class="card">
+        <div class="card-body">
+          <h5>Chart Js</h5>
+          <hr>
+          <canvas class="bg-light" id="myChart"></canvas>
+        </div>
+      </div>
+    </div>
+   
 
   <!-- Bootstrap JS -->
+  
+  <script src="chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById('myChart').getContext('2d');
+    
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          datasets: [{
+            label: 'Sales Data',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1, 
+            // backgroundColor: 'rgba(0, 10, 0, 0.1)'
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

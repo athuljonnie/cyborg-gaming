@@ -13,7 +13,8 @@ module.exports ={
             const categoryData = await Category.find()
             const addressData = await Address.findOne({userId : loggedInUserId});
             const userOrders = await Order.find({userId : loggedInUserId});
-            console.log(userOrders,"❤️❤️❤️");
+            console.log(userOrders,"❤️❤️❤️d");
+            console.log(categoryData);
             res.render('shop/userprofilepage', {userData, categoryData, addressData, userOrders});
         }catch(error){
             throw new Error(error)

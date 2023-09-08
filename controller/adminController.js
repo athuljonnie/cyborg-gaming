@@ -26,7 +26,8 @@ module.exports = {
   AdminHomePage: async (req, res, next) => {
     if(req.session.admin){
     res.render("admin/adminHome");
-    } else{res.redirect('login')}
+    } else{
+    res.redirect('login')}
   },
 
   AdminloginPage: (req, res) => {

@@ -24,5 +24,5 @@ const categorySchema = new mongoose.Schema({
 });
 
 const Category = mongoose.model('Category', categorySchema);
-
+categorySchema.index({ CategoryName: 'text' });
 module.exports = Category;
