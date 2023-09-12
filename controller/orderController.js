@@ -2,7 +2,7 @@ const Cart = require("../models/cartModel");
 const Address = require("../models/addressModel");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModels");
-const Razorpay = require('razorpay');
+const Razorpay = require("razorpay");
 const { log } = require("util");
 const instance = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -33,34 +33,33 @@ module.exports = {
     const cart = await Cart.find({ user: loggedInUserId });
   },
 
-  
-  order:async (req, res) => {
+  order: async (req, res) => {
     let { addressId, paymentMethod } = req.body;
     console.log(paymentMethod, "--payment method");
     let userId = req.session.user._id;
-  
+
     try {
       let cart = await Cart.findOne({ user: userId }).populate({
         path: "products.productId",
         model: "Product",
       });
-  
+
       const orderProducts = cart.products.map((product) => ({
         name: product.productId.productName,
         quantity: product.quantity,
       }));
-       console.log(orderProducts,"products 🫂💕😑💕🫂😊");
+      console.log(orderProducts, "products 🫂💕😑💕🫂😊");
       let totalAmount = cart.totalAmount;
-  
+
       const deliveryAddress = await Address.findOne({
         "addresses._id": addressId,
       });
-  
+
       if (deliveryAddress && deliveryAddress.addresses.length > 0) {
         const selectedAddress = deliveryAddress.addresses.find(
           (address) => address._id.toString() === addressId
         );
-  
+
         let newOrder = new Order({
           deliveryDetails: {
             Fullname: selectedAddress.fullname,
@@ -80,7 +79,7 @@ module.exports = {
           paymentstatus: paymentMethod === "cod" ? "cod" : "pending",
           deliverystatus: "pending",
         });
-  
+
         if (paymentMethod === "cod") {
           await newOrder.save();
           await Cart.deleteOne({ user: userId });
@@ -91,7 +90,7 @@ module.exports = {
             currency: "INR",
             receipt: newOrder._id.toString(),
           };
-  
+
           instance.orders.create(options, function (err, order) {
             if (err) {
               console.error(err);
@@ -103,8 +102,8 @@ module.exports = {
                 price: totalAmount,
               });
             }
-          }); 
-          await newOrder.save()
+          });
+          await newOrder.save();
         } else {
           console.log("error occured");
         }
@@ -122,8 +121,8 @@ module.exports = {
     console.log(req.body.price, "🐲🐲🐲");
     const newOrder = {};
     for (const key in req.body) {
-      if (key.startsWith('newOrder[')) {
-        const nestedKeys = key.slice('newOrder['.length, -1).split('][');
+      if (key.startsWith("newOrder[")) {
+        const nestedKeys = key.slice("newOrder[".length, -1).split("][");
         let currentObject = newOrder;
         for (let i = 0; i < nestedKeys.length - 1; i++) {
           if (!currentObject[nestedKeys[i]]) {
@@ -137,7 +136,8 @@ module.exports = {
     try {
       const cart = await Cart.findOne({ userId: loggedInUserId });
       const orderProducts = cart.products.map((product) => {
-        const price = product.cartOffer === true ? product.offerPrice : product.price;
+        const price =
+          product.cartOffer === true ? product.offerPrice : product.price;
         return {
           name: product.productName,
           image: product.image[0],
@@ -151,8 +151,7 @@ module.exports = {
           deliveryStatus: "",
         };
       });
-      
-  
+
       const newoder = new Order({
         deliveryDetails: {
           userName: newOrder.deliveryDetails.userName,
@@ -163,7 +162,7 @@ module.exports = {
           zip: newOrder.deliveryDetails.zip,
           number: newOrder.deliveryDetails.number,
           email: newOrder.deliveryDetails.email,
-          type: newOrder.deliveryDetails.type
+          type: newOrder.deliveryDetails.type,
         },
         userId: newOrder.userId,
         paymentMethod: newOrder.paymentMethod,
@@ -171,68 +170,84 @@ module.exports = {
         totalAmount: newOrder.totalAmount,
         paymentstatus: newOrder.paymentstatus,
         deliverystatus: newOrder.deliverystatus,
-        createdAt: newOrder.createdAt
+        createdAt: newOrder.createdAt,
       });
       let details = req.body;
       console.log(details, "detail");
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", "jcjoEs8uH8MNudasaIC3fq1D");
       hmac.update(
-        details['payment[razorpay_order_id]'] + "|" + details['payment[razorpay_payment_id]']
+        details["payment[razorpay_order_id]"] +
+          "|" +
+          details["payment[razorpay_payment_id]"]
       );
       hmac = hmac.digest("hex");
       console.log(hmac, "hmac value");
-      let orderResponse = details['order[receipt]']
+      let orderResponse = details["order[receipt]"];
       console.log(orderResponse, "order-response 2");
       let orderObjId = new ObjectId(orderResponse);
       console.log(orderObjId, "1");
-      let price = req.body.price * 100
+      let price = req.body.price * 100;
       console.log(price);
-      console.log(details['order[amount]']);
-      if (hmac === details['payment[razorpay_signature]'] && details['order[amount]'] == price) {
+      console.log(details["order[amount]"]);
+      if (
+        hmac === details["payment[razorpay_signature]"] &&
+        details["order[amount]"] == price
+      ) {
         const cart = await Cart.findOne({ userId: loggedInUserId });
-        
+
         if (cart.discountCode !== null) {
-          let usedCoupon = await Usedcoupons.findOne({ userId: loggedInUserId });
+          let usedCoupon = await Usedcoupons.findOne({
+            userId: loggedInUserId,
+          });
           if (!usedCoupon) {
             usedCoupon = new Usedcoupons({
               userId: loggedInUserId,
-              usedCoupon: [{
-                couponCodes: cart.discountCode
-              }]
+              usedCoupon: [
+                {
+                  couponCodes: cart.discountCode,
+                },
+              ],
             });
           } else {
             usedCoupon.usedCoupon.push({
-              couponCodes: cart.discountCode
+              couponCodes: cart.discountCode,
             });
           }
           console.log(usedCoupon, "🤣🤣🤣🤣🤣🤣🤣");
           await usedCoupon.save();
         }
-        
-  
-  
-        const productsData = [].concat(...cart.products.map(product => ({ prodId: product.prodId, count: product.count })));
+
+        const productsData = [].concat(
+          ...cart.products.map((product) => ({
+            prodId: product.prodId,
+            count: product.count,
+          }))
+        );
         console.log(productsData, "array of productIds and counts");
-        
-        const productIds = productsData.map(item => item.prodId);
+
+        const productIds = productsData.map((item) => item.prodId);
         console.log(productIds, "array of productIds");
-        
+
         const products = await Product.find({ _id: { $in: productIds } });
-        
+
         for (const product of products) {
-          const { prodId, count } = productsData.find(item => item.prodId.toString() === product._id.toString());
+          const { prodId, count } = productsData.find(
+            (item) => item.prodId.toString() === product._id.toString()
+          );
           product.stock -= count;
           console.log("Product stock updated:", product.stock, "Count:", count);
           await product.save();
         }
-        
-        console.log('---------------ORDER MANAGEMENT SUCCESS😘---------------------');
+
+        console.log(
+          "---------------ORDER MANAGEMENT SUCCESS😘---------------------"
+        );
         await newoder.save();
         cart.products = [];
-        cart.totalprice = 0
-        cart.manageTotal =0
-        cart.walletAmount = false
+        cart.totalprice = 0;
+        cart.manageTotal = 0;
+        cart.walletAmount = false;
         await cart.save();
         await Order.updateOne(
           { _id: orderObjId },
@@ -242,9 +257,9 @@ module.exports = {
             },
           }
         );
-  
+
         console.log("payment is successful");
-  
+
         res.json({ status: true });
       } else {
         await Order.updateOne(
@@ -262,7 +277,6 @@ module.exports = {
       console.log(error, "error");
     }
   },
-  
 
   deleteOrder: async (req, res) => {
     try {

@@ -291,45 +291,8 @@
 
 
 
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
-    style="font-family: 'DotGothic16', sans-serif;">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-      <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-      <div class="carousel-item active c-item">
-        <img class="d-block w-100 c-img" src="/shop/img/pc.jpg" alt="First slide">
-        <div class="carousel-caption top-0 mt-4 d-none d-md-block">
-          <h1 class="mt-5">Streaming Machines</h1>
-          <a href="/category/desktop-pcs?cat=64bf8f425b894e67f9366cf7"><p>Shop Now</p></a>
-        </div>
-      </div>
-      <div class="carousel-item c-item">
-        <img class="d-block w-100 c-img" src="/shop/img/carousel.jpeg" alt="Second slide">
-      </div>
-      <div class="carousel-item c-item">
-        <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
+  
 
-
-  <div id="heading"
-    style="background-color: rgb(0, 0, 0); height: 90px; width: 100%;  align-items: center; justify-content: center; display: flex;">
-    <h1
-      style="font-weight: 500;margin-top: 0.5rem;font-family: 'VT323', monospace; letter-spacing: 6cap;color:#E6970D;">
-      Featured Products</h1>
-  </div>
 
 
 
@@ -337,35 +300,34 @@
     <div class="container py-5">
       <div class="row justify-content-center">
         <!-- Featured Products -->
-
-        <% if (!productData || productData.length===0 ) { %>
-          <p>No products found.</p>
+ 
+        <% if (!wishlistItems|| wishlistItems.length===0 ) { %>
+          <p>No products in WishList.</p>
           <% } else { %>
 
-            <% productData.forEach((product, index)=> { %>
-              <% if (product.listed===true) { %>
+            <% wishlistItems.forEach((wishlistItem) => { %>
+                <% wishlistItem.products.forEach((product, index) => { %>
                 <% if (index % 3===0) { %>
       </div>
       <div class="row justify-content-center">
         <% } %>
           <div class="col-md-4 col-lg-4 col-xl-4 my-5">
-            <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
+              <% if (product && product.image && product.image[0]) { %>
+                <img src="/uploads/<%= product.image[0] %>" alt="Product Image" class="card-img-top" />
+                <!-- Your code for displaying product information here -->
+              <% } %>
             <div class="card text-black">
               <div class="card-body">
                 <div class="text-center">
                   <h5 class="card-title">
                     <%= product.productName %>
                   </h5>
-                  <container class="description">
-                    <p class="text-muted mb-4 description-truncate">
-                      <%= product.productDescription %>
-                    </p>
-                  </container>
+                
                 </div>
                 <div>
                   <div class="d-flex justify-content-between">
                     <span>Price</span><span><b>₹</b>
-                      <%= product.productPrice %>
+                      <%= product.price %>
                     </span>
                   </div>
                   <div class="d-flex justify-content-between">
@@ -373,13 +335,11 @@
                   </div>
                   <div class="d-flex justify-content-between">
                     <span>Category</span><span>
-                      <%= product.category.CategoryName %>
+                      <%= product.CategoryName %>
                     </span>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                  <span>Total</span><span></span>
-                </div>
+               
                 <div class="d-flex justify-content-between total font-weight-bold mt-4">
                   <span class="heart-icon">
                     <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
@@ -395,8 +355,9 @@
               </div>
             </div>
           </div>
-          <% } %>
-            <% }); %>
+
+          <% }); %>
+          <% }); %>
               <% } %>
       </div>
     </div>

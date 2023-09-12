@@ -261,7 +261,7 @@ height: 200px;
                             <li class="nav-item">
                                 <a class="nav-link"
                                     style="font-weight: 500;margin-top: 0.5rem;font-family: 'VT323', monospace; letter-spacing: 6cap;color:#E6970D;">
-                                    <h1>All Products</h1>
+                                    <h1>Search results</h1>
                                 </a>
                             </li>
 
@@ -327,21 +327,7 @@ height: 200px;
 
     </nav>
 
-    <div id="heading" style="background-color:rgb(26, 26, 26);width: 100%;  align-items: center; justify-content: right; display: flex; padding-right: 30px;">
-        <div class="radio-inputs">
-            <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="a-z">
-                <span class="name">A-Z</span>
-            </label>
-            <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-high-to-low">
-                <span class="name">High-to-Low</span>
-            </label>
-            <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-low-to-high">
-                <span class="name">Low-to-High</span>
-            </label>
-        </div>
+   
 
 
     </div>
@@ -353,7 +339,7 @@ height: 200px;
 
 
                 <% if (!products || products.length===0 ) { %>
-                    <p>No products found.</p>
+                    <h1 style="color: #E6970D;font-family: 'DotGothic16', sans-serif;">No products found.</h1>
                     <% } else { %>
 
                         <% products.forEach((product, index)=> { %>
@@ -418,89 +404,76 @@ height: 200px;
 
 
     <script>
-        $('.sort-checkbox').click(function () {
-            var selectedOption = $(this).data('sort');
-            console.log('Selected Option:', selectedOption);
+        $.ajax({
+            type: 'POST',
+            url: 'search',
+            success: function (response) {
+                console.log(response);
+                $('body').empty();
+                $('body').html(response);
+                console.log(response);
+            },
+            error: function (error) {
+                console.error('Error sending data:', error);
+            }
+        });
+        ;
+    </script>
+
+
+    <style>
+        .toast-success {
+            background-color: #4caf50;
+        }
+        .toast-error {
+            background-color: #f44336;
+        }
+    </style>
+
+    <script>
+
+        function addToCart(productId) {
             $.ajax({
-                type: 'POST',
-                url: 'allproducts',
-                data: { sortOption: selectedOption },
+                url: `/cartload?productId=${productId}`,
+                type: 'GET',
                 success: function (response) {
-                    console.log(response);
-                    $('body').empty();
-                    $('body').html(response);
+                    if (response.success) {
+                        toastr.options = {
+                            closeButton: true,
+                            positionClass: "toast-bottom-right",
+                            timeOut: 3000,
+                            toastClass: "toast-success"
+                        };
+                        toastr.success("Product added to cart!", "Success", {
+                            progressBar: true,
+                        });
+                    } else {                        
+                        toastr.options = {
+                            closeButton: true,
+                            positionClass: "toast-bottom-right",
+                            timeOut: 3000,
+                            toastClass: "toast-error"
+                        };
+                        toastr.error("Failed to add product to cart. Please try again.", "Error", {
+                            progressBar: true,
+                        });
+                    }
                 },
-                error: function (error) {
-                    console.error('Error sending data:', error);
+                error: function (error) {                    
+                    toastr.options = {
+                        closeButton: true,
+                        positionClass: "toast-bottom-right",
+                        timeOut: 3000,
+                        toastClass: "toast-error"
+                    };
+                    toastr.error("Failed to add product to cart. Please try again.", "Error", {
+                        progressBar: true,
+                    });
                 }
             });
-        });
-</script>
-
-
-<style>
-    /* Success message */
-    .toast-success {
-      background-color: #4caf50;
-    }
-  
-    /* Error message */
-    .toast-error {
-      background-color: #f44336;
-    }
-  </style>
-  
-  <script>
-
-    function addToCart(productId) {
-     console.log("hi",productId);
-      $.ajax({
-        url: `/cartload?productId=${productId}`,
-        type: 'GET',
-        success: function (response) {
-          if (response.success) {
-            // If product was successfully added to the cart, show Toastr success message
-            toastr.options = {
-              closeButton: true,
-              positionClass: "toast-bottom-right",
-              timeOut: 3000,
-              // Add the class for success message
-              toastClass: "toast-success"
-            };
-            toastr.success("Product added to cart!", "Success", {
-              progressBar: true,
-            });
-          } else {
-            // If there was an error adding the product to the cart, show Toastr error message
-            toastr.options = {
-              closeButton: true,
-              positionClass: "toast-bottom-right",
-              timeOut: 3000,
-              // Add the class for error message
-              toastClass: "toast-error"
-            };
-            toastr.error("Failed to add product to cart. Please try again.", "Error", {
-              progressBar: true,
-            });
-          }
-        },
-        error: function (error) {
-          // If there was an error with the AJAX request, show Toastr error message
-          toastr.options = {
-            closeButton: true,
-            positionClass: "toast-bottom-right",
-            timeOut: 3000,
-            // Add the class for error message
-            toastClass: "toast-error"
-          };
-          toastr.error("Failed to add product to cart. Please try again.", "Error", {
-            progressBar: true,
-          });
         }
-      });
-    }
-  </script>
-         
+    </script>
+
 
 
 

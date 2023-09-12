@@ -21,6 +21,10 @@ const upload = multer({ storage });
 
 router.get("/", isloggedInadmin, adminController.AdminHomePage);
 
+router.get("/adminsignup", isloggedInadmin, adminController.adminSignupGet);
+
+router.post("/adminsignup", isloggedInadmin, adminController.adminSignupPost);
+
 router.get("/login", isloggedInadmin, adminController.AdminloginPage);
 
 router.post("/login", isloggedInadmin, adminController.AdminLoginPost);

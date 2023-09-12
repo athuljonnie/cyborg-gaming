@@ -7,6 +7,7 @@ const productController = require('../controller/productController')
 const accountController = require("../controller/accountController");
 const addressController = require("../controller/addressController");
 const orderController = require("../controller/orderController");
+const wishlistController = require("../controller/wishlistController");
 
 
 router.get("/",userController.homePage);
@@ -26,6 +27,10 @@ router.get('/removeCart', cartController.deleteCart);
 router.post('/updateQuantity', cartController.postUpdateQuantity);
 
 router.get('/cart', cartController.cart);
+
+router.get('/wishlist', wishlistController.getWishList)
+
+router.get('/wishlistLoad', wishlistController.wishlistLoad)
 
 router.get("/login",isLoggedIn, userController.loginPage);
 

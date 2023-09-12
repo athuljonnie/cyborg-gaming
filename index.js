@@ -34,6 +34,7 @@ app.use(express.json());
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "views")));
 app.set("view engine", "ejs");
+app.set('layout', 'layouts/layout');
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads',express.static(path.join(__dirname, 'uploads')));

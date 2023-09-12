@@ -5,10 +5,12 @@ const router = express.Router();
 const isLoggedInAdmin = require("../middlewares/sessionHandling");
 const Product = require("../models/productModels");
 const Category = require("../models/categoryModels");
+const Admin = require("../models/adminSchema")
 const User = require("../models/userModel");
 const multer = require("multer");
 const sharp = require("sharp");
 const { error } = require("toastr");
+const bcrypt = require("bcrypt")
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,13 +23,47 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 module.exports = {
-  // ______________adminHomePageFunctions____________
-
   AdminHomePage: async (req, res, next) => {
-    if(req.session.admin){
-    res.render("admin/adminHome");
-    } else{
-    res.redirect('login')}
+    if (req.session.admin) {
+      res.render("admin/adminHome",{adminLayout: true});
+    } else {
+      res.redirect("login");
+    }
+  },
+
+  adminSignupGet: async (req, res) => {
+    try {
+      res.render("admin/adminsignup");
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  adminSignupPost: async (req, res) => {
+    try {
+      const {admin, email,password} = req.body;
+      const existingAdmin = await Admin.findOne({email});
+      if(existingAdmin){
+      res.redirect("login")
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      req.session.adminData = {
+        admin,
+        email,
+        password: hashedPassword,
+      };
+      
+      const newAdmin = new Admin({
+        admin,
+        email,
+        password
+      })
+
+      await newAdmin.save();
+      res.redirect('/')
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   AdminloginPage: (req, res) => {
@@ -38,16 +74,26 @@ module.exports = {
     }
   },
 
-  AdminLoginPost: (req, res) => {
-    if (
-      req.body.email === process.env.ADMIN_EMAIL &&
-      req.body.password === process.env.ADMIN_PASSWORD
-    ) {
-      req.session.admin = true;
-      res.redirect("/admin");
-    } else {
-      res.redirect("/admin/login");
+  AdminLoginPost: async(req, res) => {
+    const {email, password} = req.body 
+    try {
+    const validAdmin = await Admin.findOne({email: req.body.email});
+    console.log(validAdmin);
+    if(!validAdmin){
+      console.log("hello");
+        return res.render("admin/adminlogin", {error: "invalid email or password"});
     }
+
+    if (validAdmin.password === req.body.password) {
+      req.session.admin = validAdmin;
+      res.redirect("/admin");
+      return { admin: validAdmin };
+    } else {
+      return res.render("admin/adminlogin");
+    }
+   } catch (error) {
+    console.log(error);
+   }
   },
 
   AdminlogoutGet: (req, res) => {
@@ -59,12 +105,13 @@ module.exports = {
 
   Category: async (req, res) => {
     let categoryData = await Category.find();
-    res.render("admin/category", { categoryData });
+    res.render("admin/category", { categoryData,adminLayout: true});
   },
 
-  AddCategoryGet: (req, res) => {
+  AddCategoryGet: async (req, res) => {
+    let categoryData = await Category.find();
     if (req.session.admin) {
-      res.render("admin/addCategories");
+      res.render("admin/addCategories", { categoryData, adminLayout: true});
     }
   },
 
@@ -140,18 +187,18 @@ module.exports = {
       throw new Error(error);
     }
   },
-  
+
   postEditCategories: async (req, res, next) => {
     try {
       const categoryId = req.params.categoryId;
       const updatedCategoryData = {
         CategoryName: req.body.CategoryName,
         CategoryDescription: req.body.CategoryDescription,
-        isListed: req.body.isListed === 'on',
+        isListed: req.body.isListed === "on",
       };
       const category = await Category.findById(categoryId);
       if (!category) {
-        res.status(404).send('Category not found');
+        res.status(404).send("Category not found");
         return;
       }
       category.CategoryName = updatedCategoryData.CategoryName;
@@ -159,20 +206,18 @@ module.exports = {
       category.isListed = updatedCategoryData.isListed;
       category.offerApplied = updatedCategoryData.offerApplied;
       await category.save();
-      res.redirect("/admin/categories"); 
-      } catch (error) {
+      res.redirect("/admin/categories");
+    } catch (error) {
       next(error);
     }
   },
 
-
   // ______products____________
-
 
   Products: async (req, res) => {
     if (req.session.admin) {
       let productData = await Product.find().populate("category");
-      res.render("admin/products", { productData });
+      res.render("admin/products", { productData, adminLayout: true });
     }
   },
 
@@ -182,7 +227,7 @@ module.exports = {
       const categoryData = {
         categories,
       };
-      res.render("admin/addProducts", { categoryData });
+      res.render("admin/addProducts", { categoryData, adminLayout: true });
     } catch (error) {
       console.error("Error fetching categories:", error);
       res.status(500).send("Error fetching categories");
@@ -200,7 +245,7 @@ module.exports = {
         throw new Error("Product not found");
       }
       console.log(productData);
-      res.render("admin/editProducts", { productData, categoryData });
+      res.render("admin/editProducts", { productData, categoryData , adminLayout: true});
     } catch (error) {
       throw new Error(error);
     }
@@ -241,7 +286,7 @@ module.exports = {
   getAllUsers: async (req, res) => {
     try {
       let userData = await User.find();
-      res.render("admin/users", { userData });
+      res.render("admin/users", { userData, adminLayout: true });
     } catch (error) {
       throw new Error(error);
     }

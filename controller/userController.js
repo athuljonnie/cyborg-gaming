@@ -17,7 +17,7 @@ module.exports = {
     let productData = await Product.find().populate("category");
     const categoryData = await Category.find();
     let user = req.session.user;
-    res.render("shop/home", { productData, user, categoryData });
+    res.render("shop/home", { productData, user, categoryData, userLayout: true });
   },
 
   loginPage: async (req, res) => {
@@ -94,6 +94,7 @@ module.exports = {
           });
           await newUser.save();
           req.session.user = newUser;
+          
           res.redirect("/");
         } else {
           res.render("user/OTP", {
@@ -154,7 +155,7 @@ module.exports = {
   getCategoryDetails: async (req, res) => {
     try {
       const categoryData = await Category.find();
-      res.render("shop/category", { categoryData });
+      res.render("shop/category", { categoryData, userLayout: true });
     } catch (error) {
       throw new error(error);
     }
@@ -169,7 +170,7 @@ module.exports = {
       const categoryData = await Category.find();
       let user = req.session.user;
 
-      res.render("shop/categorypage", { productData, user, categoryData });
+      res.render("shop/categorypage", { productData, user, categoryData, userLayout: true });
     } catch (error) {
       throw new Error("Category Error");
     }
@@ -183,7 +184,7 @@ module.exports = {
       );
       const categoryData = await Category.find();
 
-      res.render("shop/productpage", { productData, categoryData });
+      res.render("shop/productpage", { productData, categoryData, userLayout: true });
     } catch (error) {
       throw new Error(error);
     }

@@ -15,7 +15,7 @@ module.exports = {
           console.log('userId is not populated for order', order._id);
         }
       });
-      res.render("admin/orderspage", { userOrders });
+      res.render("admin/orderspage", { userOrders, adminLayout: true });
       userOrders.forEach((order) => {});
     } catch (error) {
       throw new Error(error);
@@ -44,6 +44,6 @@ module.exports = {
     const orderId = req.query.orderId;
     const orderData = await Order.findById(orderId).populate({path: "userId"});
     console.log(orderData);
-    res.render("admin/orderdetails", { orderData });
+    res.render("admin/orderdetails", { orderData , adminLayout: true});
   },
 };

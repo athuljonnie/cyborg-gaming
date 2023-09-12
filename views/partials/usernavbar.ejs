@@ -1,45 +1,109 @@
 <style>
-    
-    #navbar1 {
-            background-color: #000000 !important;
-            /* Set the background color to pitch black */
-            font-family: 'DotGothic16', sans-serif;
-        }
+  .body {
+    background-color: #000000;
+  }
 
-        .navbar-brand {
-            color: white;
-            font-weight: 900;
-        }
+  #navbar1 {
+    background-color: #000000 !important;
+    /* Set the background color to pitch black */
+    font-family: 'DotGothic16', sans-serif;
+  }
 
-        .navbar-brand:hover {
-            color: rgb(0, 0, 0);
-        }
+  .navbar-brand {
+    color: white;
+    font-weight: 900;
+  }
 
-        .navbar-nav {
-            margin-left: auto;
-        }
+  .navbar-brand:hover {
+    color: rgb(0, 0, 0);
+  }
 
-        .nav-item {
-            padding: 0 15px;
-        }
+  .navbar-nav {
+    margin-left: auto;
+  }
 
-        .navbar-toggler {
-            border: none;
-            outline: none;
-        }
+  .nav-item {
+    padding: 0 15px;
+  }
 
-        .navbar-toggler-icon {
-            background-color: rgb(173, 168, 168);
-        }
+  .navbar-toggler {
+    border: none;
+    outline: none;
+  }
 
-        @media (max-width: 767px) {
-            .navbar-collapse {
-                justify-content: center;
-            }
-        }
+  .navbar-toggler-icon {
+    background-color: rgb(173, 168, 168);
+  }
 
-        .search-input {
-          color: #c7c7c7;
+  @media (max-width: 767px) {
+    .navbar-collapse {
+      justify-content: center;
+    }
+  }
+
+  .c-item {
+    height: 100%;
+  }
+
+  .c-img {
+    height: 80vh;
+    object-fit: cover;
+  }
+
+  .description-truncate {
+    max-height: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .description-container {
+    max-height: 10em;
+    overflow: auto;
+  }
+
+
+  .heart-icon i {
+    color: black;
+    transition: color 0.3s;
+
+  }
+
+
+  .heart-icon:hover i {
+    color: red;
+  }
+
+
+  .cart-icon-link i {
+    color: black;
+    padding: 15px;
+  }
+
+  .cart-icon-link:hover i {
+    color: blue;
+
+  }
+
+  .card-body {
+    background-color: #c7c7c7;
+  }
+
+  #heading1 {
+    background-image: url('/shop/img/8481.jpg');
+    font-family: 'DotGothic16', sans-serif;
+    background-color: #333;
+    color: #000000;
+    display: flex;
+
+    height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .search-input {
+    color: #c7c7c7;
     background-color: #2c2c2c;
     width: 150px;
     height: 40px;
@@ -48,36 +112,56 @@
     border: 1px solid rgb(58, 58, 58);
     font-size: 14px;
     letter-spacing: 2px;
-}
+  }
 
-.search-input:focus {
+  .search-input:focus {
     outline: none;
     border: 0.5px solid rgb(255, 234, 0);
     box-shadow: -5px -5px 0px black;
-}
+  }
 
-.input-container:hover > .icon {
+  .input-container:hover>.icon {
     animation: anim 1s linear infinite;
-}
-@keyframes anim {
-  0%,
-  100% {
-    transform: translateY(calc(-50% - 5px)) scale(1);
   }
 
-  50% {
-    transform: translateY(calc(-50% - 5px)) scale(1.1);
+  @keyframes anim {
+
+    0%,
+    100% {
+      transform: translateY(calc(-50% - 5px)) scale(1);
+    }
+
+    50% {
+      transform: translateY(calc(-50% - 5px)) scale(1.1);
+    }
   }
-}
 
 
 
-        .dropdown-toggle {
-          color: #c7c7c7;
-        
-        }
+  .dropdown-toggle {
+    color: #c7c7c7;
 
+  }
 
+  .quick-links a {
+    color: rgb(0, 179, 255);
+    
+  }
+  h3{
+    color: #E6970D;
+  }
+
+  .footer{
+    background-color: #2c2c2c;
+  }
+
+  #carouselExampleControls a{
+    color: #c7c7c7;
+  }
+
+  #carouselExampleControls a:hover{
+   color: #fffb04;
+  }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">

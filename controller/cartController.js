@@ -59,6 +59,7 @@ module.exports = {
         path: "products.productId",
         model: "Product",
       });
+      console.log(cartItems);
       for (const cartItem of cartItems) {
         // for (const product of cartItem.products) {
         //   const fetchedProduct = await Product.findById(product.productId);
@@ -79,7 +80,7 @@ module.exports = {
          res.render("shop/cart", {
           cartItems,
           user: loggedInUserId,
-          use: true,
+           userLayout: true,
           categoryData,
         });
       }
