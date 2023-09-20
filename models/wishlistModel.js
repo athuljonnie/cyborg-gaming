@@ -19,6 +19,10 @@ const wishlistSchema = new mongoose.Schema({
       ref: "Category",
     },
     
+    originalPrice:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
     price: {
       type: Number,
       required: true

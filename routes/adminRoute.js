@@ -5,6 +5,7 @@ const isloggedInadmin = require("../middlewares/sessionHandling");
 const multer = require("multer");
 const Product = require("../models/productModels");
 const adminOrderController = require("../controller/adminOrderController");
+const dashboardcontroller = require("../controller/dashboardcontroller");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, "./public/uploads");
@@ -18,8 +19,7 @@ const upload = multer({ storage });
 
 
 
-
-router.get("/", isloggedInadmin, adminController.AdminHomePage);
+router.get("/", isloggedInadmin, dashboardcontroller.dashBoard);
 
 router.get("/adminsignup", isloggedInadmin, adminController.adminSignupGet);
 

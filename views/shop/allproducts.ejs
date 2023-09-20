@@ -311,7 +311,11 @@ height: 200px;
                                         <%= user.username %>
                                     </a>
                                     <div class="dropdown-divider"></div>
-
+                   
+                                    <a class="dropdown-item" href="orders">
+                                     my Orders
+                                    </a>
+                                    <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item" href="logout">X Log Out X</a>
                                     <% } else { %>
@@ -362,7 +366,7 @@ height: 200px;
             </div>
             <div class="row justify-content-center">
                 <% } %>
-                    <div class="col-md-4 col-lg-4 col-xl-4 my-5">
+                    <div class="col-md-4 col-lg-4 col-xl-4 my-5" style="border: 10px; border-color: #E6970D;">
                         <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
                         <div class="card text-black">
                             <div class="card-body">
@@ -377,6 +381,11 @@ height: 200px;
                                     </container>
                                 </div>
                                 <div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Original Price:</span><span><b>₹</b>
+                                          <strike>   <%= product.originalPrice %></strike>
+                                        </span>
+                                    </div>
                                     <div class="d-flex justify-content-between">
                                         <span>Price</span><span><b>₹</b>
                                             <%= product.productPrice %>

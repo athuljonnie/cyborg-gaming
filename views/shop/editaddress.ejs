@@ -25,40 +25,41 @@
 </head>
 <body>
     <div class="form-container" >
-        <h1 class="text-center">Add New Address</h1>
-        <form  id="addressForm" action="address" method="post">
+        <h1 class="text-center">Edit Current Address</h1>
+        <form  id="addressForm" action="/editaddress?address=<%=addressToEdit._id%>&account=<%= account %>" method="post">
             <!-- Address Input Fields -->
             <div class="mb-3">
-                <label for="username" class="form-label">Full Name</label>
-                <input type="text" class="form-control" name="fullname" required>
+                <label for="username" class="form-label" >Full Name</label>
+                <input type="text" class="form-control" name="fullname" required value="<%= addressToEdit.fullname %>">
+
             </div>
             <div class="mb-3">
                 <label for="state" class="form-label">State</label>
-                <input type="text" class="form-control" name="state" required>
+                <input type="text" class="form-control" name="state" required value="<%= addressToEdit.state %>">
             </div>
             <div class="mb-3">
                 <label for="house" class="form-label">House</label>
-                <input type="text" class="form-control" name="house" required>
+                <input type="text" class="form-control" name="house" required value="<%= addressToEdit.house %>">
             </div>
             <div class="mb-3">
                 <label for="landmark" class="form-label">Landmark</label>
-                <input type="text" class="form-control" name="landmark">
+                <input type="text" class="form-control" name="landmark" value="<%= addressToEdit.landmark %>">
             </div>
             <div class="mb-3">
                 <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" name="city" required>
+                <input type="text" class="form-control" name="city" required value="<%= addressToEdit.city %>"> 
             </div>
             <div class="mb-3">
                 <label for="zip" class="form-label">ZIP Code</label>
-                <input type="number" class="form-control" name="zip" required>
+                <input type="number" class="form-control" name="zip" required value="<%= addressToEdit.zip %>">
             </div>
             <div class="mb-3">
                 <label for="zip" class="form-label">Email</label>
-                <input type="text" class="form-control" name="email" required>
+                <input type="text" class="form-control" name="email" required value="<%= addressToEdit.email %>">
             </div>
             <div class="mb-3">
                 <label for="zip" class="form-label">Number</label>
-                <input type="number" class="form-control" name="number" required>
+                <input type="number" class="form-control" name="number" required value="<%= addressToEdit.number %>">
             </div>
 
             <!-- Dropdown to Choose Address Type -->

@@ -1,18 +1,97 @@
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
 
-    </head>
-    <body>
-        
-    <h2>Order History:</h2>
-    <table class="table table-dark table-striped">
-        <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-        </tr>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-image: url('/shop/img/8481.jpg');         
+            color: rgb(220, 154, 0);
+            font-family: 'DotGothic16', sans-serif;
+        }
 
-    </table>
-    </body>
+        .borderless td, .borderless th {
+    border: none;
+}
+    </style>
+</head>
+<body>
+    
+    <div class="container mt-4" style="text-decoration: solid;  font-size:20px;">
+        <h2 style="padding: 10px;">Ordered Products</h2>
+        <table class="table borderless" style="background-color:rgba(0, 0, 0, 0.351); border-radius: 17px; padding: 20px; color: white;">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Product 1</td>
+                    <td>2</td>
+                    <td>$50.00</td>
+                    <td>$100.00</td>
+                </tr>
+                <tr>
+                    <td>Product 2</td>
+                    <td>1</td>
+                    <td>$30.00</td>
+                    <td>$30.00</td>
+                </tr>
+                <!-- Add more rows for other products -->
+            </tbody>
+        </table>
+        <h1>Order Details</h1>
+        <div class="row mt-4" style="background-color: rgba(0, 0, 0, 0.351); border-radius: 17px; padding: 20px;">
+            <div class="col-md-6" >
+                <h2>Order Information: </h2>
+                <table class="table borderless" style="color:rgb(255, 255, 255)">
+                    <tr>
+                        <th>Order ID:</th>
+                        <td><%= orderData._id %></td>
+                    </tr>
+                    <tr>
+                        <th>Date:</th>
+                        <td><%= orderData.createdAt.toDateString() %></td>
+                    </tr>
+                    <tr>
+                        <th>Total Amount:</th>
+                        <td><%= orderData.totalAmount%></td>
+                    </tr>
+                    <tr>
+                        <th>Payment Method:</th>
+                        <td><%= orderData.paymentMethod %></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>Shipping Information</h2>
+                <address style="color: rgb(255, 255, 255);">
+                  Full Name:  <%= orderData.deliveryDetails.Fullname %><br>
+                    House: <%= orderData.deliveryDetails.house%><br>
+                    Landmark: <%= orderData.deliveryDetails.landmark %><br>
+                    City: <%= orderData.deliveryDetails.city %><br>
+                    State: <%= orderData.deliveryDetails.state %>
+                </address>
+            </div>
+        </div>
+       
+    </div>
+
+    <!-- Include Bootstrap JS (jQuery and Popper.js are required) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>

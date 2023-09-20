@@ -77,6 +77,7 @@ module.exports = {
       if (!loggedInUserId) {
         res.redirect('/login')
       } else {
+        console.log(cartItems,'😊😊😊😊');
          res.render("shop/cart", {
           cartItems,
           user: loggedInUserId,
@@ -101,8 +102,8 @@ module.exports = {
         const productIndex = cartItem.products.findIndex(
           (product) => product._id.toString() === productId
         );
- 
-        if (productIndex == -1) {
+          console.log(productIndex, "productIndex");
+        if (productIndex !== -1) {
           cartItem.products.splice(productIndex, 1);
           await cartItem.save();
         }

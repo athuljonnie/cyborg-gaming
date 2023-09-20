@@ -33,7 +33,7 @@ module.exports = {
         { $set: { deliverystatus: newStatus } }
       );
 
-      res.redirect("http://localhost:4000/admin/getorders");
+      res.redirect("http://localhost:4000/admin");
     } catch (error) {
       console.error(error);
       res.status(500).send("Error updating deliverystatus");

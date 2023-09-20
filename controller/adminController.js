@@ -23,13 +23,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 module.exports = {
-  AdminHomePage: async (req, res, next) => {
-    if (req.session.admin) {
-      res.render("admin/adminHome",{adminLayout: true});
-    } else {
-      res.redirect("login");
-    }
-  },
 
   adminSignupGet: async (req, res) => {
     try {
@@ -60,7 +53,7 @@ module.exports = {
       })
 
       await newAdmin.save();
-      res.redirect('/')
+      res.redirect('/admin')
     } catch (error) {
       console.log(error);
     }

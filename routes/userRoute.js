@@ -52,6 +52,10 @@ router.get("/address", addressController.getAddress);
 
 router.post("/address",addressController.postAddress);
 
+router.get("/editaddress",addressController.getEditAddress);
+
+router.post("/editaddress",addressController.postEditAddress);
+
 router.get("/precheckout",userController.precheckout);
 
 router.get("/order",orderController.placeOrder);
@@ -67,6 +71,10 @@ router.post("/verify-payment", orderController.verifyPayment);
 router.get('/category/desktop-pcs', userController.getProductsByCategory);
 
 router.get('/deleteOrder', orderController.deleteOrder);
+
+router.get('/orders', orderController.OrderDetails );
+
+router.get('/orderdetails', orderController.getOrderDetails );
 
 
 

@@ -12,8 +12,12 @@ module.exports ={
             const userData= await User.findById(loggedInUserId);
             const categoryData = await Category.find()
             const addressData = await Address.findOne({userId : loggedInUserId});
-            const userOrders = await Order.find({userId : loggedInUserId});
-            res.render('shop/userprofilepage', {userData, categoryData, addressData, userOrders, userLayout: true});
+            const userOrders = await Order.find({userId : loggedInUserId}).sort("-createdAt");
+            if(userData){
+                res.render('shop/userprofilepage', {userData, categoryData, addressData, userOrders, userLayout: true});
+            }else{
+                res.redirect("/");
+            }
         }catch(error){
             throw new Error(error)
         }

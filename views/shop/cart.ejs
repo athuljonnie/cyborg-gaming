@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Page</title>
+  <title>Your Cart</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
     body {
 
       background-color: #151313;
-      color: rgb(186, 186, 186);
+      color: rgb(0, 0, 0);
     }
 
     .product-img {
@@ -199,6 +199,12 @@
                             <a class="dropdown-item" href=""><%= user.username %></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="logout">X Log Out X</a>
+                            
+                            <a class="dropdown-item" href="orders">
+                              my Orders
+                             </a>
+                             <div class="dropdown-divider"></div>
+
                             <% } else { %>
                             <a class="dropdown-item" href="login">Sign In</a>
                             <div class="dropdown-divider"></div>
@@ -211,72 +217,156 @@
         </div>
       </nav>
       
-<div class="container mt-5">
-    <h1>Your Cart</h1>
-    <% if (cartItems.length) { %>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Product Image</th>
-                    <th>Product Name</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total Amount</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% let totalPrice = 0; %>
-                <% cartItems.forEach((cart) => { %>
-                    <% cart.products.forEach((item, index) => { %>
-                        <tr>
-                            <td>
-                                <% if (item.productId && item.productId.productImage && item.productId.productImage.length > 0) { %>
-                                    <img src="/uploads/<%= item.productId.productImage[0] %>" class="cart-img" alt="Product Image">
-                                <% } else { %>
-                                    <img src="#" class="cart-img" alt="No Image Available">
-                                <% } %>
-                            </td>
-                            <td><%= item.productId.productName %></td>
-                            <td class="description-scroll"><%= item.productId.productBrand %></td>
-                            <td id="price<%= item._id %>"><%= item.productId.productPrice %></td>
-                            <td>
-                                <input type="number" class="form-control quantity-input" value="<%= item.quantity %>" min="1" max="<%= item.productId.productQuantity %>" id="quantityInput<%= item._id %>" >
-                            </td>
-                           
-                                <input id="idInput<%= item._id %>"value="<%= item._id %>" hidden>
-                           
-                            <td id="totalAmount<%= item._id %>"><%= item.quantity * item.productId.productPrice %></td>
-                            
-                            <td>
-                                <a href="/removeCart?productId=<%= item.productId._id%>&index=<%= index %>"><i class="fas fa-trash-alt delete-btn"></i></a>
-                            </td>
-                        </tr>
-                    <% }); %>              
-                <% }); %>
-            </tbody>
-        </table>
-        <p class="text-right total-price" id="cartTotalPrice">Total price:</p>
-        <div class="row">
-            <div class="col-md-4 offset-md-8">
-            
-                
-                
-                <div class="text-center mt-4">
-                    <a href="/precheckout" class="btn btn-outline-warning" style="font-family: 'DotGothic16', sans-serif;">Checkout</a>
+        <section class="ftco-section bg-light col-md-12">
+            <div class="container">
+              <% if (!user) { %>
+                <div class="no-products-container align-items-center">
+                  <img class="img" src="/image/0items.webp" alt="No products">
                 </div>
+                <div class="button-container">
+                  <a href="/userlogin">
+                    <button class="btn btn-primary btn-lg center-button">Login here</button>
+                  </a>
+                </div>
+              <% } else { %>
+                <div class="row">
+                  <% cartItems.forEach(function(cartItem) { %>
+                    <% if (cartItem.products.length === 0 || !user) { %>
+                      <div class="no-products-container align-items-center">
+                        <img class="img" src="/image/0items.webp" alt="No products">
+                      </div>
+                      <% } else { %>
+                        <% console.log(cartItem); %>
+                      <div class="table-wrap col-md-12">
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead class="thead-primary">
+                              <tr>
+                                <th style="padding-right:90px;">Image</th>
+                                <th style="padding-right:200px;">Product</th>
+                                <th style="padding-right:40px;">Price(₹)</th>
+                                <th style="padding-right:110px;">Quantity</th>
+                                <th style="padding-right:40px;">Total(₹)</th>
+                                <th class="col">Remove</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% cartItem.products.forEach(function(product, index) { %>
+                                  
+                                <tr>
+                                  <td class="image">
+                                    <div class="img-container" style="max-width: 150px;">
+                                      <a href="/product-details?productId=<%= product.productId %>">
+                                        <img src="/uploads/<%= product.productId.productImage[0] %>" class="cart-img" alt="Product Image">
+                                    </a>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="product-info">
+                                      <span class="product-name"><%= product.productId.productName %></span>
+                                      <span class="product-category">(<%= product.productId.productBrand %>)</span>
+                                    </div>
+                                  </td>
+                                  <% if(product.cartOffer === true){ %>
+                                    <td class="price">
+                                      <%=product.offerPrice %>
+                                    </td>
+                                  <% }else{ %>
+                                    <td class="price">
+                                      <%=product.productId.productPrice %>
+                                    </td>
+                                  <% } %>
+                                  <td class="quantity">
+                                    <% if(product.stock===0) { %>
+                                      <p class="text-danger">Out of stock</p>
+                                    <% } else { %>
+                                      <div class="input-group col-md-12 mb-3">
+                                        <span class="input-group-prepend">
+                                          <button type="button" class="quantity-left-minus btn" data-product-id="<%= product._id %>" data-prod-id = " <%= product.productId.productId %> ">
+                                            <i class="fa fa-minus"></i>
+                                          </button>
+                                        </span>
+                                        <input type="text" id="quantity-<%= product._id %>" name="quantity" class="quantity form-control input-number" value="<%= product.quantity %>" min="1" max="<%= product.productId.productQuantity %>" onchange="updateQuantity('<%= product._id %>')">
+                                        <span class="input-group-append">
+                                          <button type="button" class="quantity-right-plus btn" data-product-id="<%= product._id %>" data-prod-id = "<%= product.productId.productId %> ">
+                                            <i class="fa fa-plus"></i>
+                                          </button>
+                                        </span>
+                                        <% if(product.productId.productQuantity <=3) {%>
+                                             <span style="color: #ff0000;">Only <%= product.productId.productQuantity %> left in stock</span>
+                                          <% } %>
+                                      </div>
+                                    <% } %>
+                                  </td>
+                                  <!-- <#% if(product.cartOffer === true){ %>
+                                    <#% let total = product.offerPrice * product.count; %>
+                                    <td class="total">
+                                      $<#%= total %>
+                                    </td>
+                                  <#% }else{ %> -->
+                                 
+                                    <% let total = product.productId.originalPrice * product.quantity; %>
+                                    <td class="total">
+                                      $<%= total %>
+                                    </td>
+                                  <!-- <#% } %> -->
+                                  <td class="remove">
+                                    <a href="/removeCart?productId=<%= product._id %>&index=<%= index %>" class="btn btn-outline-danger">Remove</a>
+                                  </td>
+                                </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    <% } %>
+                  <% }) %>
+                </div>
+              <% } %>
             </div>
-            </div>
-        </div>
-    <% } else { %>
-        <p>Your cart is empty.</p>
-    <% } %>
+          </section>
+          
+              
+              <div class="row justify-content-center bg-light mr-md-1">
+                <div class="col-md-4 mb-5 p-5" >
+                  <a href="/allproducts" class="btn btn-outline-success d-block">Shop more <span class="fa fa-long-arrow-right"></span></a>
+                </div>
+              </div>
+              <% cartItems.forEach(function(cartItem) { %>
+
+              <% if (cartItem.products.length !== 0 && user) { %>
+              <div class="row justify-content-end bg-light mr-md-1 ">
+                <div class="col col-lg-5 col-md-6 mb-md-5 mr-md-5 cart-wrap ftco-animate shadow">
+                  <div class="cart-total mb-3 bg-light" style="border: none;">
+                    <h3>Cart Totals</h3>
+                    <p class="d-flex">
+                      <span>Subtotal</span>
+                      <span id="total-quantity"></span>
+                    </p>
+                    <p class="d-flex">
+                      <span>Delivery</span>
+                      <span id="delivery-charge"></span>
+                    </p>
+                    <p class="d-flex">
+                      <span>Discount</span>
+                      <span></span>
+                    </p>
+                    <hr>
+                    <p class="d-flex total-price">
+                      <span>Total</span>
+                      <span id="total-price"></span>
+                    </p>
+                  </div>
+                  <p class="text-center">
+                    <a href="/precheckout" class="btn btn-outline-dark py-3 px-4" id="checkout-btn">Proceed to Checkout<span id="amount"></span></a>
+                  </p>
+                </div>
+              </div>
+              <% } %>
+              <% }) %>
+              
+            
     
-    
-    
-  
-</div>
 
 
   <!-- Bootstrap JS (optional if you need to add JavaScript functionality) -->
@@ -285,6 +375,117 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- <script>
+$(document).ready(function () {
+    // Plus button click event
+    $('.quantity-right-plus').click(function (e) {
+        e.preventDefault();
+        var $row = $(this).closest('tr');
+        var quantityInput = $row.find('.quantity input');
+        var quantity = parseInt(quantityInput.val());
+        var maxQuantity = parseInt(quantityInput.attr('max'));
+
+        if (quantity < maxQuantity) {
+            quantity += 1;
+            quantityInput.val(quantity);
+            var productId = $(this).data('product-id');       
+            // updateTotalAmount(productId); 
+            console.log(productId);// Update total price when quantity changes
+            updateQuantityInDatabase(productId, quantity)
+        }
+    });
+
+    // Minus button click event
+    $('.quantity-left-minus').click(function (e) {
+        e.preventDefault();
+        var $row = $(this).closest('tr');
+        var quantityInput = $row.find('.quantity input');
+        var quantity = parseInt(quantityInput.val());
+        console.log(quantity);
+        if (quantity > 1) {
+            quantity -= 1;
+            quantityInput.val(quantity);
+            //  updateTotalAmount(productId)
+            var productId = $(this).data('product-id');
+            updateQuantityInDatabase(productId, quantity);
+        }
+    });
+
+    function updateQuantityInDatabase(productId, quantity) {
+    $.ajax({
+      url: '/updateQuantity',
+      type: 'POST',
+      data: { productId: productId, quantity: quantity },
+      success: function (response) {
+        console.log('Quantity and price updated in the database');
+      },
+      error: function (xhr, status, error) {
+        console.error('Error updating quantity and price:', error);
+      }
+    });
+  }
+  });
+
+  function updateTotalAmount(productId){
+  const quantityInput = document.getElementById(`quantity-${productId}`);
+  const totalAmountCell = document.getElementById(`totalAmount${productId}`);
+  const productPrice = document.getElementById(`price${productId}`);
+  const idInput = document.getElementById(`idInput${productId}`);
+  var id = idInput.value
+  const priceText = productPrice.textContent.trim();
+  const price = parseFloat(productPrice.textContent.replace('₹', '').trim()).toFixed(2);
+
+      var quantity = quantityInput.value
+      let number = quantityInput.value * price
+      number = number.toFixed(2);
+      totalAmountCell.textContent = `₹${number}`;
+      updateQuantityInDatabase(id, quantity)
+  }
+
+
+    
+
+    
+
+  function extractNumericValue(text) {
+        const numericRegex = /[\d.]+/; 
+        const matches = text.match(numericRegex);
+        if (matches && matches.length > 0) {
+            return parseFloat(matches[0]);
+        }
+        return 0;
+    }
+
+  function updateCartTotalPrice() {
+        let totalAmount = 0
+        const cartRows = document.querySelectorAll(".table tbody tr");
+
+        cartRows.forEach((row) => {
+            const totalAmountCell = row.querySelector("[id^='totalAmount']");
+            const amount = extractNumericValue(totalAmountCell.innerText);
+            totalAmount += amount;
+        });
+        const cartTotalPrice = document.getElementById("cartTotalPrice");
+        cartTotalPrice.textContent = totalAmount.toFixed(2);
+        
+        $.ajax({
+            url:'/getTotalPrice',
+            method: 'GET',
+            data:{totalAmount: totalAmount },
+
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.error(error); 
+            }
+        });
+
+               
+    }
+
+  </script>
 
   <script>
     function updateQuantity(cartId, itemId, newQuantity) {
@@ -324,7 +525,7 @@
   }
 
 
-    const quantityInputs = document.querySelectorAll('.quantity-input');
+    const quantityInputs  = document.querySelectorAll('.quantity-input');
     quantityInputs.forEach((input) => {
       input.addEventListener('input', () => {
         const productId = input.id.replace('quantityInput', '');
@@ -334,19 +535,7 @@
       });
     });
 
-    function updateQuantityInDatabase(productId, quantity) {
-    $.ajax({
-      url: '/updateQuantity',
-      type: 'POST',
-      data: { productId: productId, quantity: quantity },
-      success: function (response) {
-        console.log('Quantity and price updated in the database');
-      },
-      error: function (xhr, status, error) {
-        console.error('Error updating quantity and price:', error);
-      }
-    });
-  }
+    
 
   function extractNumericValue(text) {
         const numericRegex = /[\d.]+/; 
@@ -384,6 +573,144 @@
 
                
     }
+</script> -->
+
+<script>
+	$(document).ready(function () {
+  $('.quantity-right-plus').click(function (e) {
+    e.preventDefault();
+    var $row = $(this).closest('tr');
+    var quantityInput = $row.find('.quantity input');
+    var quantity = parseInt(quantityInput.val());
+	console.log(quantity,"quantity👀👀👀");
+    var price = parseFloat($row.find('.price').text());
+	console.log(price,"price ✔✔✔");
+	var maxQuantity = parseInt(quantityInput.attr('max'));
+	console.log(maxQuantity,"max quantity🙌");
+    var total = isNaN(quantity) || isNaN(price) ? 0 : (quantity * price)+price;
+	console.log(total,"total❤❤❤");
+    $row.find('.total').text(total.toFixed(2));
+    if(quantity<maxQuantity){
+		quantity += 1;
+		console.log(quantity,"updated?😊");
+        quantityInput.val(quantity);
+	} else{
+		console.log(quantity,"stop limit reached?😊");
+        quantityInput.val(quantity);
+	}
+	
+    // Update the quantity and price in the database
+    var productId = $(this).data('product-id');
+    updateQuantityInDatabase(productId,quantity);
+    calculateSum();
+  });
+
+  $('.quantity-left-minus').click(function (e) {
+    e.preventDefault();
+    var $row = $(this).closest('tr');
+    var quantityInput = $row.find('.quantity input');
+    var quantity = parseInt(quantityInput.val());
+    if (quantity > 1) {
+      var price = parseFloat($row.find('.price').text());
+      var total = isNaN(quantity) || isNaN(price) ? 0 : (quantity * price)+price;
+      $row.find('.total').text(total.toFixed(2));
+      quantity -= 1;
+      quantityInput.val(quantity);
+
+      // Update the quantity and price in the database
+      var productId = $(this).data('product-id');
+      updateQuantityInDatabase(productId, quantity);
+    }
+    calculateSum();
+  });
+
+  $('.quantity').on('change', function () {
+    var $row = $(this).closest('tr');
+    var quantity = parseInt($(this).val());
+
+    // Update the total price
+    var price = parseFloat($row.find('.price').text());
+    var total = isNaN(quantity) || isNaN(price) ? 0 : (quantity * price)+price;
+    $row.find('.total').text(total.toFixed(2));
+
+    // Update the quantity and price in the database
+    var productId = $(this).attr('id').replace('quantity-', '');
+    updateQuantityInDatabase(productId, quantity);
+    calculateSum();
+  });
+
+  function updateQuantityInDatabase(productId, quantity) {
+	console.log(quantity,"🌹🌹");
+    $.ajax({
+      url: '/updateQuantity',
+      type: 'POST',
+      data: { productId: productId, quantity: quantity },
+      success: function (response) {
+        console.log('Quantity and price updated in the database');
+      },
+      error: function (xhr, status, error) {
+        console.error('Error updating quantity and price:', error);
+      }
+    });
+  }
+
+
+});
+
+
+</script>
+
+
+<!-- -----------------------------------------------------USED TO ADD TOTAL OF THE CART----------------------------------------------------------- -->
+
+
+<script>
+	$(document).ready(function () {
+  function calculateSum() {
+    var sum = 0;
+    var totalQuantity = 0; // Initialize total quantity variable
+    $('tbody tr').each(function () {
+      var $row = $(this);
+      var quantity = parseInt($row.find('.quantity input').val());
+      var price = parseFloat($row.find('.price').text());
+      var total = isNaN(quantity) || isNaN(price) ? 0 : quantity * price;
+      $row.find('.total').text(total.toFixed(2));
+      sum += total;
+      totalQuantity += quantity; // Accumulate the quantity for each row
+    });
+    if(totalQuantity === 0){
+		$('.row.justify-content-end.bg-light.mr-1').hide();
+		$('.table-responsive').hide();
+	}
+    // Calculate delivery charge based on the total quantity
+    var deliveryCharge = sum < 10000 ? 47 : 0;
+
+    // Calculate the total price by adding the sum and delivery charge
+    var totalPrice = sum + deliveryCharge;
+    console.log(totalPrice,"😜😜😜😜😜");
+	
+    $('.sum').text(sum.toFixed(2));
+    $('#total-quantity').text('₹ '+sum); // Update total quantity
+    $('#delivery-charge').text('₹ '+deliveryCharge);
+    $('#total-price').text('₹ '+totalPrice.toFixed(2));
+	$('#amount').text('  ('+totalQuantity+')' + ' items');
+	var checkoutBtn = $('#checkout-btn');
+    //used to pass total price as query to /address
+    var currentHref = checkoutBtn.attr('href');
+    var updatedHref = currentHref.split('?')[0] + '?totalPrice=' + totalPrice;
+
+    checkoutBtn.attr('href', updatedHref);
+  }
+
+  // Call calculateSum() initially to display the total sum
+  calculateSum();
+
+  $('.quantity-right-plus, .quantity-left-minus, .quantity').on('click change', function () {
+    calculateSum();
+  });
+
+});
+
 </script>
 </body>
 </html>

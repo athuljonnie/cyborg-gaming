@@ -235,8 +235,8 @@
                                     <td>
                                         <%= order.deliverystatus %>
                                     </td>
-                                    <td> <a href="deleteOrder?orderId=<%= order._id %>" class="btn btn-outline-danger">
-                                        cancel order
+                                    <td><a href="orderdetails?orderId=<%= order._id %>" class="btn btn-outline-info">
+                                    View Details
                                         </a></td>
                                 </tr>
                                 <% }) %>
@@ -245,61 +245,9 @@
                     </table>
                 </div>
 
-
-                <div class="container mt-5">
-                    <h2 class="text-center mb-4">Saved Addresses:</h2>
-                    <table class="table table-dark table-striped">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>State</th>
-                                <th>House</th>
-                                <th>Landmark</th>
-                                <th>City</th>
-                                <th>ZIP Code</th>
-                                <th>Email</th>
-                                <th>Number</th>
-                                <th>Address Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% addressData.addresses.forEach((address)=> { %>
-                                <tr>
-                                    <td>
-                                        <%= address.fullname %>
-                                    </td>
-                                    <td>
-                                        <%= address.state %>
-                                    </td>
-                                    <td>
-                                        <%= address.house %>
-                                    </td>
-                                    <td>
-                                        <%= address.landmark %>
-                                    </td>
-                                    <td>
-                                        <%= address.city %>
-                                    </td>
-                                    <td>
-                                        <%= address.zip %>
-                                    </td>
-                                    <td>
-                                        <%= address.email %>
-                                    </td>
-                                    <td>
-                                        <%= address.number %>
-                                    </td>
-                                    <td>
-                                        <%= address.type %>
-                                    </td>
-                                </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-
-
-
+                <!-- <a href="deleteOrder?orderId=<%#= order._id %>" class="btn btn-outline-danger">
+                    cancel order
+                    </a> -->
 
 
 

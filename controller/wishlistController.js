@@ -12,7 +12,11 @@ getWishList: async(req, res) =>{
         const categoryData = await Category.find()
         const wishlistItems = await Wishlist.find({ userId: loggedInUserId });
         console.log(wishlistItems.length, "Wishlist Items");
+        if(!loggedInUserId){
+          res.redirect('/login')
+        }else{
         res.render('shop/wishlist', { wishlistItems, user: loggedInUserId , userLayout:true, categoryData });
+        }
       } catch (err) {
         console.log(err);
         res.render('error');

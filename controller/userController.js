@@ -2,6 +2,7 @@ const Address = require("../models/addressModel");
 const User = require("../models/userModel");
 const Product = require("../models/productModels");
 const Category = require("../models/categoryModels");
+const Order = require('../models/orderModel')
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middlewares/sessionHandling");
 const Cart = require("../models/cartModel");
@@ -179,12 +180,13 @@ module.exports = {
   getProductDetails: async (req, res) => {
     try {
       const productId = req.query.productId;
+      const user = req.session.user 
       const productData = await Product.findById(productId).populate(
         "category"
       );
       const categoryData = await Category.find();
 
-      res.render("shop/productpage", { productData, categoryData, userLayout: true });
+      res.render("shop/productpage", { productData, categoryData, userLayout: true, user});
     } catch (error) {
       throw new Error(error);
     }
@@ -193,24 +195,34 @@ module.exports = {
   precheckout: async (req, res) => {
     try {
       const loggedInUserId = req.session.user._id;
-      cartItems = await Cart.find({ user: loggedInUserId }).populate({
+    
+      // Fetch the user's cart items
+      const cartItems = await Cart.find({ user: loggedInUserId }).populate({
         path: "products.productId",
         model: "Product",
       });
-      let totalPrice = 0;
-cartItems.forEach((cartItem) => {
-    cartItem.products.forEach((product) => {
-        totalPrice += product.productId.productPrice * product.quantity;
-    });
-}   );
-totalPrice = totalPrice.toFixed(2);
-cartItems.totalAmount = totalPrice
-await Promise.all(cartItems.map((cartItem) => cartItem.save()));
-   console.log("Total Price:", cartItems.totalAmount, cartItems);
+    
+      // Iterate through each cart item and calculate its total amount
+      for (const cartItem of cartItems) {
+        let totalPrice = 0;
+    
+        for (const product of cartItem.products) {
+          totalPrice += product.productId.productPrice * product.quantity;
+        }
+        console.log(totalPrice,"❤️");
+        // Update the totalAmount property of the cart item
+        cartItem.totalAmount = totalPrice;
+    
+        // Save the updated cart item to the database
+        await cartItem.save();
+      }
+    
+      console.log("Total prices updated successfully");
      
       const user =await User.findById({_id: loggedInUserId})
       const categoryData = await Category.find();
       const addressData = await Address.findOne({ userId: loggedInUserId });
+  
       res.render("shop/precheckout", { cartItems, addressData,  categoryData, user });
     } catch (error) {
       console.log(error.message);
@@ -235,4 +247,8 @@ await Promise.all(cartItems.map((cartItem) => cartItem.save()));
       console.error("Error fetching address details:", error);
     }
   },
+
+  
+
+
 };
