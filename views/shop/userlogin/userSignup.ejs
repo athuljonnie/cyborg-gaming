@@ -126,7 +126,7 @@
         <%= error %>
       </p>
       <% } %>
-        <form action='signup' method="post" onsubmit="handleSignupForm(event)">
+        <form action="signup" method="post" onsubmit="handleSignupForm(event)">
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -149,7 +149,7 @@
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password"  id="confirmPassword" name="confirmPassword" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
           </div>
           <div class="form-group">
             <button type="submit">Sign Up</button>
@@ -180,6 +180,11 @@
         displayErrorMessage("usernameError", "Please enter your username");
         return;
       }
+      const alphabeticRegex = /^[a-zA-Z]+$/;
+      if (!alphabeticRegex.test(usernameInput.value)) {
+        displayErrorMessage("usernameError", "Username should only contain alphabetic characters");
+        return;
+      }
 
       // Check if email is empty
       if (emailInput.value.trim() === "") {
@@ -201,9 +206,9 @@
       }
 
       // Check if number contains exactly 10 digits
-      var numberRegex = /^\d{10}$/;
+      var numberRegex = /^(?=\d{10}$)(?!(\d)\1{4,})/;
       if (!numberRegex.test(numberInput.value)) {
-        displayErrorMessage("numberError", "Please enter a 10-digit mobile number");
+        displayErrorMessage("numberError", "Please enter a valid mobile number");
         return;
       }
 
@@ -226,6 +231,27 @@
 
       // Submit the form if all validations pass
       event.target.submit();
+
+      if (response.status === 200) {
+        // Show SweetAlert success message
+        swal({
+          title: "Success",
+          text: response.message, // Message from the server
+          icon: "success",
+          button: "OK",
+        }).then(() => {
+          // Redirect to the user profile page
+          window.location.href = "/"; // Change the URL to your user profile page
+        });
+      } else {
+        // Failure case
+        swal({
+          title: "Error",
+          text: response.message, // Message from the server
+          icon: "error",
+          button: "OK",
+        });
+      }
     }
 
     function checkPasswordStrength(password) {

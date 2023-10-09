@@ -77,11 +77,14 @@
 
         .description-truncate {
             max-height: 5em;
-            overflow: hidden;
+            overflow-y: scroll;
             text-overflow: ellipsis;
             white-space: normal;
         }
 
+        .description-truncate::-webkit-scrollbar{
+      display: none
+    }
         .description-container {
             max-height: 10em;
             overflow: auto;
@@ -126,6 +129,47 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+
+
+        .radio-inputs {
+            font-family: 'DotGothic16', sans-serif;
+            display: none;
+            position: relative;
+            padding: .5rem;
+            display: flex;
+            flex-wrap: nowrap;
+            background-color: rgb(26, 26, 26);
+            box-sizing: border-box;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .radio-inputs .radio {
+            flex: 1 1 auto;
+            text-align: center;
+        }
+
+        .radio-inputs .radio input {
+            display: none;
+        }
+
+        .radio-inputs .radio .name {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            border: none;
+            padding: .5rem;
+            color: rgb(223, 164, 0);
+            transition: all .15s ease-in-out;
+        }
+
+        .radio-inputs .radio input:checked+.name {
+            background-color: #000000;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 
@@ -134,19 +178,56 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
         <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
         <div class="container">
+            <div class="row">
+              <div class="col-md-8">
+                <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
+                  <div class="input-container">
+                    <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
+                      placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-warning" type="submit">Search</button>
+                  </div>
+                </form> 
+                
+              </div>
+            </div>
+          </div>
+      
+        <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
+
             </button>
+
+
+            
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <% categoryData.forEach((category)=>{ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
-                    </li>
-                    <% }) %>
-                </ul>
+           
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <div class="dropdown show">
+                          <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-expanded="false">
+                            Categories
+                          </a>
+            
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/allproducts">All Products</a>
+                            <div class="dropdown-divider"></div>
+                            <% categoryData.forEach((category)=>{ %>
+                              <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                <%= category.CategoryName %>
+                              </a>
+                              <% }) %>
+            
+                          </div>
+                        </div>
+                      </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
                     </li>
@@ -177,6 +258,9 @@
             </div>
         </div>
     </nav>
+    
+
+    
 
     <div id="heading" style="background-color: rgb(0, 0, 0); height: 90px; width: 100%; align-items: center; justify-content: center; display: flex;">
         <% if (productData && productData.length > 0) { %>
@@ -184,6 +268,25 @@
                 <%= productData[0].category.CategoryName %>
             </h1>
         <% } %>
+    </div>
+
+    <div id="heading" style="background-color:rgb(26, 26, 26);width: 100%;  align-items: center; justify-content: right; display: flex; padding-right: 30px;">
+        <div class="radio-inputs">
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="a-z">
+                <span class="name">A-Z</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-high-to-low">
+                <span class="name">High-to-Low</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-low-to-high">
+                <span class="name">Low-to-High</span>
+            </label>
+        </div>
+
+
     </div>
 
     <section style="background-color: rgb(26, 26, 26);">
@@ -195,6 +298,7 @@
                     <div class="row justify-content-center">
                         <% for (let j = i; j < Math.min(i + 3, productData.length); j++) { %>
                             <% const product = productData[j]; %>
+                            <% if (product.isBlocked == false) { %>
                             <div class="col-md-4 col-lg-4 col-xl-4 my-5">
                                 <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
                                 <div class="card text-black">
@@ -238,6 +342,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <% } %>
                         <% } %>
                     </div>
                 <% } %>
@@ -259,6 +364,26 @@
     background-color: #f44336;
   }
 </style>
+
+<script>
+    $('.sort-checkbox').click(function () {
+        var selectedOption = $(this).data('sort');
+        console.log('Selected Option:', selectedOption);
+        $.ajax({
+            type: 'POST',
+            url: 'allproducts',
+            data: { sortOption: selectedOption },
+            success: function (response) {
+                console.log(response);
+                $('body').empty();
+                $('body').html(response);
+            },
+            error: function (error) {
+                console.error('Error sending data:', error);
+            }
+        });
+    });
+</script>
 
 <script>
 

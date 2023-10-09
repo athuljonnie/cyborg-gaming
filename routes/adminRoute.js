@@ -6,6 +6,9 @@ const multer = require("multer");
 const Product = require("../models/productModels");
 const adminOrderController = require("../controller/adminOrderController");
 const dashboardcontroller = require("../controller/dashboardcontroller");
+const couponController = require("../controller/couponController");
+const offerController = require("../controller/offerController");
+const orderController = require("../controller/orderController");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, "./public/uploads");
@@ -36,9 +39,10 @@ router.get("/products", isloggedInadmin, adminController.Products);
 router.get("/addproducts", isloggedInadmin, adminController.AddProductsGet);
 
 router.post("/addproducts", upload.array("productImage", 3),async (req, res) => {
-  if (!req.files || req.files.length === 0) {
-    throw new Error("No files uploaded");
-  }
+  // if (!req.files || req.files.length === 0) {
+  //   throw new Error("No files uploaded");
+  // }
+  console.log(req.body,'🐲🐲');
   const uploadedImages = req.files.map((file) => file.filename);
   const newProduct = new Product({
     productName: req.body.productName,
@@ -62,7 +66,7 @@ router.post("/addproducts", upload.array("productImage", 3),async (req, res) => 
     return; 
   }
 
-  res.redirect('products')
+  // res.redirect('products')
 });
 
 router.get("/editproducts", isloggedInadmin, adminController.getEditProducts);
@@ -101,6 +105,8 @@ router.post("/editproducts/:productId", isloggedInadmin, upload.array("productIm
   }
 });
 
+router.get("/deleteProducts", isloggedInadmin, adminController.deleteProducts);
+
 router.get("/blockproducts", isloggedInadmin, adminController.getBlockProduct);
 
 router.get("/unblockproducts", isloggedInadmin, adminController.getUnblockProduct);
@@ -130,5 +136,23 @@ router.post('/update-deliverystatus/:orderId', adminOrderController.updateOrderS
 router.get('/orderdetails', adminOrderController.getOrderDetails);
 
 router.get("/users", isloggedInadmin, adminController.getAllUsers);
+
+router.get('/coupon' , couponController.coupon);
+
+router.post('/createCoupon', couponController.createCoupon);
+
+router.get('/offers', offerController.getOffers);
+
+router.post('/categoryOffer', offerController.categoryOffer);
+
+router.post('/productoffer', offerController.productOffers);
+
+router.get('/removeOffer', offerController.getRemoveOffers);
+
+router.get('/removeCatOffer', offerController.removeCatOffers);
+
+router.post('/approval',  orderController.cancelOrReturnApproval);
+
+router.get('/removecoupon', couponController.removeCoupon);
 
 module.exports = router;

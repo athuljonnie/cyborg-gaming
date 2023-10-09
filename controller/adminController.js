@@ -274,6 +274,20 @@ module.exports = {
     }
   },
 
+  deleteProducts: async(req, res) => {
+    try {
+    const productId = req.query.productId;
+    console.log(productId,'🫂🫂');
+    const product = await Product.deleteOne({_id:productId});
+    if(!product) {
+      throw new Error("product not found");
+    }  
+    res.redirect("/admin/products")
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // _________users_______
 
   getAllUsers: async (req, res) => {

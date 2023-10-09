@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* Add your custom CSS styles here */
+        /* For example, you can style the invoice layout, fonts, and colors */
+
+        /* Set the page size to A4 */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        /* Define the page margins */
+        body {
+            margin: 30px;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .invoice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            max-width: 150px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px; /* Adjust the value to increase or decrease the space */
+        }
+
+        /* Add more styles as needed */
+    </style>
+</head>
+<body id="contentToConvert">
+    <div class="invoice">
+        <div class="header">
+            <img src="/shop/img/ll.png" alt="Logo" class="logo">
+            <h1>Invoice</h1>
+        </div>
+        <div class="content">
+            <div class="customer-details">
+                <h2 st>Customer Details</h2>
+                <p><strong>Customer Name:</strong> <%= order.deliveryDetails.Fullname %></p>
+                <p><strong>Address:</strong> <%= order.deliveryDetails.house %>, <%= order.deliveryDetails.zip%>,<%= order.deliveryDetails.city %></p>
+                <!-- Add more customer details here -->
+            </div>
+            <div class="order-details">
+                <h2>Order Details</h2>
+                <p><strong>Order Number:</strong> <%= order._id %></p>
+                <p><strong>Order Date:</strong> <%= order.createdAt.toLocaleString() %></p>
+                <!-- Add more order details here -->
+            </div>
+            <h2>Products</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% order.products.forEach((product) => { %>
+                        <tr>
+                            <td><%= product.name %></td>
+                            <td><%= product.quantity %></td>
+                            <td>₹<%= product.productId.productPrice.toFixed(2) %></td>
+                            <td>₹<%= (product.quantity * product.productId.productPrice).toFixed(2) %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <p class="total-amount">Total Amount: <strong>₹<%= order.totalAmount.toFixed(2) %></strong></p>
+        </div>
+    </div>
+
+
+
+</body>
+<<script>
+    // Add a click event listener to the button
+    document.getElementById('downloadInvoiceButton').addEventListener('click', async () => {
+      try {
+        // Assuming you have the order._id in 'order._id'
+        const orderId = 'YOUR_ORDER_ID'; // Replace with the actual order ID from order._id
+
+        // Construct the URL with the orderId as a query parameter
+        // const downloadUrl = `/downloadInvoice?orderId=${orderId}`;
+
+        // Use AJAX to make a GET request to the downloadUrl
+        $.ajax({
+          type: "POST",
+          url: '/downloadInvoice',
+          data: {
+                    orderId: orderId,
+                   
+                },
+          success: function(response) {
+            // Handle the success response, such as triggering a download
+            console.log("Invoice downloaded successfully");
+          },
+          error: function(error) {
+            // Handle errors if any
+            console.error("Error downloading invoice:", error);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  </script>
+</html>

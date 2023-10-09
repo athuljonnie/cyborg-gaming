@@ -25,7 +25,31 @@ const cartSchema = new mongoose.Schema(
     type: Number,
     default:0
     },
+    offerPrice: {
+      type: Number,
+      default: 0
+    },
+    discountCode:{
+      type:String
+    },
+    couponDiscount:{
+      type:Number,
+      default: 0
+    },
+    walletAmount:{
+      type:Boolean,
+      default: false
+    },
+    manageTotal:{
+      type: Number
+    },
+    cartOffer: {
+      type: Boolean,
+      default: false
+    }
   },
+
+
   { timestamps: true }
 );
 

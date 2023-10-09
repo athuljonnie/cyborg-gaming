@@ -5,14 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
 
+    <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <!-- Include Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body{
+            /* margin: 40px; */
+    
+    margin-bottom: 40 px;
+            /* filter: blur(1px); */
             background-image: url('/shop/img/8481.jpg');         
             color: rgb(220, 154, 0);
             font-family: 'DotGothic16', sans-serif;
@@ -21,39 +34,293 @@
         .borderless td, .borderless th {
     border: none;
 }
+
+
+
+
+h1,
+        h2,
+        h3 {
+            font-family: 'DotGothic16', sans-serif;
+            color: #ffc107;
+        }
+
+
+
+        #navbar1 {
+            background-color: #000000 !important;
+            /* Set the background color to pitch black */
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-weight: 900;
+        }
+
+        .navbar-brand:hover {
+            color: white;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-item {
+            padding: 0 15px;
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            background-color: rgb(0, 0, 0);
+        }
+
+        @media (max-width: 767px) {
+            .navbar-collapse {
+                justify-content: center;
+            }
+        }
+
+    
+        .custom-card {
+            
+            background-color: #212121;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+
+        }
+
+        .custom-card h2 {
+            color: #ffc107;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .custom-card ul {
+            padding-left: 20px;
+        }
+
+        .custom-card li {
+            margin-bottom: 10px;
+        }
+
+        .custom-card .card-link {
+            color: #ffc107;
+        }
+
+        .custom-card .card-link:hover {
+            text-decoration: none;
+        }
+
+        .cardtransparent{
+            background: rgba( 255, 255, 255, 0.1 );
+
+backdrop-filter: blur( 7.5px );
+-webkit-backdrop-filter: blur( 7.5px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+        }
+        .card {
+    position: relative;
+    overflow: hidden; /* Ensure the image stays within the card */
+}
+
+.profile-image {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+    width: 60px; /* Set the desired width for the profile image */
+    height: 60px; /* Set the desired height for the profile image */
+    border-radius: 50%; /* Create a circular shape for the image (optional) */
+    border: 2px solid #fff; /* Add a border around the image (optional) */
+    z-index: 1; /* Make sure the image is above card content */
+}
+
+.list-group-item{
+    background: rgba( 0, 0, 0, 0.4 );
+/* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
+backdrop-filter: blur( 10.5px );
+-webkit-backdrop-filter: blur( 10.5px );
+/* border-radius: 10px; */
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+color: #ffffff; 
+font-family: 'DotGothic16', sans-serif;
+letter-spacing: 2px;
+}
+    
+.list-group-item:hover{
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
+        <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8">
+              <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
+                <div class="input-container">
+                  <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
+                    placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
+                </div>
+              </div>
+              <div class="col-md-4">
+                
+                <div class="input-group-append">
+                  <button class="btn btn-outline-warning" type="submit">Search</button>
+                </div>
+              </form> 
+              
+            </div>
+          </div>
+        </div>
     
-    <div class="container mt-4" style="text-decoration: solid;  font-size:20px;">
+    
+    
+    
+        <div class="collapse navbar-collapse" id="navbarNav">
+    
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+    
+                </li>
+    
+              </ul>
+            </ul>
+    
+    
+            <ul class="navbar-nav ml-auto">
+    
+              <li class="nav-item">
+                <div class="dropdown show">
+                  <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                    aria-expanded="false">
+                    Categories
+                  </a>
+    
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="/allproducts">All Products</a>
+                    <div class="dropdown-divider"></div>
+                    <% categoryData.forEach((category)=>{ %>
+                      <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                        <%= category.CategoryName %>
+                      </a>
+                      <% }) %>
+    
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
+              </li>
+    
+              <li class="nav-item">
+                <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
+              </li>
+    
+    
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-user"></i>
+                </a>
+    
+    
+    
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                  <% if (user) { %>
+                    <a class="dropdown-item" href="account">
+                      <%= user.username %>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="orders">
+                     my Orders
+                    </a>
+                    <div class="dropdown-divider"></div>
+    
+    
+                    <a class="dropdown-item" href="logout">X Log Out X</a>
+                    <% } else { %>
+                      <a class="dropdown-item" href="login">Sign In</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="signup">Create an Account</a>
+                      <% } %>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+    
+      </nav>
+    
+    
+    <div class="container mt-4" style="text-decoration: solid; font-size: 16px;">
         <h2 style="padding: 10px;">Ordered Products</h2>
-        <table class="table borderless" style="background-color:rgba(0, 0, 0, 0.351); border-radius: 17px; padding: 20px; color: white;">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Product 1</td>
-                    <td>2</td>
-                    <td>$50.00</td>
-                    <td>$100.00</td>
-                </tr>
-                <tr>
-                    <td>Product 2</td>
-                    <td>1</td>
-                    <td>$30.00</td>
-                    <td>$30.00</td>
-                </tr>
-                <!-- Add more rows for other products -->
-            </tbody>
-        </table>
-        <h1>Order Details</h1>
-        <div class="row mt-4" style="background-color: rgba(0, 0, 0, 0.351); border-radius: 17px; padding: 20px;">
+        <div class="row">
+            <% orderData.products.forEach(function(product) { %>
+            <div class="col-md-4 mb-4">
+                <div class="card" style="border-radius: 17px; background-color: rgba(0, 0, 0, 0.351);  ">
+                    <div class="bg-image hover-overlay ripple ripple-surface ripple-surface-light"
+                        data-mdb-ripple-color="light">
+                        <img src="/uploads/<%= product.productId.productImage[0] %>"
+                            style="border-top-left-radius: 15px; border-top-right-radius: 15px;" class="img-fluid"
+                            alt="Product" />
+                        <a href="#!">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p><a href="#!" style="color:rgb(220, 154, 0) ;"><%= product.productId.productName %></a></p>
+                                <p>quantity:<a href="#!" style="color:rgb(220, 154, 0) ;"><%= product.quantity %></a></p>
+                           
+                            </div>
+                            <div>
+                                <div class="d-flex flex-row justify-content-end mt-1 mb-4 text-danger">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="">Rated 4.0/5</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body pb-0">
+                        <div class="d-flex justify-content-between">
+                            <p><a href="#!" class="text-light">₹  <%=product.productId.productPrice%></a></p>
+
+                        </div>
+                      
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
+                            <!-- <a href="#!" class="text-danger fw-bold">Cancel</a> -->
+                       
+                            <button type="button" class="btn btn-outline-warning">Product Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+    
+        <h1 style="margin-left: 40px;">Order Details</h1>
+        <div class="row mt-4" style="background-color: rgba(0, 0, 0, 0.351); border-radius: 17px; padding: 20px; margin: 40px;">
             <div class="col-md-6" >
                 <h2>Order Information: </h2>
                 <table class="table borderless" style="color:rgb(255, 255, 255)">
@@ -63,20 +330,28 @@
                     </tr>
                     <tr>
                         <th>Date:</th>
-                        <td><%= orderData.createdAt.toDateString() %></td>
+                        <td><%= orderData.createdAt%></td>
                     </tr>
                     <tr>
                         <th>Total Amount:</th>
-                        <td><%= orderData.totalAmount%></td>
+                        <td style="color: tomato;">₹ <%= orderData.totalAmount.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <th>Payment Method:</th>
                         <td><%= orderData.paymentMethod %></td>
                     </tr>
+                    <tr>
+                        <th>Delivery Status:</th>
+                        <td style="color: cyan;"><%= orderData.deliverystatus %></td>
+                    </tr>
+                    <tr>
+                        <th>Order Status:</th>
+                        <td style="color: rgb(255, 255, 255);"><%= orderData.deliverystatus %></td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-6">
-                <h2>Shipping Information</h2>
+                <h2>Shipping Information: </h2>
                 <address style="color: rgb(255, 255, 255);">
                   Full Name:  <%= orderData.deliveryDetails.Fullname %><br>
                     House: <%= orderData.deliveryDetails.house%><br>
@@ -84,7 +359,62 @@
                     City: <%= orderData.deliveryDetails.city %><br>
                     State: <%= orderData.deliveryDetails.state %>
                 </address>
+          
+                <% if (orderData.deliverystatus === "pending") { %>
+                    <button class="btn btn-outline-danger" id="cancelButton">
+                  Cancel this Order
+                    </button>
+                 
+                <% } else if(orderData.deliverystatus === "delivered"){ %>
+                    <button class="btn btn-outline-danger" id="returnButton">
+                  Return this Order
+                    </button> 
+                    <% }  else if (orderData.deliverystatus === "return approved") { %>
+                      <div style="padding: 20px; margin-bottom: 5px;">
+                        <p style="background-color: #00000056; display: inline-block; padding: 10px; color:rgb(220, 154, 0);border-radius: 17px;">
+                            This order has been approved for return.<br>
+                            <% if (orderData.paymentMethod === 'razorpay') { %>
+                              Your purchase amount will be reflected in your eWallet shorlty                             
+                            <% } %>
+                         <!-- <span style=" color: red;">  Ignore if your payment method was Cash on Delivery.</span>  -->
+                        </p>
+                    </div>
+                  <% }   else if (orderData.deliverystatus === "cancellation approved") { %>
+                      <div style="padding: 20px; margin-bottom: 5px;">
+                        <p style="background-color: #00000056; display: inline-block; padding: 10px; color:rgb(220, 154, 0);border-radius: 17px;">
+                            This order has been cancelled<br>
+                            <% if (orderData.paymentMethod === 'razorpay') { %>
+                              Your purchase amount will be reflected in your eWallet shorlty                             
+                            <% } %>
+                        </p>
+                    </div>
+                  <% } %>
+                   <a href="/generateInvoice?orderId=<%= orderData._id%>"> <button class="btn btn-outline-success"id="InvoiceButton">
+                        Generate Invoice
+                    </button></a>
+                    
+
+
+
             </div>
+            <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="returnModalLabel">Return Request</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="returnReason" class="form-label">Reason for Return:</label>
+                      <input type="text" class="form-control" id="returnReason" placeholder="Enter reason" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="submitReturnRequest">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
        
     </div>
@@ -93,5 +423,103 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <!-- Add this script inside your HTML file -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Define a function to handle button click
+        function handleButtonClick(status) {
+            const orderId = '<%= orderData._id %>'; // Replace with the actual order ID
+            $.ajax({
+                url: '/cancelOrReturn', // Replace with your actual backend endpoint
+                method: 'POST', // You can use 'GET' if it's more appropriate
+                data: {
+                    orderId: orderId,
+                    status: status // This will indicate 'cancel' or 'return'
+                },
+                success: function (response) {
+                    // Handle success response from the server
+                    console.log('Request successful', response);
+                    Swal.fire('Requested for approval.');
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response from the server
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'An error occurred', 'error');
+                }
+            });
+        }
+
+        // Add a click event listener to the "Cancel" button
+        $('#cancelButton').click(function () {
+            Swal.fire({
+                title: 'Confirm Cancellation',
+                text: 'Are you sure you want to cancel this order?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    handleButtonClick('cancellationrequest');
+                }
+            });
+        });
+
+     // Add a click event listener to the "Return" button
+// Add a click event listener to the "Return" button
+$('#returnButton').click(async function () {
+  const { value: returnReason } = await Swal.fire({
+    title: 'Reason for return',
+    input: 'select',
+    inputOptions: {
+      'Defects': 'Defects',
+      'Perfomance Dissatisfaction': 'Perfomance Dissatisfaction',
+      'Software Compatibility Issues': 'Software Compatibility Issues',
+      'Missing or Damaged Components': 'Missing or Damaged Components',
+      'Change of Mind': 'Change of Mind',
+      'Incorrect Specifications': 'Incorrect Specifications',
+      // Add more options as needed
+    },
+    inputPlaceholder: 'Select a reason',
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You need to select a reason!';
+      }
+    }
+  });
+
+  if (returnReason) {
+    console.log(returnReason);
+    const orderId = '<%= orderData._id %>'; // Replace with your actual order ID
+    const status = 'returnrequest'; // Or any other status you want to send
+
+    $.ajax({
+      url: '/cancelOrReturn', // Replace with your actual URL
+      type: 'POST',
+      data: {
+        orderId: orderId,
+        status: status,
+        returnReason: returnReason
+      },
+      success: function (response) {
+        // Handle success response
+        Swal.fire('Reason submitted successfully!', 'success');
+      },
+      error: function (error) {
+        // Handle error response
+        Swal.fire('Error', 'Failed to submit reason', 'error');
+      },
+    });
+  }
+});
+
+
+    });
+</script>
+
+
 </body>
 </html>

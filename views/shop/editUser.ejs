@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyborg || Edit User</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('/shop/img/authformbg.jpg');
+      font-family: 'DotGothic16', sans-serif;
+      background-color: #333;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .login-container {
+      background-color: #111;
+      padding: 50px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      width: 400px;
+      opacity: .8;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      align-self: right;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #000000;
+    }
+
+    .form-group input::placeholder {
+      color: #888;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #ccba8a;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group button:hover {
+      background-color: #E6970D;
+    }
+
+    .signup-section {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .signup-link {
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #8a8a8a;
+      padding: 8px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .signup-link:hover {
+      background-color: #ffd000;
+      color: #000000;
+    }
+
+    .navbar {
+      background-color: #000;
+    }
+
+    .navbar-brand img {
+      max-height: 50px;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="login-container">
+    <a class="navbar-brand" href="/">
+      <h1 style="padding-left: 95px; color:#ffd000 ;  ">Cyborg<br>Gaming</h1>
+    </a>
+    <h2>Edit User Details</h2>
+    <% if (typeof error !=='undefined' ) { %>
+      <p class="text-danger">
+        <%= error %>
+      </p>
+      <% } %>
+        <form action='editUser' method="post" onsubmit="handleSignupForm(event)">
+          <div class="form-group">
+            <label for="username">username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" value="<%= user.username %>" required>
+            <div id="usernameError" class="error-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" value="<%= user.email %>" required>
+            <div id="emailError" class="error-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="email">Contact Number</label>
+            <input type="text" id="number" name="number" placeholder="Enter your contact number" value="<%= user.number %> "required>
+            <div id="numberError" class="error-text"></div>
+          </div>
+
+          <div class="form-group">
+            <button type="submit">Update</button>
+
+          </div>
+          <div class="form-group">
+            <a href= "account">Go Back</a>
+
+          </div>
+          <div class="signup-section">
+          
+          </div>
+        </form>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="sweetalert2.all.min.js"></script>
+  <script defer>
+    function handleSignupForm(event) {
+      // Prevent form submission
+      event.preventDefault();
+
+      // Reset error messages
+      resetErrorMessages();
+
+      // Validate form fields
+      var usernameInput = document.getElementById("username");
+      var emailInput = document.getElementById("email");
+      var numberInput = document.getElementById("number");
+     
+      // Check if username is empty
+      if (usernameInput.value.trim() === "") {
+        displayErrorMessage("usernameError", "Please enter your username");
+        return;
+      }
+
+      const alphabeticRegex = /^[a-zA-Z]+$/;
+      if (!alphabeticRegex.test(usernameInput.value)) {
+        displayErrorMessage("usernameError", "Username should only contain alphabetic characters");
+        return;
+      }
+
+      // Check if email is empty
+      if (emailInput.value.trim() === "") {
+        displayErrorMessage("emailError", "Please enter your email");
+        return;
+      }
+
+      // Check if email is valid
+      var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!emailRegex.test(emailInput.value)) {
+        displayErrorMessage("emailError", "Please enter a valid email address");
+        return;
+      }
+
+      // Check if number is empty
+      if (numberInput.value.trim() === "") {
+        displayErrorMessage("numberError", "Please enter your mobile number");
+        return;
+      }
+
+      // Check if number contains exactly 10 digits
+      var numberRegex = /^(?=\d{10}$)(?!(\d)\1{4,})/;
+      if (!numberRegex.test(numberInput.value)) {
+        displayErrorMessage("numberError", "Please enter a valid mobile number");
+        return;
+      }
+
+      // Check if password is empty
+     
+
+      // Check password strength
+     
+      // Submit the form if all validations pass
+      event.target.submit();
+    }
+
+
+    function displayErrorMessage(elementId, errorMessage) {
+      var errorElement = document.getElementById(elementId);
+      errorElement.innerText = errorMessage;
+      errorElement.style.display = "block";
+    }
+
+    function resetErrorMessages() {
+      var errorElements = document.getElementsByClassName("error-text");
+      for (var i = 0; i < errorElements.length; i++) {
+        errorElements[i].innerText = "";
+        errorElements[i].style.display = "none";
+      }
+    }
+
+
+    Swal.fire('Updated successfully')
+
+  
+  </script>
+</body>
+
+</html>

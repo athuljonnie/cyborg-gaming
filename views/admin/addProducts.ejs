@@ -69,22 +69,32 @@
     .navbar-nav .nav-item .nav-link:hover {
       color: #888 !important;
     }
-    .toastClass{
+
+    .toastClass {
       background-color: aquamarine;
     }
-    .toast-success {
-  background-color: #4CAF50 !important; /* Green color for success */
-  color: #ffffff; /* White text color */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Optional: Add a subtle shadow */
-}
-.toast-error {
-  background-color: #FF4136 !important; /* Red color for error */
-  color: #ffffff; /* White text color */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Optional: Add a subtle shadow */
-}
 
+    .toast-success {
+      background-color: #4CAF50 !important;
+      /* Green color for success */
+      color: #ffffff;
+      /* White text color */
+      border-radius: 8px;
+      /* Rounded corners */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      /* Optional: Add a subtle shadow */
+    }
+
+    .toast-error {
+      background-color: #FF4136 !important;
+      /* Red color for error */
+      color: #ffffff;
+      /* White text color */
+      border-radius: 8px;
+      /* Rounded corners */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      /* Optional: Add a subtle shadow */
+    }
   </style>
 </head>
 
@@ -103,7 +113,7 @@
         <li class="nav-item">
           <a class="nav-link" href="users">Users</a>
         </li>
-        
+
         <li class="nav-item">
           <a class="nav-link" href="products">Products</a>
         </li>
@@ -117,7 +127,7 @@
 
   <div class="container mt-5">
     <h2>Add New Product</h2>
-    <form action="addproducts" id="addproductform" method="post" enctype="multipart/form-data">
+    <form id="addproductform" method="post" enctype="multipart/form-data" >
       <div class="mb-3">
         <label for="productName" class="form-label">Product Name</label>
         <input type="text" class="form-control" id="productName" name="productName" required>
@@ -147,11 +157,15 @@
         <option value="">Select Category</option>
         <% if (categoryData && categoryData.categories) { %>
           <% for (let category of categoryData.categories) { %>
-            <option value="<%= category._id %>">
-              <%= category.CategoryName %>
-            </option>
+            <% if (category.isBlocked===false) { %>
+              <option value="<%= category._id %>">
+                <%= category.CategoryName %>
+              </option>
+             
             <% } %>
-              <% } %>
+            <% } %>
+            <% } %>
+              <!-- <#%} %> -->
       </select>
 
 
@@ -173,51 +187,123 @@
       <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
     </form>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Then add the toastr.js script -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
-  $(document).ready(function() {
-    $('#addproductform').submit(function(e) {
-      e.preventDefault(); // Prevent form submission
+    $(document).ready(function () {
+      $('#addproductform').submit(function (e) {
+        e.preventDefault(); // Prevent form submission
 
-      // Display loading spinner
-      $('#addproductform .btn-primary').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding Product...').prop('disabled', true);
 
-      // Submit the form data using AJAX
-      $.ajax({
-        url: '/admin/addproducts',
-        type: 'POST',
-        data: new FormData(this),
-        processData: false,
-        contentType: false,
-        success: function(response) {
-          // Reset form fields
-          $('#addproductform')[0].reset();
-
-        
-
-     
-
-          // Display success toast message
-          toastr.success('Product added successfully!', 'Success');
-         
-          // Reset button state
-          $('#addproductform .btn-primary').html('Add Product').prop('disabled', false);
-        },
-        error: function(error) {
-          // Display error toast message
-          toastr.error('Failed to add product. Please try again.', 'Error');
-
-          // Reset button state
-          $('#addproductform .btn-primary').html('Add Product').prop('disabled', false);
+        if (!validateForm(e)) {
+          // If validation fails, do not proceed with the submission
+          // Enable the submit button
+          $('#submitButton').prop('disabled', false);
+          return;
         }
+        // Display loading spinner
+
+        // Submit the form data using AJAX
+        $.ajax({
+          url: '/admin/addproducts',
+          type: 'POST',
+          data: new FormData(this),
+          processData: false,
+          contentType: false,
+          success: function (response) {
+
+            // Reset form fields
+            $('#addproductform')[0].reset();
+
+
+
+            // e.target.submit();
+
+
+            toastr.success('Product added successfully!', 'Success');
+
+
+            $('#addproductform .btn-primary').html('Add Product').prop('disabled', false);
+          },
+          error: function (error) {
+            toastr.error('Failed to add product. Please try again.', 'Error');
+
+
+            $('#addproductform .btn-primary').html('Add Product').prop('disabled', false);
+          }
+        });
       });
     });
-  });
-</script>
-  
+
+    function validateForm(e) {
+      e.preventDefault();
+      const productNameInput = document.getElementById('productName');
+      const productPriceInput = document.getElementById('productPrice');
+      const productBrandInput = document.getElementById('productBrand');
+      const productDescriptionInput = document.getElementById('productDescription');
+      const productQuantityInput = document.getElementById('productQuantity');
+      const originalPriceInput = document.getElementById('originalPrice');
+
+
+
+      const productNamePattern = /^[A-Za-z0-9\s]+$/;
+      if (!productNamePattern.test(productNameInput.value)) {
+
+        Swal.fire('Product Name must contain only alphabets, numbers, and spaces.');
+        return false;
+      }
+      const productBrandPattern = /^[A-Za-z0-9\s]+$/;
+      if (!productBrandPattern.test(productBrandInput.value)) {
+
+        Swal.fire('Product Brand must contain only alphabets, numbers, and spaces.')
+        return false;
+      }
+
+
+      const productDescriptionPattern = /^[A-Za-z0-9\s.,?!()-]+$/;
+      if (!productDescriptionPattern.test(productDescriptionInput.value)) {
+        Swal.fire('Product Description contains invalid characters.')
+        return false;
+      }
+
+    
+
+      const productQuantity = parseInt(productQuantityInput.value, 10);
+      if (isNaN(productQuantity) || productQuantity <= 0) {
+        Swal.fire('product quantity should be greater than zero')
+
+
+        return false;
+      }
+
+   
+
+
+
+      if (parseFloat(productPriceInput.value) <= 0) {
+        Swal.fire('Product Price must be greater than zero.')
+
+        return false;
+      }
+
+
+      const originalPrice = parseFloat(originalPriceInput.value);
+
+      if (originalPrice <= 0) {
+        Swal.fire('Original Price must be greater than zero.')
+        return false;
+      }
+
+
+
+      return true; // Form will submit if all validations pass
+    }
+  </script>
 </body>
 
 </html>

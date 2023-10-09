@@ -317,26 +317,24 @@
       <div class="row justify-content-center">
         <% } %>
           <div class="col-md-4 col-lg-4 col-xl-4 my-5">
-              <% if (product && product.image && product.image[0]) { %>
-                <img src="/uploads/<%= product.image[0] %>" alt="Product Image" class="card-img-top" />
+              <% if (product.productId.productImage[0]) { %>
+                <img src="/uploads/<%= product.productId.productImage[0] %>" alt="Product Image" class="card-img-top" />
                 <!-- Your code for displaying product information here -->
               <% } %>
             <div class="card text-black">
               <div class="card-body">
                 <div class="text-center">
                   <h5 class="card-title">
-                    <%= product.productName %>
+                    <%= product.productId.productName %>
                   </h5>
                 
                 </div>
                 <div>
                   <div class="d-flex justify-content-between">
                     <span>Price</span><span><b>₹</b>
-                      <%= product.price %>
+                      <%= product.productId.productPrice %>
                     </span>
-                    <span>Price</span><span><b>₹</b>
-                      <%= product.category %>
-                    </span>
+                   
                   </div>
                   <div class="d-flex justify-content-between">
                     <span></span><span></span>
@@ -347,12 +345,16 @@
                
                 <div class="d-flex justify-content-center total font-weight-bold mt-4">
             
-                  <a href="addToCart('<%= product._id %>')">
-                    <button type="button" class="btn btn-outline-dark">Add to Cart</button>
-                  </a>
-                  <span></span>
-                  <span>
-                  </span>
+                    <button type="button" class="btn btn-outline-dark" onclick="addToCart('<%=product.productId._id%>')">Add to Cart</button>
+                
+                 
+                </div>
+               
+                <div class="d-flex justify-content-center total font-weight-bold mt-4">
+            
+                  <button type="button" class="btn btn-outline-danger" onclick="removeFromWishlist('<%= product._id %>')">Remove </button>
+                
+                 
                 </div>
               </div>
             </div>
@@ -454,7 +456,48 @@
       background-color: #f44336;
     }
   </style>
+<script>
 
+function removeFromWishlist(productId) {
+  console.log(productId);
+  $.ajax({
+    url: `/wishlist/remove?productId=${productId}`,
+    type: 'GET',
+    success: function (response) {
+      if (response.success) {
+        // If product was successfully removed from the wishlist, refresh the page
+        location.reload(); // This reloads the current page
+      } else {
+        // Handle the case where removal was not successful
+        toastr.options = {
+          closeButton: true,
+          positionClass: "toast-bottom-right",
+          timeOut: 3000,
+          // Add the class for error message
+          toastClass: "toast-error"
+        };
+        toastr.error("Failed to remove product from the wishlist. Please try again.", "Error", {
+          progressBar: true,
+        });
+      }
+    },
+    error: function (error) {
+      // Handle the case where there was an error with the AJAX request
+      toastr.options = {
+        closeButton: true,
+        positionClass: "toast-bottom-right",
+        timeOut: 3000,
+        // Add the class for error message
+        toastClass: "toast-error"
+      };
+      toastr.error("Failed to remove product from the wishlist. Please try again.", "Error", {
+        progressBar: true,
+      });
+    }
+  });
+}
+
+</script>
   <script>
 
     function addToCart(productId) {
@@ -474,7 +517,10 @@
             };
             toastr.success("Product added to cart!", "Success", {
               progressBar: true,
-            });
+              
+            }
+            )
+            location.reload();
           } else {
             // If there was an error adding the product to the cart, show Toastr error message
             toastr.options = {
@@ -506,57 +552,7 @@
     }
   </script>
 
-  <script>
-
-    function addToWishlist(productId) {
-      console.log("hi", productId);
-      $.ajax({
-        url: `/wishlistload?productId=${productId}`,
-        type: 'GET',
-        success: function (response) {
-          if (response.success) {
-            // If product was successfully added to the cart, show Toastr success message
-            toastr.options = {
-              closeButton: true,
-              positionClass: "toast-bottom-right",
-              timeOut: 3000,
-              // Add the class for success message
-              toastClass: "toast-success"
-            };
-            toastr.success("Product added to Wishlist!", "Success", {
-              progressBar: true,
-            });
-          } else {
-            // If there was an error adding the product to the cart, show Toastr error message
-            toastr.options = {
-              closeButton: true,
-              positionClass: "toast-bottom-right",
-              timeOut: 3000,
-              // Add the class for error message
-              toastClass: "toast-error"
-            };
-            toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
-              progressBar: true,
-            });
-          }
-        },
-        error: function (error) {
-          // If there was an error with the AJAX request, show Toastr error message
-          toastr.options = {
-            closeButton: true,
-            positionClass: "toast-bottom-right",
-            timeOut: 3000,
-            // Add the class for error message
-            toastClass: "toast-error"
-          };
-          toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
-            progressBar: true,
-          });
-        }
-      });
-    }
-  </script>
-
+ 
 
 <script>
   const searchForm = document.getElementById("search-form");

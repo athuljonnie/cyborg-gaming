@@ -79,11 +79,16 @@
         }
 
         .description-truncate {
-            max-height: 5em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
+      max-height: 5em;
+      overflow-y: scroll;
+    
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
+
+    .description-truncate::-webkit-scrollbar{
+      display: none
+    }
 
         .description-container {
             max-height: 10em;
@@ -226,6 +231,10 @@ height: 200px;
         #heading {
             color: #E6970D;
         }
+        .footer{
+      background-color: #2c2c2c;
+    }
+
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -235,18 +244,26 @@ height: 200px;
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
         <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
-        <div class="input-wrapper">
-            <button class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
-                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff"
-                        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z">
-                    </path>
-                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff"
-                        d="M22 22L20 20"></path>
-                </svg>
-            </button>
-            <input placeholder="search.." class="input" name="text" type="text">
+        <div class="row">
+            <div class="col-md-8">
+              <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
+                <div class="input-container">
+                  <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
+                    placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
+                </div>
+              </div>
+              <div class="col-md-4">
+                
+                <div class="input-group-append">
+                  <button class="btn btn-outline-warning" type="submit">Search</button>
+                </div>
+              </form> 
+              
+            </div>
+          </div>
         </div>
+    
+    
 
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -274,20 +291,25 @@ height: 200px;
 
                         <li class="nav-item">
                             <div class="dropdown show">
-                                <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink"
-                                    data-toggle="dropdown" aria-expanded="false" style="color: #c7c7c7;">
-                                    Categories
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-
-                                    <% categoryData.forEach((category)=>{ %>
+                              <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Categories
+                              </a>
+                
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/allproducts">All Products</a>
+                                <div class="dropdown-divider"></div>
+                                <% categoryData.forEach((category)=>{ %>
+                                    <% if (category.isBlocked === false) { %>
                                         <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                            <%= category.CategoryName %>
-                                        </a>
-                                        <% }) %>
-
-                                </div>
+                                          <%= category.CategoryName %>
+                                        </a>                                     
+                                    <% } %>
+                                  <% }) %>
+                
+                              </div>
+                            </div>
+                          </li>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
@@ -326,6 +348,24 @@ height: 200px;
             </div>
 
     </nav>
+    <div id="heading" style="background-color:rgb(26, 26, 26);width: 100%;  align-items: center; justify-content: right; display: flex; padding-right: 30px;">
+        <div class="radio-inputs">
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="a-z">
+                <span class="name">A-Z</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-high-to-low">
+                <span class="name">High-to-Low</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-low-to-high">
+                <span class="name">Low-to-High</span>
+            </label>
+        </div>
+
+
+    </div>
 
    
 
@@ -343,7 +383,7 @@ height: 200px;
                     <% } else { %>
 
                         <% products.forEach((product, index)=> { %>
-
+                            <% if (product.isBlocked == false) { %>
                             <% if (index % 3===0) { %>
             </div>
             <div class="row justify-content-center">
@@ -364,8 +404,18 @@ height: 200px;
                                 </div>
                                 <div>
                                     <div class="d-flex justify-content-between">
-                                        <span>Price</span><span><b>₹</b>
-                                            <%= product.productPrice %>
+                                        <span>Price:</span>
+                                        <span>
+                                            <b>₹</b>
+                                            <% if (product.catoffer && product.catofferPrice < product.productPrice) { %>
+                                                <strike><%= product.productPrice %></strike> <%= product.catofferPrice %>
+                                                (<%= product.catofferPercentage %> off)
+                                            <% } else if (product.offer && product.offerPrice < product.productPrice) { %>
+                                                <strike><%= product.productPrice %></strike> <%= product.offerPrice %>
+                                               <span style="color: #ff0000;"> (<%= product.offerPercentage %>% off)</span>
+                                            <% } else { %>
+                                                <%= product.productPrice %>
+                                            <% } %>
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -387,7 +437,7 @@ height: 200px;
                                 </div>
                                 <div class="d-flex justify-content-between total font-weight-bold mt-4">
                                     <span class="heart-icon">
-                                        <a href=""><i class="fas fa-heart"></i></a>
+                                        <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
                                         <a href="" onclick="addToCart('<%= product._id %>')"><i
                                                 class="fas fa-shopping-cart"></i></a>
                                     </span>
@@ -401,12 +451,76 @@ height: 200px;
                             </div>
                         </div>
                     </div>
+                    <% } %>
                     <% }); %>
                         <% } %>
             </div>
         </div>
     </section>
-
+    <footer class="footer text-white py-4">
+        <div class="container" style="  font-family: 'DotGothic16', sans-serif;">
+    
+          <div class="row">
+            <div class="col-md-6">
+    
+              <h3>Cyborg Gaming</h3>
+        <p>At Cyborg Gaming, we are dedicated to providing you with the most cutting-edge prebuilt gaming PCs and immersive gaming experiences. Our mission is simple: to fuel your passion for gaming by offering top-notch hardware and the latest games at your fingertips.</p>
+               </div>
+            <div class="col-md-3">
+              <h3>Quick Links</h3>
+              <ul class="list-unstyled quick-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Contact Us</a></li>
+              </ul>
+            </div>
+            <div class="col-md-3">
+              <h3>Contact Info</h3>
+              <address>
+                <p><i class="fa fa-map-marker"></i>404 WallStreet, NYC, Manhattan</p>
+                <p><i class="fa fa-envelope"></i> support@cyborg.com</p>
+                <p><i class="fa fa-phone"></i> +1 653 4823</p>
+              </address>
+            </div>
+    
+          </div>
+    
+          <section class="mb-4 text-center">
+            <!-- Facebook -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#" role="button"><i
+                class="fab fa-facebook-f"></i></a>
+    
+            <!-- Twitter -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
+    
+            <!-- Google -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
+    
+            <!-- Instagram -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
+    
+            <!-- Linkedin -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i
+                class="fab fa-linkedin-in"></i></a>
+    
+            <!-- Github -->
+            <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
+          </section>
+          <!-- Section: Social media -->
+        </div>
+        <section class="">
+          <form action="/signup" method="get">
+            <p class="d-flex justify-content-center align-items-center">
+              <span style="  font-family: 'DotGothic16', sans-serif;">Register for free--<br></span>
+              <button type="submit" class="btn btn-outline-warning btn-rounded">
+                Sign up!
+              </button>
+          </form>
+          </p>
+        </section>
+        </div>
+      </footer>
 
     <script>
         $.ajax({
@@ -479,8 +593,116 @@ height: 200px;
         }
     </script>
 
+<script>
+    $('.sort-checkbox').click(function () {
+        var selectedOption = $(this).data('sort');
+        console.log('Selected Option:', selectedOption);
+        $.ajax({
+            type: 'POST',
+            url: 'allproducts',
+            data: { sortOption: selectedOption },
+            success: function (response) {
+                console.log(response);
+                $('body').empty();
+                $('body').html(response);
+            },
+            error: function (error) {
+                console.error('Error sending data:', error);
+            }
+        });
+    });
+</script>
+
+<script>
+
+    function addToWishlist(productId) {
+      console.log("hi", productId);
+      $.ajax({
+        url: `/wishlistload?productId=${productId}`,
+        type: 'GET',
+        success: function (response) {
+          if (response.success) {
+            // If product was successfully added to the cart, show Toastr success message
+            toastr.options = {
+              closeButton: true,
+              positionClass: "toast-bottom-right",
+              timeOut: 3000,
+              // Add the class for success message
+              toastClass: "toast-success"
+            };
+            toastr.success("Product added to Wishlist!", "Success", {
+              progressBar: true,
+            });
+          } else {
+            // If there was an error adding the product to the cart, show Toastr error message
+            toastr.options = {
+              closeButton: true,
+              positionClass: "toast-bottom-right",
+              timeOut: 3000,
+              // Add the class for error message
+              toastClass: "toast-error"
+            };
+            toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
+              progressBar: true,
+            });
+          }
+        },
+        error: function (error) {
+          // If there was an error with the AJAX request, show Toastr error message
+          toastr.options = {
+            closeButton: true,
+            positionClass: "toast-bottom-right",
+            timeOut: 3000,
+            // Add the class for error message
+            toastClass: "toast-error"
+          };
+          toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
+            progressBar: true,
+          });
+        }
+      });
+    }
+  </script>
 
 
+<script>
+  const searchForm = document.getElementById("search-form");
+  const searchInput = document.getElementById("search-input");
+
+  // Add an event listener to the form for when it's submitted
+  searchForm.addEventListener("submit", function (event) {
+    
+    event.preventDefault();
+
+    // Get the search term from the input field
+    const searchTerm = searchInput.value;
+    console.log(searchTerm);
+  $.ajax({
+      type: 'GET', // Use 'GET' if your server-side route is a GET request
+      url: '/search', // Adjust the URL to match your server's route
+      data: { searchTerm: searchTerm }, // Send the search term as data
+      success: function (response) {
+          console.log(response);
+          $('body').empty();
+          $('body').html(response);
+      },
+      error: function (error) {
+          console.error('Error sending data:', error);
+      }
+  });
+</script>
+
+
+  <script>
+    document.getElementById("search-form").addEventListener("submit", function (e) {
+      var searchTerm = document.getElementById("search-input").value.trim(); // Get the search term
+      console.log(searchTerm);
+      // Redirect to the search results page with the search term as a query parameter
+      if (!searchTerm) {
+        e.preventDefault(); // Prevent form submission if search term is empty
+      }
+    });
+  </script>
 
 </body>
 

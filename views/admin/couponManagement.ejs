@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Management || Admin</title>
+    
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+    .container {
+      display: flex;
+    }
+    
+    .form-container {
+      flex: 1;
+      margin-right: 20px;
+    }
+    
+    .table-container {
+      flex: 1;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1, h2 {
+      margin-top: 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    
+    button[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    #coupon-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    
+    #coupon-table th,
+    #coupon-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+    
+    
+    
+    </style>
+    </head>
+<body>
+    
+    
+    
+        <div class="container-fluid d-flex col-md-10 mt-5">
+            <div class="form-container col-md-4">
+              <h1 class="text-dark">Create Coupon</h1>
+              <form id="coupon-form" action="/admin/createCoupon" method="POST">
+                <div class="form-group">
+                  <label for="price-range">Price Range:</label>
+                  <input type="text" id="price-range" name="priceRange" required>
+                  <p id="price-error" style="color: red; display: none;">Price range must be a number.</p>
+                </div>
+        
+                <div class="form-group">
+                  <label for="discount-amount">Discount Amount:</label>
+                  <input type="number" id="discount-amount" name="discountAmount" required>
+                </div>
+                <div class="form-group">
+                  <label for="expiration-date">Expiration Date:</label>
+                  <input type="date" id="expiration-date" name="expirationDate" required>
+                  <p id="expiration-error" style="color: red; display: none;">Expiration date must be greater than the current date.</p>
+                </div>
+        
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea id="description" name="description"></textarea>
+                </div>
+        
+                <button type="submit">Create Coupon</button>
+              </form>
+            </div>
+        
+            <div class="table-container col-md-8">
+              <h2 class="text-dark">Coupon Details</h2>
+              <table id="coupon-table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Coupon Code</th>
+                    <th>Price Range</th>
+                    <th>Discount Amount</th>
+                    <th>Expiration Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% coupon.reverse().forEach(coupon => { %>
+                    
+                    <tr>
+                      <% if(coupon.active === true ) {%>
+                      <td class="text-success">Active</td>
+                      <%} else {%>
+                      <td class="text-secondary">Expired</td>
+                      <% } %>
+                      <td class="text-dark"><%= coupon.couponCode %></td>
+                      <td class="text-dark"><%= coupon.priceRange %></td>
+                      <td class="text-dark"><%= coupon.discountAmount %></td>
+                      <td class="text-dark"><%= coupon.expirationDate %></td>
+                      <td class="text-dark"><a href="removecoupon?couponId=<%= coupon._id %>">Delete</a></td>
+                    </tr>
+                    
+                  <% }) %>
+                </tbody>
+              </table>
+              
+            </div>
+          </div>
+    
+</body>
+
+          <script>
+            var expirationDateInput = document.getElementById('expiration-date');
+            var expirationError = document.getElementById('expiration-error');
+          
+            expirationDateInput.addEventListener('input', function() {
+              var expirationDate = new Date(expirationDateInput.value);
+              var currentDate = new Date();
+          
+              if (expirationDate <= currentDate) {
+                expirationError.style.display = 'block';
+              } else {
+                expirationError.style.display = 'none';
+              }
+            });
+          </script>
+          <script>
+            var priceRangeInput = document.getElementById('price-range');
+            var priceError = document.getElementById('price-error');
+          
+            priceRangeInput.addEventListener('input', function() {
+              var priceRange = priceRangeInput.value;
+          
+              if (isNaN(priceRange)) {
+                priceError.style.display = 'block';
+              } else {
+                priceError.style.display = 'none';
+              }
+            });
+          </script>
+</html>
+
+    

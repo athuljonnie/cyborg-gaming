@@ -1,54 +1,44 @@
-<!-- user_profile.ejs -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Custom CSS for dark theme */
-        body {
-            background-color: #212020;
-            color: #fff;
-            /* padding: 20px; */
-        }
+  <style>
+    body {
 
-        h1,
-        h2,
-        h3 {
-            font-family: 'DotGothic16', sans-serif;
-            color: #ffc107;
-        }
+      background-color: #151313;
+      color: rgb(0, 0, 0);
+    }
 
-        table {
-            color: #fff;
-        }
+    .product-img {
+      max-width: 100%;
+      height: auto;
+    }
 
-        th {
-            background-color: #343a40;
-        }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
 
-        a {
-            color: #ffc107;
-        }
-
-        .body {
-
-            background-color: #000000;
-        }
+    
 
         #navbar1 {
             background-color: #000000 !important;
@@ -88,43 +78,84 @@
             }
         }
 
-    
-        .custom-card {
+        .c-item {
+            height: 100%;
+        }
+
+        .c-img {
+            height: 100%;
+            object-fit: cover;
+            }
             
-            background-color: #212121;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+          .description-scroll {
+            max-height: 10em;
+            overflow: auto; 
+           }
+
+
+
+        .heart-icon i {
+            color: black;
+            transition: color 0.3s;
 
         }
 
-        .custom-card h2 {
-            color: #ffc107;
-            font-size: 24px;
-            margin-bottom: 10px;
+
+        .heart-icon:hover i {
+            color: red;
         }
 
-        .custom-card ul {
-            padding-left: 20px;
+
+        .cart-icon-link i {
+            color: black;
+            padding: 15px;
         }
 
-        .custom-card li {
-            margin-bottom: 10px;
-        }
+        .cart-icon-link:hover i {
+            color: blue;
 
-        .custom-card .card-link {
-            color: #ffc107;
-        }
-
-        .custom-card .card-link:hover {
-            text-decoration: none;
         }
 
         .card-body {
-            
-            background-color: #343a40;
+            background-color: #e80000;
+        }
+        
+        .table thead th {
+            border: 1px solid #dee2e6;
+            background-color: #6d6d6d;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody td {
+            border: 1px solid #dee2e6;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .cart-img {
+            max-width: 80px;
+            height: auto;
+        }
+
+        .quantity-input {
+            width: 100px;
+            text-align: center;
+        }
+
+        .delete-btn {
+            color: #ff0000;
+            cursor: pointer;
+        }
+
+        .total-price {
+            font-weight: bold;
+        }
+        h1, p{
+            font-family: 'DotGothic16', sans-serif;
+            color: #f3af02;
         }
     </style>
 </head>
@@ -137,56 +168,61 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
             <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
             <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <% categoryData.forEach((category)=>{ %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                    <%= category.CategoryName %>
-                                </a>
-                            </li> 
-                            <% }) %>
-                    </ul>
+          
                     <ul class="navbar-nav ml-auto">
+                      <li class="nav-item">
+                        <div class="dropdown show">
+                          <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-expanded="false">
+                            Categories
+                          </a>
+            
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/allproducts">All Products</a>
+                            <div class="dropdown-divider"></div>
+                            <% categoryData.forEach((category)=>{ %>
+                              <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                <%= category.CategoryName %>
+                              </a>
+                              <% }) %>
+            
+                          </div>
+                        </div>
+                      </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                            <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                        </li>
+                     
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-user"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <% if (userData) { %>
-                                    <a class="dropdown-item" href="">
-                                        <%= userData.username %>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="">Profile</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="logout">X Log Out X</a>
-                                    <% } else { %>
-                                        <a class="dropdown-item" href="login">Sign In</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="signup">Create an Account</a>
-                                        <% } %>
+                                <% if (user) { %>
+                                <a class="dropdown-item" href="account"><%= user.username %></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="orders">
+                                  my Orders
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout">X Log Out X</a>
+                                
+    
+                                <% } else { %>
+                                <a class="dropdown-item" href="login">Sign In</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="signup">Sign Up</a>
+                                <% } %>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-        </nav>
-
+          </nav>
 
 
 
@@ -194,10 +230,10 @@
         <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
         <% if (!userOrders) { %>
-            <h4>No orders </h4>
+            <h4 style="color: #f3af02;   font-family: 'DotGothic16', sans-serif;">No orders </h4>
             <% } else {%>
                 <div class="container mt-5">
-                    <h2 class="text-center mb-4">Orders:</h2>
+                    <h2 class="text-center mb-4" style="color: #f3af02;   font-family: 'DotGothic16', sans-serif;">Your Orders:</h2>
                     <table class="table table-dark table-striped">
                         <thead>
                             <tr>
@@ -217,7 +253,7 @@
                                         <%= order._id %>
                                     </td>
                                     <td>
-                                        <%= order.createdAt.toDateString() %>
+                                        <%= order.createdAt.toLocaleString() %>
                                     </td>
                                     <td>
                                         <%= order.totalAmount %>
@@ -232,10 +268,16 @@
                                             <%= product.quantity %><br>
                                                 <% }) %>
                                     </td>
-                                    <td>
-                                        <%= order.deliverystatus %>
-                                    </td>
-                                    <td><a href="orderdetails?orderId=<%= order._id %>" class="btn btn-outline-info">
+                                    <% if (order.deliverystatus==='pending' || order.deliverystatus==='delivered') { %>
+                                        <td>
+                                            <span><%= order.deliverystatus %></span>
+                                        </td>
+                                        <% }else { %>
+                                            <td>
+                                            <span style="color: #ff0000;"><%= order.deliverystatus %></span>
+                                        </td>
+                                        <% } %>
+                                        <td><a href="orderdetails?orderId=<%= order._id %>" class="btn btn-outline-info">
                                     View Details
                                         </a></td>
                                 </tr>
@@ -254,7 +296,11 @@
 
 
 
-
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <!-- Bootstrap JS -->
                 <!-- Bootstrap JS -->
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

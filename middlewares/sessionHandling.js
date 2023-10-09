@@ -1,10 +1,10 @@
 function isLoggedIn(req, res, next) {
   if (req.session.user ) {
     console.log('isLoggedIn');
-
+    
+    res.redirect('/')
   } else {
     next();
-
   }
 }
 

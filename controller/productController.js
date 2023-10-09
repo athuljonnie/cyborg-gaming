@@ -41,21 +41,25 @@ module.exports = {
   
 
   getSearch: async (req, res) => {
-      try {
+    try {
       const searchTerm = req.query.searchTerm;
-      console.log("searchQuery: ", searchTerm);
-      let categoryData = await Category.find();
+      const regexPattern = new RegExp(searchTerm, "i");
       
-      let products =[]
-      if (searchTerm) {
-      categoryData = await Category.find({$text: { $search: searchTerm }});      
-      console.log("catData: ", categoryData);
-      products = await Product.find({ $text: { $search: searchTerm } });
-      let categoryIds = categoryData.map((category) => category._id);
-      let productIds = products.map((product) => product._id);
-      console.log("Product ID: ", productIds);
-      products = await Product.find({$or: [{ category: { $in: categoryIds } },{ _id: { $in: productIds } },]}).populate("category");}
-      console.log("products:", products );
+      let categoryData = await Category.find({
+        $text: { $search: searchTerm },
+      });
+      
+      let productsByTextSearch = await Product.find({
+        $text: { $search: searchTerm },
+      }).populate("category");
+      
+      let productsByRegexSearch = await Product.find({
+        productDescription: { $regex: regexPattern },
+      }).populate("category");
+      
+      // Combine the results as needed
+      let products = [...productsByTextSearch, ...productsByRegexSearch];
+      
       let user = req.session.user;
       res.render("shop/searchresults", {
         categoryData,
@@ -66,5 +70,6 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-  },
-};
+    
+},
+}

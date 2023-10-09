@@ -4,8 +4,6 @@
 <html>
 
 <head>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,16 +13,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   
     <style>
         /* Custom CSS for dark theme */
         body {
-            background-color: #212020;
-            color: #fff;
-            /* padding: 20px; */
-        }
+    background-image: url('/shop/img/profilebg.png');
+    background-color: #212020;
+    color: #fff;
+    background-size: cover; /* Set the background image to cover the entire body */
+    background-repeat: no-repeat; /* Prevent image from repeating */
+    background-attachment: fixed; /* Optionally, fix the background image */
+    font-family: 'DotGothic16', sans-serif;
+}
+
 
         h1,
         h2,
@@ -33,22 +40,7 @@
             color: #ffc107;
         }
 
-        table {
-            color: #fff;
-        }
 
-        th {
-            background-color: #343a40;
-        }
-
-        a {
-            color: #ffc107;
-        }
-
-        .body {
-
-            background-color: #000000;
-        }
 
         #navbar1 {
             background-color: #000000 !important;
@@ -122,10 +114,123 @@
             text-decoration: none;
         }
 
-        .card-body {
-            
-            background-color: #343a40;
+        .cardtransparent{
+            background: rgba( 255, 255, 255, 0.1 );
+
+backdrop-filter: blur( 7.5px );
+-webkit-backdrop-filter: blur( 7.5px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
         }
+        .card {
+    position: relative;
+    overflow: hidden; /* Ensure the image stays within the card */
+}
+
+.profile-image {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+    width: 60px; /* Set the desired width for the profile image */
+    height: 60px; /* Set the desired height for the profile image */
+    border-radius: 50%; /* Create a circular shape for the image (optional) */
+    border: 2px solid #fff; /* Add a border around the image (optional) */
+    z-index: 1; /* Make sure the image is above card content */
+}
+
+.list-group-item{
+    background: rgba( 0, 0, 0, 0.4 );
+/* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
+backdrop-filter: blur( 10.5px );
+-webkit-backdrop-filter: blur( 10.5px );
+/* border-radius: 10px; */
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+color: #ffffff; 
+font-family: 'DotGothic16', sans-serif;
+letter-spacing: 2px;
+}
+    
+.list-group-item:hover{
+    cursor: pointer;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Enlarged Image */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+
+/* Style for the modal container */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+}
+
+/* Style for the modal content */
+.modal-content {
+  background-color: #00000042;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #ffc400;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Style for the close button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Add styles for even and odd transactions */
+.transaction-item.even {
+  background-color: #ffffff5f; /* Light background color for even rows */
+  border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+  padding: 10px; /* Add some padding for spacing */
+}
+
+.transaction-item.odd {
+  background-color: #ffffff5f; /* White background color for odd rows */
+  border-bottom: 1px solid #000000; /* Add a bottom border for separation */
+  padding: 10px; /* Add some padding for spacing */
+}
+
+
     </style>
 </head>
 
@@ -142,16 +247,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <% categoryData.forEach((category)=>{ %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                    <%= category.CategoryName %>
-                                </a>
-                            </li> 
-                            <% }) %>
-                    </ul>
+        
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <div class="dropdown show">
+                              <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Categories
+                              </a>
+                
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/allproducts">All Products</a>
+                                <div class="dropdown-divider"></div>
+                                <% categoryData.forEach((category)=>{ %>
+                                  <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                    <%= category.CategoryName %>
+                                  </a>
+                                  <% }) %>
+                
+                              </div>
+                            </div>
+                          </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
                         </li>
@@ -172,7 +288,7 @@
                                         <%= userData.username %>
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="">Profile</a>
+                                    <a class="dropdown-item" href="orders">My Orders</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="logout">X Log Out X</a>
                                     <% } else { %>
@@ -193,145 +309,236 @@
 
         <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
-        <% if (!userOrders) { %>
-            <h4>No orders </h4>
-            <% } else {%>
-                <div class="container mt-5">
-                    <h2 class="text-center mb-4">Orders:</h2>
-                    <table class="table table-dark table-striped">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Date</th>
-                                <th>Total Amount</th>
-                                <th>Product Details</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% userOrders.forEach(order=> { %>
-                                <tr>
-                                    <td>
-                                        <%= order._id %>
-                                    </td>
-                                    <td>
-                                        <%= order.createdAt.toDateString() %>
-                                    </td>
-                                    <td>
-                                        <%= order.totalAmount %>
-                                    </td>
-                                    <td>
-                                        <% order.products.forEach((product)=> { %>
-                                            <%= product.name %><br>
-                                                <% }) %>
-                                    </td>
-                                    <td>
-                                        <% order.products.forEach(product=> { %>
-                                            <%= product.quantity %><br>
-                                                <% }) %>
-                                    </td>
-                                    <td>
-                                        <%= order.deliverystatus %>
-                                    </td>
-                                    <td> <a href="deleteOrder?orderId=<%= order._id %>" class="btn btn-outline-danger">
-                                        cancel order
-                                        </a></td>
-                                </tr>
-                                <% }) %>
-                                    <% } %>
-                        </tbody>
-                    </table>
+        <div class="py-5" >
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card cardtransparent">
+                    <img src="/shop/img/profile.jpg" class="profile-image" alt="Profile Image" id="profileImage">
+                    <!-- Modal for Enlarged Image -->
+
+
+
+                    <div class="card-body " style="letter-spacing: 2px;">
+                      <h3 class="card-title" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><b>User Details</b></h3>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Name: <%= userData.username %></h6>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Email: <%= userData.email %></h6>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">contact: <%= userData.number %></h6>
+                      
+                      <a href="editUser?userId=<%= userData._id %>" class="card-link" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><u> Edit Profile</u></a>
+                      <a href="changepassword" class="card-link" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><u>Change Password</u></a>
+                    </div>
+                  </div>
                 </div>
-
-
-                <div class="container mt-5">
-                    <h2 class="text-center mb-4">Saved Addresses:</h2>
-                    <table class="table table-dark table-striped">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>State</th>
-                                <th>House</th>
-                                <th>Landmark</th>
-                                <th>City</th>
-                                <th>ZIP Code</th>
-                                <th>Email</th>
-                                <th>Number</th>
-                                <th>Address Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% addressData.addresses.forEach((address)=> { %>
-                                <tr>
-                                    <td>
-                                        <%= address.fullname %>
-                                    </td>
-                                    <td>
-                                        <%= address.state %>
-                                    </td>
-                                    <td>
-                                        <%= address.house %>
-                                    </td>
-                                    <td>
-                                        <%= address.landmark %>
-                                    </td>
-                                    <td>
-                                        <%= address.city %>
-                                    </td>
-                                    <td>
-                                        <%= address.zip %>
-                                    </td>
-                                    <td>
-                                        <%= address.email %>
-                                    </td>
-                                    <td>
-                                        <%= address.number %>
-                                    </td>
-                                    <td>
-                                        <%= address.type %>
-                                    </td>
-                                </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
+                <div class="col-md-6 ">
+                  <div class="card cardtransparent">
+                    <div class="card-body " >
+                      <h3 class="card-title" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00; letter-spacing: 2px;"><b>Shopping Details</b></h3>
+                      <ul class="list-group list"  >
+                        <% if (addressData) { %>
+                            <a href="viewAddress"><li class="list-group-item d-flex justify-content-between align-items-center"> Addresses <span class="badge badge-warning badge-pill"><%= addressData.length %></span> </li></a>
+                        <% }else{ %>
+                            <a href="viewAddress"><li class="list-group-item d-flex justify-content-between align-items-center"> Addresses <span class="badge badge-warning badge-pill">0</span> </li></a>
+                            <%  }%>
+                            <% if (userOrders) { %>
+                                <a href="orders">  <li class="list-group-item d-flex justify-content-between align-items-center"> Orders<span class="badge badge-warning badge-pill"><%= userOrders.length %></span> </li></a>                             
+                            <% } else{%>
+                                <a href="orders">  <li class="list-group-item d-flex justify-content-between align-items-center"> Orders<span class="badge badge-warning badge-pill">0</span> </li></a>                          
+                               <%}%>
+                               <% if (cart) { %>
+                                <a href="cart"><li class="list-group-item d-flex justify-content-between align-items-center"> Cart<span class="badge badge-warning badge-pill"><%= cart.length %></span> </li></a>
+                                
+                               <% } else{ %>
+                                <a href="cart"><li class="list-group-item d-flex justify-content-between align-items-center"> Cart<span class="badge badge-warning badge-pill">0</span> </li></a>
+                                <% } %>
+                        <a href="wishlist"><li class="list-group-item d-flex justify-content-between align-items-center"> Wishlist <span class="badge badge-warning badge-pill"><%= wishlistItems.length %></span> </li></a>
+                        <li class="list-group-item d-flex justify-content-between align-items-center"> Coupons<button class="btn btn-warning" id="redeemButton">redeem</button> </li>
+                      </ul>
+                      
+<div id="couponCard" class="list-group-item" style="display: none;">
+    <div class="card-body"> 
+        <% if (coupons) { %>
+            Coupons:<br>
+            <% coupons.forEach(coupon => { %>
+                Code:  <span class="text-warning"> <%=coupon.couponCode%> </span>
+                <button class="btn btn-outline-success copy-button" data-clipboard-text="<%= coupon.couponCode %>">Copy</button><br>
+                Discount:  <span class="text-warning"> ₹<%= coupon.discountAmount%> </span><br>
+                On Orders Above: <span class="text-warning"> ₹<%= coupon.priceRange%> </span><br>
+                Expires On:  <span class="text-warning"> <%= coupon.expirationDate.toLocaleString() %> </span><br>
+            <% }); %>
+        <% } else { %>
+            No Coupons Available
+        <% } %>
+    </div>
+</div>
+                    </div>
+                    <div class="card-body" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00; letter-spacing: 2px;">
+                        <h5 class="card-title"><b>Wallet</b></h5>
+                        <% if (!wallet) { %>
+                            <h6 class="card-subtitle my-2 text-danger">Wallet Not Found !!!</h6>
+                            <p class="card-text" style="background-color: #00000079; border-radius: 17px; padding: 10px;  letter-spacing: 2px;">Creating a Wallet benefits in faster cashback for your cancellations and returns</p>
+                            <!-- <button class ="btn btn-success">Create Wallet</button> -->
+                        <% } else if(wallet.wallet === 0){ %>
+                            <h6 class="card-subtitle my-2 text-danger" style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <%= wallet.wallet%><br><span id="openModal" style="color: #ffd500;">Transaction History</span></h6>
+                           
+                            <% } else{%>
+                                <h6 class="card-subtitle my-2 " style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <span style="color: yellow;"> <%= wallet.wallet.toFixed(2) %></span></h6>
+                                <% } %>
+                                <div id="myModal" class="modal">
+                                    <div class="modal-content">
+                                      <span class="close" id="closeModal">&times;</span>
+                                      <h2>Transaction History</h2>
+                                      <div class="transaction-list">
+                                        <% wallet.transactions.forEach((transaction, index) => {%>
+                                        <div class="transaction-item <%= index % 2 === 0 ? 'even' : 'odd' %>">
+                                          <div class="transaction-info">
+                                            <div class="transaction-amount">
+                                               
+                                                    Amount: ₹<span style="color: rgb(0, 0, 0);"><%= transaction.amount %></span>
+                                          
+                                            </div>
+                                            <div class="transaction-description">
+                                              Description: <span style="color: #000000;"><%= transaction.description %></span>
+                                            </div>
+                                          </div>
+                                          <div class="transaction-time">
+                                            Date: <span style="color: #000000;"><%= transaction.timestamp.toLocaleString() %> </span>
+                                          </div>
+                                        </div>
+                                        <% }) %>
+                                      </div>
+                                    </div>
+                                  </div>
+                        
+                        <% if (!wallet) { %>
+                      <a href="createwallet" class="card-link text-light">Create Wallet</a>
+                      <% } %>
+                      <a href="#" class="card-link text-light" style="letter-spacing: 2px;" >Terms and Conditions</a>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+      
+
+          <div id="imageModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="enlargedImage">
+        </div>
 
 
+            
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Then add the toastr.js script -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        // Function to format date (e.g., "2023-09-29" to "29 Sep 2023")
+        const formatDate = (timestamp) => {
+          const date = new Date(timestamp);
+          const options = { year: 'numeric', month: 'short', day: 'numeric' };
+          return date.toLocaleDateString(undefined, options);
+        };
+      
+        // Function to format time (e.g., "14:30:00" to "2:30 PM")
+        const formatTime = (timestamp) => {
+          const date = new Date(timestamp);
+          const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+          return date.toLocaleTimeString(undefined, options);
+        };
+      </script>
 
 
+<script>
+    // Get the modal and trigger element
+let modal = document.getElementById("myModal");
+const span = document.getElementById("openModal");
+const closeBtn = document.getElementsByClassName("close")[0];
+
+// Function to open the modal
+span.onclick = function () {
+  modal.style.display = "block";
+};
+
+// Function to close the modal when clicking the close button
+closeBtn.onclick = function () {
+  modal.style.display = "none";
+};
+
+// Function to close the modal when clicking anywhere outside the modal
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+</script>
+
+<script>
+   // Initialize Clipboard.js
+new ClipboardJS('.copy-button');
+
+// Add an event listener to show a tooltip when the copy operation is successful
+document.querySelectorAll('.copy-button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var tooltip = document.createElement('span');
+        tooltip.className = 'tooltip';
+        tooltip.textContent = 'Copied!';
+        this.appendChild(tooltip);
+        setTimeout(function () {
+            tooltip.parentElement.removeChild(tooltip);
+        }, 1000);
+    });
+});
+
+</script>
+
+   <script>
+        // Get a reference to the "Redeem" button and the coupon card
+        const redeemButton = document.getElementById('redeemButton');
+        const couponCard = document.getElementById('couponCard');
+    
+        // Add a click event listener to the button
+        redeemButton.addEventListener('click', function (event) {
+            // Prevent the default button behavior
+            event.preventDefault();
+    
+            // Show the coupon card
+            couponCard.style.display = 'block';
+    
+            // You can populate the coupon card with coupon data here
+            // For example, by modifying the content of the card's innerHTML
+
+        });
+    </script>
 
 
+           <script>
+            // Get references to the profile image and the modal
+const profileImage = document.getElementById('profileImage');
+const modal = document.getElementById('imageModal');
+const enlargedImage = document.getElementById('enlargedImage');
 
+// When the profile image is clicked, display the modal with the enlarged image
+profileImage.addEventListener('click', () => {
+    modal.style.display = 'block';
+    enlargedImage.src = profileImage.src;
+});
 
+// When the user clicks the close button or anywhere outside the modal, close the modal
+modal.addEventListener('click', (event) => {
+    if (event.target === modal || event.target.classList.contains('close')) {
+        modal.style.display = 'none';
+    }
+});
 
-
-                <!-- Bootstrap JS -->
-                <!-- Bootstrap JS -->
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-                    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-                    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-                <!-- Then add the toastr.js script -->
-                <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-                <script>
-                    // Toggle sidebar when the button is clicked
-                    document.getElementById('toggleSidebar').addEventListener('click', function () {
-                        const sidebar = document.getElementById('sidebar');
-                        const content = document.getElementById('content');
-
-                        sidebar.classList.toggle('show');
-                        content.classList.toggle('sidebar-show');
-                    });
-                </script>
+           </script>
 
     </body>
 

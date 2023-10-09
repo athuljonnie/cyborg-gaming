@@ -7,6 +7,10 @@
   <title>Admin Panel</title>
   <!-- Bootstrap CSS -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -67,7 +71,7 @@
     }
 
     .table th {
-        background-color: #ffa600;
+        background-color: #010101;
         color: white;
     }
 
@@ -89,8 +93,12 @@
     }
 
     .card-body{
-      border: 3px solid #ffa600;
+      border: 1px solid #ffffff;
       
+    }
+    #cancelButton{
+      padding: 20px;
+
     }
   </style>
 </head>
@@ -161,7 +169,6 @@
                                 Email: <a href="mailto:athuljonnie93@gmail.com"><%= orderData.userId.email%></a><br>
                               Contact Number: <%= orderData.userId.number%>
                             </p>
-                            <a href="#" class="btn btn-link">View Profile</a>
                         </div>
                     </div>
                 </div>
@@ -175,7 +182,7 @@
                                 Payment Method: <%= orderData.paymentMethod %><br>
                                 Status: <%= orderData.deliverystatus %>
                             </p>
-                            <a href="#" class="btn btn-link">Download Info</a>
+                         
                         </div>
                     </div>
                 </div>
@@ -189,9 +196,9 @@
                                 Address: <%= orderData.deliveryDetails.house %>, <%= orderData.deliveryDetails.landmark %><br>
                              
                                 ZIP Code:<%= orderData.deliveryDetails.zip %> <br>
-                                State: <%= orderData.deliveryDetails.State %>
+                                State: <%= orderData.deliveryDetails.state %>
                             </p>
-                            <a href="#" class="btn btn-link">View Address</a>
+                        
                         </div>
                     </div>
                 </div>
@@ -205,6 +212,7 @@
                               <tr>
                                   <th width="20%">Products</th>
                                   <th width="20%">Quantity</th>
+                                  <th width="20%">Order Total</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -220,24 +228,100 @@
                                               <span><strong><%= product.quantity %></strong></span>
                                           </div>
                                       </td>
+                                      <td>
+                                          <div class="d-flex align-items-center">
+                                              <span><strong><%= orderData.totalAmount %></strong></span>
+                                          </div>
+                                      </td>
                                   </tr>
                               <% }) %>
                           </tbody>
                       </table>
                   </div>
               </div>
-          </div>
-          
-           
+            </div>
+            <div style="align-items: center; margin-left: 500px;">
+            <% if (orderData.cancellationrequest === true && orderData.cancellationapproval === false) { %>
+              <button class="btn btn-outline-danger" id="cancelButton">Cancellation approval requested</button>
+              <% } else if(orderData.returnrequest === true) { %>
+                <button class="btn btn-outline-success" id="returnButton"> Return approval requested</button><br>
+                <span style="color: seagreen;">reason for return: </span> <%= orderData.returnreason %>
+                <% } else if(orderData.cancellationapproval === true){ %>
+                  <button class="btn btn-light" disabled>Cancellation approved</button>
+                  <% } %>
+              </div>
 
 
 
       <!-- Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+      <script>
+        $(document).ready(function () {
+            // Define a function to handle button click
+            function handleButtonClick(status) {
+                const orderId = '<%= orderData._id %>'; // Replace with the actual order ID
+                console.log(orderId);
+                $.ajax({
+                    url: '/admin/approval', // Replace with your actual backend endpoint
+                    method: 'POST', // You can use 'GET' if it's more appropriate
+                    data: {
+                        orderId: orderId,
+                        status: status // This will indicate 'cancel' or 'return'
+                    },
+                    success: function (response) {
+                        // Handle success response from the server
+                        console.log('Request successful', response);
+                        Swal.fire('approved');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response from the server
+                        console.error('Error:', error);
+                        Swal.fire('Error', 'An error occurred', 'error');
+                    }
+                });
+            }
+    
+            // Add a click event listener to the "Cancel" button
+            $('#cancelButton').click(function () {
+                Swal.fire({
+                    title: 'Confirm Cancellation',
+                    text: 'Are you sure you want to cancel this order?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handleButtonClick('approved');
+                    }
+                });
+            });
+    
+            // Add a click event listener to the "Return" button
+            $('#returnButton').click(function () {
+                Swal.fire({
+                    title: 'Confirm Return',
+                    text: 'Are you sure you want to return this order?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handleButtonClick('approved');
+                    }
+                });
+            });
+        });
+    </script>
     
     </body>
-    
     </html>
     

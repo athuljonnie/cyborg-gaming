@@ -21,6 +21,7 @@
 
       background-color: #151313;
       color: rgb(186, 186, 186);
+  
     }
 
     .product-img {
@@ -88,7 +89,12 @@
           .description-scroll {
             max-height: 10em;
             overflow: auto; 
+
            }
+
+           .description-scroll::-webkit-scrollbar{
+      display: none
+    }
 
 
 
@@ -117,10 +123,48 @@
         .card-body {
             background-color: #c7c7c7;
         }
-    </style>
+
+        /* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Enlarged Image */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+}
+.footer{
+  margin-top: 100px;
+}
+
+.product-img {
+  transform: scale(1);
+  transition: transform 0.2s; /* Add a smooth transition effect */
+}
+
+/* Apply a larger scale when hovering over the product image */
+.product-img:hover {
+  transform: scale(1.2); /* Increase the scale factor as desired */
+  cursor: pointer;
+}
+
+
+</style>
 </head>
 
-  </style>
+</style>
 </head>
 
 <body >
@@ -129,30 +173,42 @@
     <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
     <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <% categoryData.forEach((category)=>{ %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
-                </li>
-                <% }) %>
-            </ul>
+           
             <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <div class="dropdown show">
+                  <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                  aria-expanded="false">
+                    Categories
+                  </a>
+    
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="/allproducts">All Products</a>
+                    <div class="dropdown-divider"></div>
+                    <% categoryData.forEach((category)=>{ %>
+                      <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                        <%= category.CategoryName %>
+                      </a>
+                      <% }) %>
+    
+                  </div>
+                </div>
+              </li>
+            </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                    <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
+                    <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                </li>
+                
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                  aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user"></i>
                   </a>
       
@@ -180,6 +236,7 @@
                 </li>
             </ul>
 </nav>
+
 <% if (!productData) { %>
  <h6>No products found</h6>
 <% } else {%> 
@@ -188,26 +245,45 @@
       <div class="col-md-6">
         <div class="row">
           <div class="col d-flex justify-content-center ">
-            <img src="/uploads/<%=  productData.productImage[2] %>" alt="Product Image" class="product-img">
+            <img src="/uploads/<%=  productData.productImage[2] %>" alt="Product Image" class="product-img" id="productImage">
           </div>      
           </div>
-       <div class="row d-flex justify-content-center my-3">
-        <% productData.productImage.forEach(imageUrl => { %>
-          <img src="/uploads/<%= imageUrl %>" alt="Product Image" class="product-img me-2" style="height:100px; width:100px;object-fit: fill;">
-        <% }); %>
-       
-       </div>
+          <div class="row d-flex justify-content-center my-3">
+            <% productData.productImage.forEach((imageUrl, index) => { %>
+              <img src="/uploads/<%= imageUrl %>" alt="Product Image" class="product-img me-2" style="height: 100px; width: 100px; object-fit: fill;" data-index="<%= index %>">
+            <% }); %>
+          </div>
+          
+          
       </div>
-      <div class="col-md-6">
-        <h2><%=productData.productName%></h2>
-        <h4><%= productData.productBrand%></h4>
-        <h4>Original Price: ₹ <strike><%= productData.originalPrice %> /-</h4></strike>
-        <h4>Price: ₹ <%= productData.productPrice %> /-</h4>
+      <!-- Modal HTML Structure -->
+      <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img src="" alt="Enlarged Image" id="enlargedImage" style="max-width:60%; max-height: 80vh; margin: auto; display: block;">
+      </div>
       
+      <div class="col-md-6">
+        <h2 style="color: #E6970D; font-family: 'DotGothic16', sans-serif;"><%=productData.productName%></h2>
+        <h4><%= productData.productBrand%></h4>
+        <h4>Price: ₹ 
+          <% if (productData.catoffer && productData.catofferPrice < productData.productPrice) { %>
+              <strike><%= productData.productPrice %> /-</strike> <%= productData.catofferPrice %> /-
+              (<%= productData.catofferPercentage %> off)
+          <% } else if (productData.offer && productData.offerPrice < productData.productPrice) { %>
+              <strike><%= productData.productPrice %> /-</strike> <%= productData.offerPrice %> /-
+             <span style="color: #f44336;"> (<%= productData.offerPercentage %>% off)</span>
+          <% } else { %>
+              <%= productData.productPrice %> /-
+          <% } %>
+      </h4>
+      
+      <!-- <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="enlargedImage">
+      </div> -->
           <div class="btn-group">
-            <a href="#" onclick="addToCart('<%= productData._id %>')"><button class="btn btn-outline-primary" ><i class="fas fa-shopping-cart"  ></i> Add to Cart</button></a>
+            <a href="#" onclick="addToCart('<%= productData._id %>')"><button class="btn btn-outline-success" ><i class="fas fa-shopping-cart"  ></i> Add to Cart</button></a>
           <a>  <button class="btn btn-outline-light"><i class="fas fa-heart"></i> Wishlist</button></a>
-           <a href="#" onclick="buyNow('<%= productData._id %>')"> <button class="btn btn-outline-warning" >Buy Now</button></a>
           </div>
        
         <div class="product-description description-scroll">
@@ -231,13 +307,103 @@
     </div>
   </div>
 <% } %>
+
+<footer class="footer text-white py-4" style="background-color: #151313;">
+  <div class="container" style="  font-family: 'DotGothic16', sans-serif;">
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <h3>Cyborg Gaming</h3>
+  <p>At Cyborg Gaming, we are dedicated to providing you with the most cutting-edge prebuilt gaming PCs and immersive gaming experiences. Our mission is simple: to fuel your passion for gaming by offering top-notch hardware and the latest games at your fingertips.</p>
+         </div>
+      <div class="col-md-3">
+        <h3>Quick Links</h3>
+        <ul class="list-unstyled quick-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Portfolio</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h3>Contact Info</h3>
+        <address>
+          <p><i class="fa fa-map-marker"></i>404 WallStreet, NYC, Manhattan</p>
+          <p><i class="fa fa-envelope"></i> support@cyborg.com</p>
+          <p><i class="fa fa-phone"></i> +1 653 4823</p>
+        </address>
+      </div>
+
+    </div>
+
+    <section class="mb-4 text-center">
+      <!-- Facebook -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#" role="button"><i
+        class="fab fa-facebook-f"></i></a>
+
+      <!-- Twitter -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
+
+      <!-- Google -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
+
+      <!-- Instagram -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
+
+      <!-- Linkedin -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i
+        class="fab fa-linkedin-in"></i></a>
+
+      <!-- Github -->
+      <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <section class="">
+    <form action="/signup" method="get">
+      <p class="d-flex justify-content-center align-items-center">
+        <span style="  font-family: 'DotGothic16', sans-serif;">Register for free--<br></span>
+        <button type="submit" class="btn btn-outline-warning btn-rounded">
+          Sign up!
+        </button>
+    </form>
+    </p>
+  </section>
+  </div>
+</footer>
+<!-- Footer -->
+<script>
+  const productData = <%- JSON.stringify(productData) %>
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Then add the toastr.js script -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+  // Get references to the product images, modal, and enlarged image
+  const productImages = document.querySelectorAll('.product-img');
+  const modal = document.getElementById('imageModal');
+  const enlargedImage = document.getElementById('enlargedImage');
+  // const productData =  JSON.stringify(productData);
+  
+  // When a product image is clicked, display the modal with the enlarged image
+  productImages.forEach((image, index) => {
+    image.addEventListener('click', () => {
+      modal.style.display = 'block';
+      enlargedImage.src = `/uploads/${productData.productImage[index-1]}`;
+    });
+  });
 
+  // When the user clicks the close button or anywhere outside the modal, close the modal
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal || event.target.classList.contains('close')) {
+      modal.style.display = 'none';
+    }
+  });
+</script>
 <style>
   /* Success message */
   .toast-success {

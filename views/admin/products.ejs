@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome CSS -->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     body {
@@ -145,9 +150,9 @@
                     <a href="/admin/editproducts?productId=<%= Product._id %>" class="btn btn-outline-primary">
                       <i class="fas fa-edit"></i> Edit
                     </a>
-                    <a href="#" class="btn btn-outline-danger">
+                    <!-- <a class="btn btn-outline-danger" href="/admin/deleteProducts?productId=<%#= Product._id %>">
                       <i class="fas fa-trash"></i> Delete
-                    </a>
+                    </a> -->
             </div>
           </div>
           <% }); %>
@@ -158,6 +163,45 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+  $(document).ready(function () {
+  
+    $('.delete-product-btn').click(function () {
+      const productId = $(this).data('productId');
+      console.log(productId);
+      console.log("ButtonCLickeds");
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this product!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // User confirmed the delete action, make an AJAX request to delete the product
+          $.ajax({
+            url: '/admin/deleteProducts', // Replace with your actual endpoint
+            type: 'GET', // Or use the appropriate HTTP method
+            data: { productId: productId }, // Replace with your actual data
+            success: function (response) {
+              // Display a SweetAlert success message when the product is deleted
+              Swal.fire('Success', 'Product deleted successfully', 'success');
+              // You can also update the UI to remove the deleted product from the list
+            },
+            error: function (error) {
+              // Handle errors or display an error message if needed
+              Swal.fire('Error', 'Failed to delete product', 'error');
+            },
+          });
+        }
+      });
+    });
+  });
+</script>
 </body>
 
 </html>

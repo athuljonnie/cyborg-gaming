@@ -107,8 +107,6 @@ module.exports = {
       ]);
    
 
-console.log(categoryCounts,"CategoryCounts");
-console.log(productCounts,"ProductCounts");
 
 const categories = categoryCounts.map(category => category.category);
 const counts = categoryCounts.map(category => category.count);
@@ -116,20 +114,26 @@ const counts = categoryCounts.map(category => category.count);
 const products = await Product.find()
 .populate('category', 'category');
 
-console.log(categories ,counts);
 
 const codTotalAmount = codOrders.length > 0 ? codOrders[0].totalAmount : 0;
 const razorpayTotalAmount = razorpayOrders.length > 0 ? razorpayOrders[0].totalAmount : 0;
 
 const totalRevenue = codTotalAmount + razorpayTotalAmount;
-console.log(totalRevenue, "totalRevenue");
 
 const numberOfDays = Math.ceil((Date.now() - orders[0].createdAt) / (1000 * 60 * 60 * 24));
-      console.log(numberOfDays, 'Number of days');
   
 
+  
+    const approvalRequests = await Order.find({
+      $or: [{ returnrequest: true }, { cancellationrequest: true } ],
+    })   
+    console.log(approvalRequests,"🫂🫂🫂🫂🫂");
+    const requestCount = await Order.countDocuments({
+      $or: [{ returnrequest: true }, { cancellationrequest: true }],
+    });
+    
+    console.log(requestCount);
 const dailyRevenue = totalRevenue / numberOfDays;
-console.log(dailyRevenue, 'Daily revenue');
 
 const numberOfProducts = orders.reduce((count, order) => {
 const deliveredProducts = order.products.filter(product => product.orderstatus === 'delivered');
@@ -139,10 +143,8 @@ return count + deliveredProducts.length;
 const totalCustomers = await User.countDocuments();
 const totalOrder =  await Order.countDocuments();
 const totalOrders = totalOrder +1 ;
-console.log(totalCustomers, 'Total Number Of Users');
 
 const monthlyRevenue = calculateMonthlyRevenue(orders);
-console.log(monthlyRevenue, 'Monthly revenue');
 if(!req.session.admin){
     res.redirect('login')
 }else{
@@ -160,7 +162,9 @@ res.render('admin/adminHome', {
     categories,
     counts,
     productCounts,
-    products
+    products,
+    approvalRequests,
+    requestCount
   });
 }
 } catch (error) {

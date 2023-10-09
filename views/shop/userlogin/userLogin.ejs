@@ -120,7 +120,7 @@
             <h1 style="padding-left: 95px; color:#ffd000 ;  ">Cyborg<br>Gaming</h1>
     </a>
         <h2>Welcome Back!</h2>
-        <p><%= error %></p>
+        <p style="color: red;"><%= error %></p>
         <form action="/login" method="post" onsubmit="handleLoginForm(event)">
             <div class="form-group">
                 <label for="username">email</label>
@@ -136,8 +136,9 @@
                 <button type="submit">Login</button>
 
                 <div class="signup-section">
+                    <p>Not a member? <a href="/signup" class="signup-link">Signup Here</a></p><br>
+                    <p><a href="/getemail" class="signup-link">Forgot Password? </a></p>
 
-                    <p>Not a member? <a href="/signup" class="signup-link">Signup Here</a></p>
                 </div>
 
             </div>

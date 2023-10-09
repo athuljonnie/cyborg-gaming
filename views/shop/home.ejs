@@ -75,9 +75,14 @@
 
     .description-truncate {
       max-height: 5em;
-      overflow: hidden;
+      overflow-y: scroll;
+    
       text-overflow: ellipsis;
       white-space: normal;
+    }
+
+    .description-truncate::-webkit-scrollbar{
+      display: none
     }
 
     .description-container {
@@ -86,25 +91,35 @@
     }
 
 
-    .heart-icon i {
-      color: black;
+    .fa-heart {
+      color: rgb(255, 255, 255);
+      transition: color 0.3s;
+
+    }
+    .fa-shopping-cart {
+      color: rgb(255, 253, 253);
       transition: color 0.3s;
 
     }
 
-
-    .heart-icon:hover i {
-      color: red;
+    .fa-heart:hover{
+      color: #f44336;
     }
+ 
+
+    .fa-shopping-cart:hover{
+      color: #05d40f;
+    }
+ 
 
 
-    .cart-icon-link i {
+    .cart-icon-link  {
       color: black;
       padding: 15px;
     }
 
-    .cart-icon-link:hover i {
-      color: blue;
+    .cart-icon-link:hover {
+      color: rgb(9, 9, 9);
 
     }
 
@@ -159,17 +174,13 @@
       }
     }
 
-
-
+    
     .dropdown-toggle {
       color: #c7c7c7;
 
     }
 
-    .quick-links a {
-      color: rgb(0, 179, 255);
-      
-    }
+  
     h3{
       color: #E6970D;
     }
@@ -179,7 +190,7 @@
     }
 
     #carouselExampleControls a{
-      color: #c7c7c7;
+      color: #000000;
     }
 
     #carouselExampleControls a:hover{
@@ -242,9 +253,11 @@
                 <a class="dropdown-item" href="/allproducts">All Products</a>
                 <div class="dropdown-divider"></div>
                 <% categoryData.forEach((category)=>{ %>
-                  <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                    <%= category.CategoryName %>
-                  </a>
+                  <% if (category.isBlocked === false) { %>
+                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                      <%= category.CategoryName %>
+                    </a>                   
+                  <% } %>
                   <% }) %>
 
               </div>
@@ -312,9 +325,17 @@
       </div>
       <div class="carousel-item c-item">
         <img class="d-block w-100 c-img" src="/shop/img/carousel.jpeg" alt="Second slide">
+        <div class="carousel-caption top-0 mt-4 d-none d-md-block">
+          <h1 class="mt-5">Editing PowerHouses</h1>
+          <a href="/category/desktop-pcs?cat=64bfebbe371a585154e96748"><p>Shop Now</p></a>
+        </div>
       </div>
       <div class="carousel-item c-item">
         <img class="d-block w-100 c-img" src="/shop/img/PCs_By_Game_.jpg" alt="Third slide">
+        <div class="carousel-caption top-0 mt-4 d-none d-md-block">
+          <h1 class="mt-5">Game Zone</h1>
+          <a href="/category/desktop-pcs?cat=64bf8eb95b894e67f9366cee"><p>Shop Now</p></a>
+        </div>
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -360,7 +381,7 @@
                   <h5 class="card-title">
                     <%= product.productName %>
                   </h5>
-                  <container class="description">
+                  <container class="description" style=" overflow-y: scroll;">
                     <p class="text-muted mb-4 description-truncate">
                       <%= product.productDescription %>
                     </p>
@@ -368,10 +389,20 @@
                 </div>
                 <div>
                   <div class="d-flex justify-content-between">
-                    <span>Price</span><span><b>₹</b>
-                      <%= product.productPrice %>
+                    <span>Price:</span>
+                    <span>
+                        <b>₹</b>
+                        <% if (product.catoffer && product.catofferPrice < product.productPrice) { %>
+                            <strike><%= product.productPrice %></strike> <%= product.catofferPrice %>
+                            (<%= product.catofferPercentage %> off)
+                        <% } else if (product.offer && product.offerPrice < product.productPrice) { %>
+                            <strike><%= product.productPrice %></strike> <%= product.offerPrice %>
+                           <span style="color: #ff0000;"> (<%= product.offerPercentage %>% off)</span>
+                        <% } else { %>
+                            <%= product.productPrice %>
+                        <% } %>
                     </span>
-                  </div>
+                </div>
                   <div class="d-flex justify-content-between">
                     <span></span><span></span>
                   </div>
@@ -387,9 +418,9 @@
                 <div class="d-flex justify-content-between total font-weight-bold mt-4">
                   <span class="heart-icon">
                     <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
-                    <a href="#" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
+           
                   </span>
-                  <span></span>
                   <span>
                     <a href="productdetails?productId=<%= product._id %>">
                       <button type="button" class="btn btn-outline-dark">Shop Now</button>
@@ -518,16 +549,17 @@
             });
           } else {
             // If there was an error adding the product to the cart, show Toastr error message
-            toastr.options = {
-              closeButton: true,
-              positionClass: "toast-bottom-right",
-              timeOut: 3000,
-              // Add the class for error message
-              toastClass: "toast-error"
-            };
-            toastr.error("Failed to add product to cart. Please try again.", "Error", {
-              progressBar: true,
-            });
+            window.location.href = "/login"; 
+            // toastr.options = {
+            //   closeButton: true,
+            //   positionClass: "toast-bottom-right",
+            //   timeOut: 3000,
+            //   // Add the class for error message
+            //   toastClass: "toast-error"
+            // };
+            // toastr.error("Failed to add product to cart. Please try logging in.", "Error", {
+            //   progressBar: true,
+            // });
           }
         },
         error: function (error) {

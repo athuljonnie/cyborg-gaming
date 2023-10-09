@@ -49,6 +49,47 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  offer: {
+    type: Boolean,
+    default: false
+  },
+  catoffer: {
+    type: Boolean,
+    default: false
+  },
+  offerPrice: {
+    type: Number,
+    default: 0
+  },
+  catofferPrice: {
+    type: Number,
+    default: 0
+  },
+  offerPercentage:{
+    type: Number,
+    default: 0
+  },
+  catofferPercentage:{
+    type: Number,
+    default: 0
+  },
+  offerStart:{
+    type:Date,
+    default: null
+  },
+  offerEnd:{
+    type:Date,
+    default: null
+  },
+  catofferEnd:{
+    type:Date,
+    default: null
+  },
+  catofferStart:{
+    type:Date,
+    default: null
+  },
+  
 });
 
 

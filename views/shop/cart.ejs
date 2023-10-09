@@ -167,21 +167,29 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
         <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
         <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <% categoryData.forEach((category)=>{ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/category/desktop-pcs?cat=<%=category._id %>"><%= category.CategoryName %></a>
-                    </li>
-                    <% }) %>
-                </ul>
+      
                 <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                    <div class="dropdown show">
+                      <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                        aria-expanded="false">
+                        Categories
+                      </a>
+        
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/allproducts">All Products</a>
+                        <div class="dropdown-divider"></div>
+                        <% categoryData.forEach((category)=>{ %>
+                          <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                            <%= category.CategoryName %>
+                          </a>
+                          <% }) %>
+        
+                      </div>
+                    </div>
+                  </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                        <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
@@ -196,14 +204,14 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <% if (user) { %>
-                            <a class="dropdown-item" href=""><%= user.username %></a>
+                            <a class="dropdown-item" href="account"><%= user.username %></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="orders">
+                              my Orders
+                            </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="logout">X Log Out X</a>
                             
-                            <a class="dropdown-item" href="orders">
-                              my Orders
-                             </a>
-                             <div class="dropdown-divider"></div>
 
                             <% } else { %>
                             <a class="dropdown-item" href="login">Sign In</a>
@@ -218,7 +226,7 @@
       </nav>
       
         <section class="ftco-section bg-light col-md-12">
-            <div class="container">
+            <div class="container" id="cart-container">
               <% if (!user) { %>
                 <div class="no-products-container align-items-center">
                   <img class="img" src="/image/0items.webp" alt="No products">
@@ -252,6 +260,7 @@
                             </thead>
                             <tbody>
                                 <% cartItem.products.forEach(function(product, index) { %>
+                            
                                   
                                 <tr>
                                   <td class="image">
@@ -267,28 +276,45 @@
                                       <span class="product-category">(<%= product.productId.productBrand %>)</span>
                                     </div>
                                   </td>
-                                  <% if(product.cartOffer === true){ %>
+                                  <% if (product.productId.offerPrice !== 0 || product.productId.catofferPrice !== 0) { %>
                                     <td class="price">
-                                      <%=product.offerPrice %>
+                                      <% if (product.productId.offerPrice > 0 && product.productId.catofferPrice > 0) { %>
+                                        <% if (product.productId.offerPrice > product.productId.catofferPrice) { %>
+                                          <%= product.productId.catofferPrice %> > (<%= product.productId.catofferPercentage%>% off)
+                                        <% } else if (product.productId.offerPrice < product.productId.catofferPrice) { %>
+                                          <%= product.productId.offerPrice %>(<%= product.productId.offerPercentage %>% off)
+
+                                        <% } %>
+                                      <% } else if (product.productId.offerPrice > 0) { %>
+                                        <%= product.productId.offerPrice %> <span style="color: #e80000;"> (<%= product.productId.offerPercentage %>% off)</span>
+
+                                      <% } else if (product.productId.catofferPrice > 0) { %>
+                                        <%= product.productId.catofferPrice %> <span style="color: #e80000;"> (<%= product.productId.catofferPercentage%>% off)</span>
+
+                                      <% } %>
+                                  
                                     </td>
-                                  <% }else{ %>
+                                  <% } else { %>
                                     <td class="price">
-                                      <%=product.productId.productPrice %>
+                                      <%= product.productId.productPrice %>
                                     </td>
                                   <% } %>
+                                  
+                                   
+                                  
                                   <td class="quantity">
                                     <% if(product.stock===0) { %>
                                       <p class="text-danger">Out of stock</p>
                                     <% } else { %>
                                       <div class="input-group col-md-12 mb-3">
                                         <span class="input-group-prepend">
-                                          <button type="button" class="quantity-left-minus btn" data-product-id="<%= product._id %>" data-prod-id = " <%= product.productId.productId %> ">
+                                          <button type="button" class="quantity-left-minus btn" data-product-id="<%= product._id %>" data-prod-id = " <%= product.productId.productId %> " data-orderId="<%= cartItems._id %>">
                                             <i class="fa fa-minus"></i>
                                           </button>
                                         </span>
                                         <input type="text" id="quantity-<%= product._id %>" name="quantity" class="quantity form-control input-number" value="<%= product.quantity %>" min="1" max="<%= product.productId.productQuantity %>" onchange="updateQuantity('<%= product._id %>')">
                                         <span class="input-group-append">
-                                          <button type="button" class="quantity-right-plus btn" data-product-id="<%= product._id %>" data-prod-id = "<%= product.productId.productId %> ">
+                                          <button type="button" class="quantity-right-plus btn" data-product-id="<%= product._id %>" data-prod-id = "<%= product.productId.productId %> " data-orderId="<%= cartItems._id %>">
                                             <i class="fa fa-plus"></i>
                                           </button>
                                         </span>
@@ -326,18 +352,22 @@
             </div>
           </section>
           
-              
-              <div class="row justify-content-center bg-light mr-md-1">
-                <div class="col-md-4 mb-5 p-5" >
-                  <a href="/allproducts" class="btn btn-outline-success d-block">Shop more <span class="fa fa-long-arrow-right"></span></a>
-                </div>
-              </div>
-              <% cartItems.forEach(function(cartItem) { %>
-
+          <div class="row justify-content-center bg-light mr-md-1">
+            <div class="col-md-4 mb-5 p-5" >
+              <a href="/allproducts" class="btn btn-outline-success d-block">Shop more <span class="fa fa-long-arrow-right"></span></a>
+            </div>
+          </div>
+       
+          
+        </div>
+     
+        <% cartItems.forEach(function(cartItem) { %>
               <% if (cartItem.products.length !== 0 && user) { %>
               <div class="row justify-content-end bg-light mr-md-1 ">
                 <div class="col col-lg-5 col-md-6 mb-md-5 mr-md-5 cart-wrap ftco-animate shadow">
                   <div class="cart-total mb-3 bg-light" style="border: none;">
+                  
+                    
                     <h3>Cart Totals</h3>
                     <p class="d-flex">
                       <span>Subtotal</span>
@@ -347,26 +377,23 @@
                       <span>Delivery</span>
                       <span id="delivery-charge"></span>
                     </p>
-                    <p class="d-flex">
-                      <span>Discount</span>
-                      <span></span>
-                    </p>
+                
                     <hr>
                     <p class="d-flex total-price">
-                      <span>Total</span>
+                      <span>Total: ₹</span>
                       <span id="total-price"></span>
                     </p>
                   </div>
+       
                   <p class="text-center">
-                    <a href="/precheckout" class="btn btn-outline-dark py-3 px-4" id="checkout-btn">Proceed to Checkout<span id="amount"></span></a>
+                    <a href="/precheckout" class="btn btn-outline-dark py-3 px-4" id="checkout-btn"><button class="btn btn-muted" onclick="updateQuantityInDatabase()">Proceed to Checkout</button><span id="amount"></span></a>
                   </p>
                 </div>
               </div>
               <% } %>
               <% }) %>
               
-            
-    
+           
 
 
   <!-- Bootstrap JS (optional if you need to add JavaScript functionality) -->
@@ -546,7 +573,7 @@ $(document).ready(function () {
         return 0;
     }
 
-  function updateCartTotalPrice() {
+   function updateCartTotalPrice() {
         let totalAmount = 0
         const cartRows = document.querySelectorAll(".table tbody tr");
 
@@ -572,8 +599,31 @@ $(document).ready(function () {
         });
 
                
-    }
-</script> -->
+      </script> --
+    } -->
+
+    <script>
+      $(document).ready(function () {
+        $("#couponForm").submit(function (event) {
+          event.preventDefault();
+          var formData = $(this).serialize();
+          console.log(formData);
+    
+          $.ajax({
+            url: "/checkCoupon",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+              console.log(response);
+              location.reload();
+            },
+            error: function (error) {
+              console.error(error);
+            },
+          });
+        });
+      });
+    </script>
 
 <script>
 	$(document).ready(function () {
@@ -630,17 +680,18 @@ $(document).ready(function () {
 
     // Update the total price
     var price = parseFloat($row.find('.price').text());
+    // console.log(price,'😶‍🌫️😶‍🌫️');
     var total = isNaN(quantity) || isNaN(price) ? 0 : (quantity * price)+price;
     $row.find('.total').text(total.toFixed(2));
-
-    // Update the quantity and price in the database
     var productId = $(this).attr('id').replace('quantity-', '');
     updateQuantityInDatabase(productId, quantity);
     calculateSum();
   });
 
   function updateQuantityInDatabase(productId, quantity) {
+    // let totalPrice = document.getElementById('total-price').textContent , totalAmount: totalPrice
 	console.log(quantity,"🌹🌹");
+  // console.log(totalPrice,"😶‍🌫️");
     $.ajax({
       url: '/updateQuantity',
       type: 'POST',
@@ -683,21 +734,42 @@ $(document).ready(function () {
 		$('.table-responsive').hide();
 	}
     // Calculate delivery charge based on the total quantity
-    var deliveryCharge = sum < 10000 ? 47 : 0;
+    var deliveryCharge = sum < 5000 ? 47 : 0;
 
     // Calculate the total price by adding the sum and delivery charge
     var totalPrice = sum + deliveryCharge;
     console.log(totalPrice,"😜😜😜😜😜");
-	
+    const cartId = $('#cart-container').data('cart-id');
+     console.log(cartId,'💕'); 
+  // Perform an Ajax POST request to send totalPrice to another URL
+$.ajax({
+    url: 'updateQuantity', // Replace with the actual URL you want to send data to
+    type: 'POST', // Use 'POST' method to send data
+    data: {
+        cartId: cartId,
+        totalPrice: totalPrice // Include the data you want to send
+    },
+    success: function (response) {
+        // Handle success response from the server
+        console.log('Total price sent successfully:', response);
+    },
+    error: function (xhr, status, error) {
+        // Handle error response from the server
+        console.error('Error sending total price:', error);
+    }
+});
+
+
+
     $('.sum').text(sum.toFixed(2));
-    $('#total-quantity').text('₹ '+sum); // Update total quantity
+    $('#total-quantity').text('₹ '+sum.toFixed(2)); // Update total quantity
     $('#delivery-charge').text('₹ '+deliveryCharge);
-    $('#total-price').text('₹ '+totalPrice.toFixed(2));
+    $('#total-price').text(totalPrice.toFixed(2));
 	$('#amount').text('  ('+totalQuantity+')' + ' items');
 	var checkoutBtn = $('#checkout-btn');
     //used to pass total price as query to /address
     var currentHref = checkoutBtn.attr('href');
-    var updatedHref = currentHref.split('?')[0] + '?totalPrice=' + totalPrice;
+    var updatedHref = currentHref.split('?')[0] + '?totalPrice=' + totalPrice.toFixed(2);
 
     checkoutBtn.attr('href', updatedHref);
   }
@@ -708,7 +780,7 @@ $(document).ready(function () {
   $('.quantity-right-plus, .quantity-left-minus, .quantity').on('click change', function () {
     calculateSum();
   });
-
+ 
 });
 
 </script>

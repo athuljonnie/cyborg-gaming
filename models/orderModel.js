@@ -12,9 +12,8 @@ const orderSchema = new mongoose.Schema({
     email: { type: String, required: true },
     type: { type: String, required: true },
   },
-  
-  userId: { type: mongoose.Schema.Types.ObjectId, 
-          ref: "User" },
+
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
   paymentMethod: { type: String, required: true },
   products: [
@@ -23,13 +22,16 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      
+
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+
       quantity: {
         type: Number,
         required: true,
       },
-      
-     
     },
   ],
   totalAmount: {
@@ -41,8 +43,31 @@ const orderSchema = new mongoose.Schema({
   },
   deliverystatus: {
     type: String,
-    },
-  
+  },
+  cancellationrequest: {
+    type: Boolean,
+    default: false,
+  },
+  returnrequest: {
+    type: Boolean,
+    default: false,
+  },
+  cancellationapproval: {
+    type: Boolean,
+    default: false,
+  },
+  returnapproval: {
+    type: Boolean,
+    default: false,
+  },
+  returnreason:{
+  type: String
+  },
+
+  orderstatus: {
+    type: String,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

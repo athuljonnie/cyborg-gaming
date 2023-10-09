@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Address</title>
+    <title>Edit Address</title>
     <!-- Bootstrap CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,8 +26,9 @@
 <body>
     <div class="form-container" >
         <h1 class="text-center">Edit Current Address</h1>
-        <form  id="addressForm" action="/editaddress?address=<%=addressToEdit._id%>&account=<%= account %>" method="post">
-            <!-- Address Input Fields -->
+   
+            <form id="addressForm" action="/editaddress?address=<%=addressToEdit._id%>&account=<%= account %><%= source ? '&source=' + source : '' %>" method="post">                
+           
             <div class="mb-3">
                 <label for="username" class="form-label" >Full Name</label>
                 <input type="text" class="form-control" name="fullname" required value="<%= addressToEdit.fullname %>">
@@ -85,6 +86,85 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const addressForm = document.getElementById("addressForm");
+            event.preventDefault();
+            addressForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                // Validate Full Name
+                const fullname = document.querySelector('input[name="fullname"]');
+const fullnameValue = fullname.value.trim();
+
+if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
+    alert("Full Name must contain only alphabetic characters and spaces");
+    fullname.focus();
+    return;
+}
+
+                // Validate State
+                const state = document.querySelector('input[name="state"]');
+                if (!/^[A-Za-z]+$/.test(state.value.trim())) {
+                    alert("State must contain only alphabetic characters");
+                    state.focus();
+                    return;
+                }
+
+                // Validate House
+                const house = document.querySelector('input[name="house"]');
+                if (house.value.trim() === "") {
+                    alert("House is required");
+                    house.focus();
+                    return;
+                }
+
+                // Validate City
+                const city = document.querySelector('input[name="city"]');
+                if (!/^[A-Za-z]+$/.test(city.value.trim())) {
+                    alert("City must contain only alphabetic characters");
+                    city.focus();
+                    return;
+                }
+
+
+                // Validate ZIP Code
+                const zip = document.querySelector('input[name="zip"]');
+                const zipValue = zip.value.trim();
+
+                if (!/^\d{6}$/.test(zipValue) || /(\d)\1\1\1/.test(zipValue)) {
+                    alert("ZIP Code must be a 6-digit number without more than three consecutive same digits");
+                    zip.focus();
+                    return;
+                }
+
+                // Validate Email
+                const email = document.querySelector('input[name="email"]');
+                if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email.value.trim())) {
+                    alert("Invalid Email");
+                    email.focus();
+                    return;
+                }
+
+                // Validate Number
+                const number = document.querySelector('input[name="number"]');
+                const numberValue = number.value.trim();
+
+                if (!/^(?=\d{10}$)(?!(\d)\1{3,})/.test(numberValue)) {
+                    alert("Please enter a 10-digit mobile number without more than three consecutive same digits");
+                    number.focus();
+                    return;
+                }
+
+                // If all validations pass, you can submit the form
+                this.submit();
+                console.log(object);
+                window.history.back();
+            });
+        });
+    </script>
+
     <!-- <script>
         const addressForm = document.getElementById('addressForm');
     
@@ -114,6 +194,18 @@
                 console.error(error);
                 toastr.error('Error saving address. Please try again later.', 'Error');
             });
+        });
+    </script> -->
+
+    <!-- <script>
+        document.getElementById('addressForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+    
+            // Perform your form submission logic here
+            // For example, make an AJAX request or handle form validation
+    
+            // After successful form submission or validation, navigate back to the previous page
+            window.history.back();
         });
     </script> -->
 </body>
