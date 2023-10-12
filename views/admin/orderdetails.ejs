@@ -243,8 +243,8 @@
             <div style="align-items: center; margin-left: 500px;">
             <% if (orderData.cancellationrequest === true && orderData.cancellationapproval === false) { %>
               <button class="btn btn-outline-danger" id="cancelButton">Cancellation approval requested</button>
-              <% } else if(orderData.returnrequest === true) { %>
-                <button class="btn btn-outline-success" id="returnButton"> Return approval requested</button><br>
+              <% } else if(orderData.returnrequest === true&& orderData.cancellationapproval === false) { %>
+                <button class="btn btn-outline-success" id="returnButton"> Return approval requested</button> <br>
                 <span style="color: seagreen;">reason for return: </span> <%= orderData.returnreason %>
                 <% } else if(orderData.cancellationapproval === true){ %>
                   <button class="btn btn-light" disabled>Cancellation approved</button>
@@ -319,6 +319,21 @@
                     }
                 });
             });
+            // $('#rejectReturnButton').click(function () {
+            //     Swal.fire({
+            //         title: 'reject Return',
+            //         text: 'Are you sure you want to reject return request?',
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonText: 'Yes',
+            //         cancelButtonText: 'No'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             handleButtonClick('rejectedr');
+            //         }
+            //     });
+            // });
+           
         });
     </script>
     

@@ -265,12 +265,7 @@
       }
 
 
-      const productDescriptionPattern = /^[A-Za-z0-9\s.,?!()-]+$/;
-      if (!productDescriptionPattern.test(productDescriptionInput.value)) {
-        Swal.fire('Product Description contains invalid characters.')
-        return false;
-      }
-
+   
     
 
       const productQuantity = parseInt(productQuantityInput.value, 10);

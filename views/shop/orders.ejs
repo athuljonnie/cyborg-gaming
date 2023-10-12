@@ -255,10 +255,16 @@
                                     <td>
                                         <%= order.createdAt.toLocaleString() %>
                                     </td>
-                                    <td>
-                                        <%= order.totalAmount %>
-                                    </td>
-                                    <td>
+                                    <% if (order.totalAmount !== null) { %>
+                                        <td>
+                                            <%=order.totalAmount.toFixed(2) %>
+                                        </td>
+                                        
+                                        <% }else{ %>
+                                            <td>0</td>
+
+                                            <% } %>
+                                        <td>
                                         <% order.products.forEach((product)=> { %>
                                             <%= product.name %><br>
                                                 <% }) %>

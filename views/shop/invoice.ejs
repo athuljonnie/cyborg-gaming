@@ -60,9 +60,9 @@
         </div>
         <div class="content">
             <div class="customer-details">
-                <h2 st>Customer Details</h2>
-                <p><strong>Customer Name:</strong> <%= order.deliveryDetails.Fullname %></p>
-                <p><strong>Address:</strong> <%= order.deliveryDetails.house %>, <%= order.deliveryDetails.zip%>,<%= order.deliveryDetails.city %></p>
+                <h2 >Customer Details</h2>
+                <p><strong>Customer Name:</strong> <span id="customerName"><%= order.deliveryDetails.Fullname %></span></p>
+                <p><strong>Address:</strong> <span id="customerAddress"><%= order.deliveryDetails.house %>, <%= order.deliveryDetails.zip %>, <%= order.deliveryDetails.city %></span></p>
                 <!-- Add more customer details here -->
             </div>
             <div class="order-details">
@@ -72,7 +72,7 @@
                 <!-- Add more order details here -->
             </div>
             <h2>Products</h2>
-            <table>
+            <table id="myTable">
                 <thead>
                     <tr>
                         <th>Description</th>
@@ -92,43 +92,79 @@
                     <% }); %>
                 </tbody>
             </table>
-            <p class="total-amount">Total Amount: <strong>₹<%= order.totalAmount.toFixed(2) %></strong></p>
+            <p class="total-amount"><span id = "totalAmount"></span>Total Amount: <strong>₹<%= order.totalAmount.toFixed(2) %></strong></p>
         </div>
+        <button id="download-pdf-btn">Download PDF</button>
     </div>
 
 
 
 </body>
-<<script>
-    // Add a click event listener to the button
-    document.getElementById('downloadInvoiceButton').addEventListener('click', async () => {
-      try {
-        // Assuming you have the order._id in 'order._id'
-        const orderId = 'YOUR_ORDER_ID'; // Replace with the actual order ID from order._id
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+<script>
+    $('#download-pdf-btn').click(function () {
+        var table = $('#myTable')[0];
 
-        // Construct the URL with the orderId as a query parameter
-        // const downloadUrl = `/downloadInvoice?orderId=${orderId}`;
+// Define table headers
+var headers = [];
+$(table)
+  .find('thead th')
+  .each(function () {
+    headers.push($(this).text());
+  });
 
-        // Use AJAX to make a GET request to the downloadUrl
-        $.ajax({
-          type: "POST",
-          url: '/downloadInvoice',
-          data: {
-                    orderId: orderId,
-                   
+// Define table rows
+var data = [];
+$(table)
+  .find('tbody tr:visible') // Consider only visible (filtered) rows
+  .each(function () {
+    var rowData = [];
+    $(this)
+      .find('td')
+      .each(function () {
+        rowData.push($(this).text());
+      });
+    data.push(rowData);
+  });
+console.log(data);
+var customerName = document.getElementById("customerName").textContent;
+var customerAddress = document.getElementById("customerAddress").textContent;
+var totalAmount = document.getElementById("totalAmount").textContent;
+
+    var docDefinition = {
+        content: [
+            { text: 'Invoice', style: 'header' },
+            { text: 'Generated on: ' + new Date().toLocaleString(), style: 'subheader' },
+            { text: 'Client Name: ' + customerName, style: 'subheader' },
+            { text: 'Delivery Address: ' + customerAddress, style: 'subheader' },
+            { text: '\n' }, 
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['auto', 'auto' , 'auto', 'auto'],
+                    body: [headers, ...data], // Table headers and filtered data rows
                 },
-          success: function(response) {
-            // Handle the success response, such as triggering a download
-            console.log("Invoice downloaded successfully");
-          },
-          error: function(error) {
-            // Handle errors if any
-            console.error("Error downloading invoice:", error);
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    });
+            },
+            { text: '\n' }, 
+            { text: totalAmount}, 
+    ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                margin: [0, 0, 0, 10], // Adjust margins as needed
+            },            
+        },
+        subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 0, 0, 5],
+      },
+    };
+
+    // Generate PDF using pdfmake library
+    pdfMake.createPdf(docDefinition).download('your_invoice.pdf');
+});
   </script>
 </html>

@@ -28,6 +28,7 @@
     body {
 
       /* background-image: url('/shop/img/8481.jpg'); */
+      background-color: #232323;
       background-repeat: no-repeat;
       background-size: cover;
       margin: 0px 40px 50px 40px ;
@@ -665,10 +666,10 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
           console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"); // Parse response JSON data
           
           console.log(paymentMethod);
-          console.log(responseData.order, "order", responseData.newOrder, "🫂🫂🫂🫂------------> new order we created");
+          console.log(responseData.order, "order", responseData.newOrder, "🫂🫂🫂🫂------------> new order we created", responseData.totalAmount);
 
           if (paymentMethod === "razorpay") {
-            razorpayPayment(responseData.newOrder, responseData.price);
+            razorpayPayment(responseData.newOrder, responseData.order,responseData.totalAmount);
           }else{
             setTimeout(function() {
              window.location.href = '/ordersuccess'; // Redirect to the ordersuccess page
@@ -696,8 +697,9 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
     }
 
 
-    function razorpayPayment(newOrder,price){
+    function razorpayPayment(newOrder,order,price){
       console.log("LLLLLLLLLLLLLLLLLLL");
+      console.log(order, 'razorpaypayment');
       var options = {
         key: "rzp_test_T7Y9hT7EceVVNL",
         amount: price,
@@ -711,7 +713,7 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
           console.log("Handler function executed");
           console.log("??????????????????????????????????????????????????????????");
           console.log("Response:", response);
-           verifyPayment(newOrder, price);
+           verifyPayment(newOrder,order, price,response);
           // try {
            
           // } catch (error) {
@@ -793,15 +795,16 @@ rzp1.on('payment.failed', function (response){
     //   rzp1.open();
     // }
 
-    function verifyPayment(newOrder, price) {
+    function verifyPayment(newOrder,order, price, response) {
       console.log("verifyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-      console.log("verifying payment"  , newOrder ,price);
+      console.log("verifying payment"  , newOrder ,order,price);
       console.log(newOrder, price);
       $.ajax({
         url: "/verify-payment",
         data: {
-          // payment,
-          newOrder,
+          response,
+         newOrder,
+          order,
           price,
         },
         method: "post",

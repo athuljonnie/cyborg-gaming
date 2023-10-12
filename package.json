@@ -41,7 +41,7 @@
     "puppeteer": "^21.3.4",
     "razorpay": "^2.9.2",
     "session": "^0.1.0",
-    "sharp": "^0.32.4",
+    "sharp": "^0.32.6",
     "toastr": "^2.1.4",
     "twilio": "^4.18.0"
   }

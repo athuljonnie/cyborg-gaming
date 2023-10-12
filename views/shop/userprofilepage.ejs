@@ -32,6 +32,9 @@
     font-family: 'DotGothic16', sans-serif;
 }
 
+.card-body:hover{
+cursor: pointer;
+}
 
         h1,
         h2,
@@ -357,7 +360,7 @@ letter-spacing: 2px;
                       
 <div id="couponCard" class="list-group-item" style="display: none;">
     <div class="card-body"> 
-        <% if (coupons) { %>
+        <% if (coupons.length>0) { %>
             Coupons:<br>
             <% coupons.forEach(coupon => { %>
                 Code:  <span class="text-warning"> <%=coupon.couponCode%> </span>
@@ -382,34 +385,9 @@ letter-spacing: 2px;
                             <h6 class="card-subtitle my-2 text-danger" style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <%= wallet.wallet%><br><span id="openModal" style="color: #ffd500;">Transaction History</span></h6>
                            
                             <% } else{%>
-                                <h6 class="card-subtitle my-2 " style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <span style="color: yellow;"> <%= wallet.wallet.toFixed(2) %></span></h6>
+                                <h6 class="card-subtitle my-2 " style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <span style="color: yellow;"> <%= wallet.wallet.toFixed(2) %><br><span id="openModal" style="color: #ffd500;">Transaction History</span></span></h6>
                                 <% } %>
-                                <div id="myModal" class="modal">
-                                    <div class="modal-content">
-                                      <span class="close" id="closeModal">&times;</span>
-                                      <h2>Transaction History</h2>
-                                      <div class="transaction-list">
-                                        <% wallet.transactions.forEach((transaction, index) => {%>
-                                        <div class="transaction-item <%= index % 2 === 0 ? 'even' : 'odd' %>">
-                                          <div class="transaction-info">
-                                            <div class="transaction-amount">
-                                               
-                                                    Amount: ₹<span style="color: rgb(0, 0, 0);"><%= transaction.amount %></span>
-                                          
-                                            </div>
-                                            <div class="transaction-description">
-                                              Description: <span style="color: #000000;"><%= transaction.description %></span>
-                                            </div>
-                                          </div>
-                                          <div class="transaction-time">
-                                            Date: <span style="color: #000000;"><%= transaction.timestamp.toLocaleString() %> </span>
-                                          </div>
-                                        </div>
-                                        <% }) %>
-                                      </div>
-                                    </div>
-                                  </div>
-                        
+                               
                         <% if (!wallet) { %>
                       <a href="createwallet" class="card-link text-light">Create Wallet</a>
                       <% } %>
@@ -420,7 +398,32 @@ letter-spacing: 2px;
               </div>
             </div>
           </div>
-      
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close" id="closeModal">&times;</span>
+              <h2>Transaction History</h2>
+              <div class="transaction-list">
+                <% wallet.transactions.forEach((transaction, index) => {%>
+                <div class="transaction-item <%= index % 2 === 0 ? 'even' : 'odd' %>">
+                  <div class="transaction-info">
+                    <div class="transaction-amount">
+                       
+                            Amount: ₹<span style="color: rgb(0, 0, 0);"><%= transaction.amount %></span>
+                  
+                    </div>
+                    <div class="transaction-description">
+                      Description: <span style="color: #000000;"><%= transaction.description %></span>
+                    </div>
+                  </div>
+                  <div class="transaction-time">
+                    Date: <span style="color: #000000;"><%= transaction.timestamp.toLocaleString() %> </span>
+                  </div>
+                </div>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+
 
           <div id="imageModal" class="modal">
             <span class="close">&times;</span>

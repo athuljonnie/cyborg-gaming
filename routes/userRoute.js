@@ -53,19 +53,19 @@ router.get('/search', productController.getSearch);
 
 router.get("/productdetails",userController.getProductDetails);
 
-router.get('/cartload',cartController.cartLoad);
+router.get('/cartload', redirection,cartController.cartLoad);
 
-router.get('/removeCart', cartController.deleteCart);
+router.get('/removeCart', redirection, cartController.deleteCart);
 
 router.post('/updateQuantity', cartController.postUpdateQuantity);
 
-router.get('/cart',redirection,cartController.cart);
+router.get('/cart', redirection,cartController.cart);
 
 router.get('/wishlist',redirection, wishlistController.getWishList)
 
 router.get('/wishlistLoad', redirection, wishlistController.wishlistLoad)
 
-router.get("/login",isLoggedIn, userController.loginPage);
+router.get("/login", userController.loginPage);
 
 router.get("/signup",isLoggedIn,userController.signUpPage);
 
@@ -77,41 +77,41 @@ router.post("/verify",userController.postVerify);
 
 router.post("/login",  isLoggedIn,userController.loginPost);
 
-router.post("/changepassword", userController.changePassword);
+router.post("/changepassword",  userController.changePassword);
 
-router.get("/getemail", userController.getEmail);
+router.get("/getemail",  userController.getEmail);
 
 router.post("/forgotpassword", userController.forgotPassword);
 
 router.post("/verify-pass", userController.postForgotPasswordVerify);
 
-router.post("/new-pass", userController.postNewpassword);
+router.post("/new-pass",  userController.postNewpassword);
 
-router.get("/changepassword" , userController.getChangePassword);
+router.get("/changepassword" ,  userController.getChangePassword);
 
 router.get("/logout", userController.logOutGet);
 
-router.get("/editUser", userController.getEditUser);
+router.get("/editUser", redirection, userController.getEditUser);
 
 router.post("/editUser", userController.postEditUser);
 
 router.get("/account",redirection, accountController.accountDetails);
 
-router.get("/viewAddress", addressController.viewAddress);
+router.get("/viewAddress", redirection, addressController.viewAddress);
 
-router.get("/address", redirection,addressController.getAddress);
+router.get("/address", redirection, redirection,addressController.getAddress);
 
-router.post("/address",addressController.postAddress);
+router.post("/address", redirection,addressController.postAddress);
 
-router.get("/editaddress",addressController.getEditAddress);
+router.get("/editaddress", redirection,addressController.getEditAddress);
 
-router.post("/editaddress",addressController.postEditAddress);
+router.post("/editaddress", redirection,addressController.postEditAddress);
 
 router.get("/deleteaddress/:addressId", addressController.addressDelete);
 
 router.get("/precheckout", redirection,userController.precheckout);
 
-router.get("/order",orderController.placeOrder);
+router.get("/order", redirection,orderController.placeOrder);
 
 router.get("/getTotalPrice", orderController.getTotalPrice)
 
@@ -127,21 +127,21 @@ router.get('/deleteOrder', orderController.deleteOrder);
 
 router.get('/orders', redirection,orderController.OrderDetails );
 
-router.get('/orderdetails', orderController.getOrderDetails );
+router.get('/orderdetails', redirection, orderController.getOrderDetails );
 
-router.post('/cancelOrReturn', orderController.cancelOrReturn);
+router.post('/cancelOrReturn', redirection, orderController.cancelOrReturn);
 
-router.get('/ordersuccess', orderController.orderSuccess);
+router.get('/ordersuccess', redirection, orderController.orderSuccess);
 
-router.get('/createwallet', userController.createWallet);
+router.get('/createwallet', redirection, userController.createWallet);
 
-router.get('/wishlist/remove' , wishlistController.removeFromWishlist);
+router.get('/wishlist/remove' , redirection, wishlistController.removeFromWishlist);
 
-router.post('/generateInvoice', orderController.generateInvoice);
+router.post('/generateInvoice', redirection, orderController.generateInvoice);
 
-router.get('/generateInvoice', orderController.generateInvoice);
+router.get('/generateInvoice', redirection, orderController.generateInvoice);
 
-router.post('/checkCoupon', couponController.checkCoupon);
+router.post('/checkCoupon', redirection, couponController.checkCoupon);
 
 // router.get('/downloadInvoice', orderController.InvoiceDownload);
 module.exports = router;

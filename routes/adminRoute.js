@@ -9,6 +9,9 @@ const dashboardcontroller = require("../controller/dashboardcontroller");
 const couponController = require("../controller/couponController");
 const offerController = require("../controller/offerController");
 const orderController = require("../controller/orderController");
+const salesController = require("../controller/salesController");
+const sharp = require('sharp');
+const PATH = require('path')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, "./public/uploads");
@@ -20,7 +23,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }); 
 
-
+const adminRedirection = (req, res, next) => {
+  if(req.session.admin){
+   next()
+  }else{
+   res.redirect("/admin/login")
+  }
+ };
 
 router.get("/", isloggedInadmin, dashboardcontroller.dashBoard);
 
@@ -38,18 +47,45 @@ router.get("/products", isloggedInadmin, adminController.Products);
 
 router.get("/addproducts", isloggedInadmin, adminController.AddProductsGet);
 
-router.post("/addproducts", upload.array("productImage", 3),async (req, res) => {
+router.post("/addproducts", upload.array("productImage", 3), async (req, res) => {
   // if (!req.files || req.files.length === 0) {
-  //   throw new Error("No files uploaded");
+  //   return res.status(400).send("No files uploaded");
   // }
-  console.log(req.body,'🐲🐲');
-  const uploadedImages = req.files.map((file) => file.filename);
+
+  console.log(req.body, "🐲🐲");
+
+  // Process and store uploaded images using sharp
+  const uploadedImages = [];
+  for (const file of req.files) {
+    const uploadedImage = file.path;
+
+    // Use sharp to crop/resize the image
+    const croppedImage = `public/uploads/ropped-${file.filename}`;
+    try {
+      await sharp(uploadedImage)
+        .resize(400, 400) // Crop/resize to 200x200 pixels
+        .toFile(croppedImage);
+      uploadedImages.push(croppedImage);
+    } catch (err) {
+      console.error("Error processing image:", err);
+    }
+      console.log(uploadedImages,'uploadedImages');
+    }
+
+    function removePathPrefix(imagesArray) {
+      return imagesArray.map(image => image.replace('public/uploads/', ''));
+    }
+
+    const sanitizedImages = removePathPrefix(uploadedImages);
+
+console.log(sanitizedImages);
+
   const newProduct = new Product({
     productName: req.body.productName,
     productBrand: req.body.productBrand,
     productPrice: req.body.productPrice,
     productDescription: req.body.productDescription,
-    productImage: uploadedImages,
+    productImage: sanitizedImages,
     category: req.body.category,
     productQuantity: req.body.productQuantity,
     originalPrice: req.body.originalPrice,
@@ -59,15 +95,12 @@ router.post("/addproducts", upload.array("productImage", 3),async (req, res) => 
     const savedProduct = await newProduct.save();
     console.log("Product added to the database:", savedProduct);
     res.json({ success: true });
-    return; 
   } catch (err) {
     console.error("Error saving product:", err);
-    res.status(500).json({ error: "Failed to save product" }); 
-    return; 
+    res.status(500).json({ error: "Failed to save product" });
   }
-
-  // res.redirect('products')
 });
+
 
 router.get("/editproducts", isloggedInadmin, adminController.getEditProducts);
 
@@ -155,4 +188,7 @@ router.post('/approval',  orderController.cancelOrReturnApproval);
 
 router.get('/removecoupon', couponController.removeCoupon);
 
+router.get('/salesReport', adminRedirection, salesController.salesReport)
+
+router.get('/salesReport/search', salesController.getSalesReport);
 module.exports = router;

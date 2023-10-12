@@ -26,11 +26,11 @@ module.exports = {
     const orderId = req.params.orderId;
     const newStatus = req.body.deliverystatus;
     console.log(orderId);
-    try {
-      // Update the deliverystatus in the database
+    const currentDate= new Date();
+        try {
       await Order.updateOne(
         { _id: orderId },
-        { $set: { deliverystatus: newStatus } }
+        { $set: { deliverystatus: newStatus, deliveredAt: currentDate } }
       );
 
       res.redirect("http://localhost:4000/admin");
