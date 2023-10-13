@@ -205,7 +205,7 @@ module.exports = {
             }
             for (const cartProduct of cart.products) {
               const product = await Product.findById(cartProduct.productId);
-
+              console.log(product,'products');
               if (!product) {
                 return res.status(404).json({ error: "Product not found" });
               }

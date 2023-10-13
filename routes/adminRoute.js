@@ -33,10 +33,6 @@ const adminRedirection = (req, res, next) => {
 
 router.get("/", isloggedInadmin, dashboardcontroller.dashBoard);
 
-router.get("/adminsignup", isloggedInadmin, adminController.adminSignupGet);
-
-router.post("/adminsignup", isloggedInadmin, adminController.adminSignupPost);
-
 router.get("/login", isloggedInadmin, adminController.AdminloginPage);
 
 router.post("/login", isloggedInadmin, adminController.AdminLoginPost);
@@ -45,9 +41,9 @@ router.get("/logout", isloggedInadmin, adminController.AdminlogoutGet);
 
 router.get("/products", isloggedInadmin, adminController.Products);
 
-router.get("/addproducts", isloggedInadmin, adminController.AddProductsGet);
+router.get("/addproducts",adminRedirection, isloggedInadmin, adminController.AddProductsGet);
 
-router.post("/addproducts", upload.array("productImage", 3), async (req, res) => {
+router.post("/addproducts",adminRedirection,  upload.array("productImage", 3), async (req, res) => {
   // if (!req.files || req.files.length === 0) {
   //   return res.status(400).send("No files uploaded");
   // }
@@ -102,9 +98,9 @@ console.log(sanitizedImages);
 });
 
 
-router.get("/editproducts", isloggedInadmin, adminController.getEditProducts);
+router.get("/editproducts",adminRedirection,  isloggedInadmin, adminController.getEditProducts);
 
-router.post("/editproducts/:productId", isloggedInadmin, upload.array("productImage", 3), async (req, res) => {
+router.post("/editproducts/:productId", adminRedirection, isloggedInadmin, upload.array("productImage", 3), async (req, res) => {
   try {
     const productId = req.params.productId;
     const productData = await Product.findById(productId);
@@ -113,10 +109,28 @@ router.post("/editproducts/:productId", isloggedInadmin, upload.array("productIm
       throw new Error("Product not found");
     }
 
-    if (req.files && req.files.length > 0) {
-      const uploadedImages = req.files.map((file) => file.filename);
-      productData.productImage = uploadedImages;
+    const uploadedImages = [];
+  for (const file of req.files) {
+    const uploadedImage = file.path;
+
+    // Use sharp to crop/resize the image
+    const croppedImage = `public/uploads/ropped-${file.filename}`;
+    try {
+      await sharp(uploadedImage)
+        .resize(400, 400) // Crop/resize to 200x200 pixels
+        .toFile(croppedImage);
+      uploadedImages.push(croppedImage);
+    } catch (err) {
+      console.error("Error processing image:", err);
     }
+      console.log(uploadedImages,'uploadedImages');
+    }
+
+    function removePathPrefix(imagesArray) {
+      return imagesArray.map(image => image.replace('public/uploads/', ''));
+    }
+
+    const sanitizedImages = removePathPrefix(uploadedImages);
 
     productData.productName = req.body.productName;
     productData.productBrand = req.body.productBrand;

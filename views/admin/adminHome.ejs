@@ -460,7 +460,7 @@ border: 1px solid rgb(152, 152, 152);
           <div class="col-md-3 mb-3">
             <div class="card1 text-white h-100" style="border-color:rgb(211, 144, 0) ;">
               <% if(totalOrders) { %> 
-              <div class="card-body py-5"><%= totalOrders%></div>
+              <div class="card-body py-5"><%= totalOrders-1%></div>
               <% } else { %>
                 <div class="card-body py-5">0</div>
                   <% } %>
@@ -468,7 +468,7 @@ border: 1px solid rgb(152, 152, 152);
                 Total Orders
             
               </div>
-            </div>
+            </div>  
           </div>
           <div class="col-md-3 mb-3">
             <div class="card1 text-white h-100" style="border-color:rgb(211, 144, 0) ;">
@@ -499,7 +499,15 @@ border: 1px solid rgb(152, 152, 152);
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <div class="card h-100"> <!-- Changed the id to chart2 to make it unique -->
+            <div class="card h-100"> 
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Bar chart</h4>
+                    <canvas id="category-sales-chart" class="chart-canvas"></canvas>
+                  </div>
+                </div>
+              </div><!-- Changed the id to chart2 to make it unique -->
               <div class="card-header" style="color: rgb(255, 166, 0); font-family: 'DotGothic16', sans-serif">
                 <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
                 Revenue Chart
@@ -643,11 +651,11 @@ charts.forEach(function (chart) {
   var myChart = new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["RazorPay", "COD"],
+      labels: ["RazorPay", "COD","Wallet"],
       datasets: [{
-            data: [<%= razorpayTotalAmount %>, <%= codTotalAmount %>],
-            backgroundColor: ['rgb(255, 166, 0)', '#36A2EB'], // Add color for the Wallet data point
-            hoverBackgroundColor: ['rgba(255, 166, 0,0.5)', 'rgba(54, 163, 235, 0.5)'] // Add hover color for the Wallet data point
+            data: [<%= razorpayTotalAmount %>, <%= codTotalAmount %>, <%= walletTotalAmount%>],
+            backgroundColor: ['rgb(255, 166, 0)', '#36A2EB', 'rgba(97, 247, 94, 1)'], // Add color for the Wallet data point
+            hoverBackgroundColor: ['rgba(255, 166, 0,0.5)'] // Add hover color for the Wallet data point
           }]
         },
         options: {
@@ -678,14 +686,17 @@ var chartCanvas = document.getElementById("chart2");
 // Check if the canvas element exists
 if (chartCanvas) {
   var ctx = chartCanvas.getContext("2d");
+  const monthlyRevenue = <%- JSON.stringify(monthlyRevenue) %>;
   var myChart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: ["Daily Revenue", "Monthly Revenue"],
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       datasets: [{
-        data: [<%= dailyRevenue %>, <%= monthlyRevenue %>],
-        backgroundColor: ['rgb(255, 166, 0)','rgb(255, 166, 0)'], // Add color for the Wallet data point
-        hoverBackgroundColor: ['rgba(255, 166, 0)', 'rgba(54, 163, 235, 0.5)'] // Add hover color for the Wallet data point
+        label: 'Revenue',
+        data: monthlyRevenue,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
       }]
     },
     options: {
@@ -709,6 +720,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var categories = <%- JSON.stringify(categories) %>;
+    var orders = <%- JSON.stringify(counts) %>;
+
+    console.log("hai");
+    console.log(orders);
+
+    // Define an array of colors for the categories
+    var colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+    // Get the canvas element and create a chart context
+    var canvas = document.getElementById('category-sales-chart');
+    var ctx = canvas.getContext('2d');
+
+    // Create the bar chart
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: categories,
+        datasets: [{
+          label: 'Orders',
+          data: orders,
+          backgroundColor: colors, // Assign the colors array to backgroundColor
+          borderColor: 'rgba(75, 192, 192, 1)', // Customize the bar border color if needed
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Orders'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Categories'
+            }
+          }
+        }
+      }
+    });
+  });
 </script>
 
   </body>

@@ -181,9 +181,11 @@
                             <a class="dropdown-item" href="/allproducts">All Products</a>
                             <div class="dropdown-divider"></div>
                             <% categoryData.forEach((category)=>{ %>
-                              <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                <%= category.CategoryName %>
-                              </a>
+                                <% if (category.isBlocked === false) { %>
+                                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                      <%= category.CategoryName %>
+                                    </a>                   
+                                  <% } %>
                               <% }) %>
             
                           </div>
@@ -257,7 +259,7 @@
                                     </td>
                                     <% if (order.totalAmount !== null) { %>
                                         <td>
-                                            <%=order.totalAmount.toFixed(2) %>
+                                            ₹<%=order.totalAmount.toFixed(2) %>
                                         </td>
                                         
                                         <% }else{ %>

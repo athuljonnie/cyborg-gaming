@@ -212,9 +212,11 @@ letter-spacing: 2px;
                     <a class="dropdown-item" href="/allproducts">All Products</a>
                     <div class="dropdown-divider"></div>
                     <% categoryData.forEach((category)=>{ %>
-                      <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                        <%= category.CategoryName %>
-                      </a>
+                      <% if (category.isBlocked === false) { %>
+                        <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                          <%= category.CategoryName %>
+                        </a>                   
+                      <% } %>
                       <% }) %>
     
                   </div>
@@ -308,10 +310,10 @@ letter-spacing: 2px;
                     <hr class="my-0" />
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
-                            <!-- <a href="#!" class="text-danger fw-bold">Cancel</a> -->
-                       
-                            <button type="button" class="btn btn-outline-warning">Product Details</button>
-                        </div>
+                          <a href="productdetails?productId=<%= product.productId._id %>">
+                            <button type="button" class="btn btn-outline-dark shop-now-button">Shop Now</button>
+                        </a>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -360,7 +362,7 @@ letter-spacing: 2px;
                     State: <%= orderData.deliveryDetails.state %>
                 </address>
           
-                <% if (orderData.deliverystatus === "pending") { %>
+                <% if (orderData.deliverystatus === "pending" || orderData.deliverystatus === "shipped") { %>
                     <button class="btn btn-outline-danger" id="cancelButton">
                   Cancel this Order
                     </button>

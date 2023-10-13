@@ -77,7 +77,7 @@ router.post("/verify",userController.postVerify);
 
 router.post("/login",  isLoggedIn,userController.loginPost);
 
-router.post("/changepassword",  userController.changePassword);
+router.post("/changepassword",redirection,  userController.changePassword);
 
 router.get("/getemail",  userController.getEmail);
 
@@ -122,6 +122,8 @@ router.post("/order", orderController.order);
 router.post("/verify-payment", orderController.verifyPayment);
 
 router.get('/category/desktop-pcs', userController.getProductsByCategory);
+
+router.post('/category/desktop-pcs', userController.getProductsByCategory);
 
 router.get('/deleteOrder', orderController.deleteOrder);
 

@@ -202,9 +202,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                </li>
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -670,16 +668,17 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
 
           if (paymentMethod === "razorpay") {
             razorpayPayment(responseData.newOrder, responseData.order,responseData.totalAmount);
-          }else{
-            setTimeout(function() {
-             window.location.href = '/ordersuccess'; // Redirect to the ordersuccess page
-           }, 1500); 
           }
+            
            
           
 
-          if (response.ok) {
+         else if (response.ok) {
             toastr.success('Order placed successfully!', 'Success');
+            setTimeout(function() {
+             window.location.href = '/ordersuccess'; // Redirect to the ordersuccess page
+           }, 1500); 
+          
         
           } else {
             toastr.error('Error placing order. Please try again later.', 'Error');

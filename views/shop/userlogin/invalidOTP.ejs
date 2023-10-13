@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        .container {
+            margin: 100px auto;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #e74c3c;
+        }
+
+        p {
+            color: #333;
+            font-size: 18px;
+        }
+
+        #countdown {
+            font-size: 24px;
+            color: #e74c3c;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h6>Redirecting in</h6>
+        <p id="countdown">5</p>
+
+    <div class="container">
+        <h1>Invalid OTP</h1>
+        <p>The OTP you entered is invalid. Please check and try again.</p>
+    </div>
+
+    <script>
+        // Function to redirect after a certain time
+        function redirectWithCountdown(url, countdown) {
+            const countdownElement = document.getElementById('countdown');
+
+            const timer = setInterval(function () {
+                countdownElement.innerText = countdown;
+                countdown--;    
+
+                if (countdown < 0) {
+                    clearInterval(timer);
+                    window.location.href = "login";
+                }
+            }, 1000);
+        }
+
+        // Call the redirectWithCountdown function with the URL and countdown time (in seconds)
+        redirectWithCountdown('https://example.com', 5); // Replace 'https://example.com' with your desired URL
+    </script>
+</body>
+</html>

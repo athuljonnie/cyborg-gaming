@@ -197,8 +197,7 @@ letter-spacing: 2px;
 .modal-content {
   background-color: #00000042;
   margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #ffc400;
+  /* padding: 20px; */
   width: 80%;
   max-width: 600px;
   border-radius: 5px;
@@ -263,9 +262,11 @@ letter-spacing: 2px;
                                 <a class="dropdown-item" href="/allproducts">All Products</a>
                                 <div class="dropdown-divider"></div>
                                 <% categoryData.forEach((category)=>{ %>
-                                  <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                    <%= category.CategoryName %>
-                                  </a>
+                                  <% if (category.isBlocked === false) { %>
+                                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                      <%= category.CategoryName %>
+                                    </a>                   
+                                  <% } %>
                                   <% }) %>
                 
                               </div>
@@ -403,7 +404,7 @@ letter-spacing: 2px;
               <span class="close" id="closeModal">&times;</span>
               <h2>Transaction History</h2>
               <div class="transaction-list">
-                <% wallet.transactions.forEach((transaction, index) => {%>
+                <% wallet.transactions?.forEach((transaction, index) => {%>
                 <div class="transaction-item <%= index % 2 === 0 ? 'even' : 'odd' %>">
                   <div class="transaction-info">
                     <div class="transaction-amount">

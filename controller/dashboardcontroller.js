@@ -17,6 +17,11 @@ module.exports = {
         { $group: { _id: null, totalAmount: { $sum: "$totalAmount" } } },
       ]);
 
+      const walletOrders = await Order.aggregate([
+        { $match: { paymentMethod: 'wallet' } },
+        { $group: { _id: null, totalAmount: { $sum: '$totalAmount' } } }
+      ]);
+
       const categoryCounts = await Category.aggregate([
         {
           $lookup: {
@@ -108,15 +113,17 @@ module.exports = {
    
 
 
-const categories = categoryCounts.map(category => category.category);
+const categories = categoryCounts.map(category => category.CategoryName);
 const counts = categoryCounts.map(category => category.count);
-
+console.log(categories,'categories');
 const products = await Product.find()
 .populate('category', 'category');
 
 
 const codTotalAmount = codOrders.length > 0 ? codOrders[0].totalAmount : 0;
 const razorpayTotalAmount = razorpayOrders.length > 0 ? razorpayOrders[0].totalAmount : 0;
+const walletTotalAmount = walletOrders.length > 0 ? walletOrders[0].totalAmount : 0;
+
 
 const totalRevenue = codTotalAmount + razorpayTotalAmount;
 
@@ -145,6 +152,7 @@ const totalOrder =  await Order.countDocuments();
 const totalOrders = totalOrder +1 ;
 
 const monthlyRevenue = calculateMonthlyRevenue(orders);
+console.log(monthlyRevenue);
 if(!req.session.admin){
     res.redirect('login')
 }else{
@@ -157,6 +165,7 @@ res.render('admin/adminHome', {
     totalCustomers,
     codTotalAmount,
     razorpayTotalAmount,
+    walletTotalAmount,
     order: orders,
     monthlyRevenue,
     categories,

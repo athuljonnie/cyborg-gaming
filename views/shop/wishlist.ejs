@@ -185,6 +185,11 @@
     #carouselExampleControls a:hover{
      color: #fffb04;
     }
+
+    .blur-image {
+    filter: blur(4px); /* You can adjust the blur intensity (4px in this example) */
+}
+
   </style>
 </head>
 
@@ -242,9 +247,11 @@
                 <a class="dropdown-item" href="/allproducts">All Products</a>
                 <div class="dropdown-divider"></div>
                 <% categoryData.forEach((category)=>{ %>
-                  <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                    <%= category.CategoryName %>
-                  </a>
+                  <% if (category.isBlocked === false) { %>
+                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                      <%= category.CategoryName %>
+                    </a>                   
+                  <% } %>
                   <% }) %>
 
               </div>
@@ -318,7 +325,7 @@
         <% } %>
           <div class="col-md-4 col-lg-4 col-xl-4 my-5">
               <% if (product.productId.productImage[0]) { %>
-                <img src="/uploads/<%= product.productId.productImage[0] %>" alt="Product Image" class="card-img-top" />
+                <img src="/uploads/<%= product.productId.productImage[0] %>" alt="Product Image" class="card-img-top fixed-image <%= product.productQuantity === 0 ? 'blur-image' : '' %>">
                 <!-- Your code for displaying product information here -->
               <% } %>
             <div class="card text-black">

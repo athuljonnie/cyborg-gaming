@@ -33,26 +33,15 @@ module.exports = {
   },
 
   wishlistLoad: async (req, res) => {
+    const productId = req.query.productId;
+    const loggedInUserId = req.session.user;
+
     try {
-      const productId = req.query.productId;
-      const product = await Product.findById(productId);
-      console.log(product, "❤️");
-      const loggedInUserId = req.session.user;
-      console.log(loggedInUserId, "------------------loggrdinid");
       let wishlistItem = await Wishlist.findOne({
         user: loggedInUserId,
-      }).populate({
-        path: "products.productId",
-        model: "Product",
       });
-      console.log(wishlistItem);
 
-      if (wishlistItem) {
-        wishlistItem.products.push({
-          productId: productId,
-          quantity: 1,
-        });
-      } else {
+      if (!wishlistItem) {
         const newWishlist = new Wishlist({
           user: loggedInUserId,
           products: [
@@ -61,14 +50,38 @@ module.exports = {
               quantity: 1,
             },
           ],
-          // totalAmount: totalAmount,
         });
-        wishlistItem = await newWishlist.save();
+        const doc = await newWishlist.save();
+        return res.status(200).json({ success: true, doc });
       }
 
-      // cartItem.totalAmount = updatedTotalAmount;
-      await wishlistItem.save();
-      res.json({ success: true });
+      const exist = wishlistItem.products.filter(
+        (doc) => doc.productId.toString() === productId
+      );
+      console.log(exist);
+
+      if (exist.length > 0) {
+        return res
+          .status(200)
+          .json({ success: false, message: "already exists in wishlist" });
+      }
+
+      const newItem = await Wishlist.updateOne(
+        { _id: wishlistItem._id },
+        {
+          $push: {
+            products: {
+              productId: productId,
+              quantity: 1,
+            },
+          },
+        }
+      )
+      if(newItem.acknowledged){
+        return res.status(200).json({ success: true })
+      }
+
+     
     } catch (error) {
       console.log(error);
       res.json({ success: false, error: "Error adding product to Wishlist" });
@@ -98,11 +111,11 @@ module.exports = {
       }
 
       wishlist.products.splice(productIndex, 1);
-      if(wishlist.products.length === 0){
+      if (wishlist.products.length === 0) {
         await wishlist.deleteOne();
-      }else{
-      await wishlist.save();
-    }
+      } else {
+        await wishlist.save();
+      }
       res.json({ success: true });
     } catch (error) {
       console.log(error);

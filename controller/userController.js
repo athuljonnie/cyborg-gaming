@@ -77,6 +77,7 @@ module.exports = {
           to: `+91${number}`,
           channel: "sms",
         });
+        console.log(verification, 'verification variable');
       res.render("shop/userlogin/otp", { number });
     } catch (err) {
       console.error("Error generating OTP:", err);
@@ -85,6 +86,7 @@ module.exports = {
 
   postVerify: async (req, res) => {
     const otp = req.body.otp;
+    console.log(otp);
     const number = req.query.number;
     client.verify.v2
       .services(serviceSid)
@@ -106,7 +108,7 @@ module.exports = {
 
           res.redirect("/");
         } else {
-          res.render("user/OTP", {
+          res.render("shop/userlogin/invalidOTP", {
             email: req.session.userData.email,
             error: "Invalid OTP. Please try again.",
           });
@@ -277,13 +279,11 @@ module.exports = {
           let email = req.query.email;
           res.render("shop/userlogin/newpassword", { email });
         } else {
-          res.render("shop/userlogin/forgotpassword", {
-            email,
+          res.render("shop/userlogin/invalidOTP", {
             error: "Invalid OTP. Please try again.",
           });
         }
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.log(error);
       });
   },
@@ -298,7 +298,7 @@ module.exports = {
 
   logOutGet: async (req, res) => {
     req.session.user = false;
-    res.redirect("/");
+    res.redirect("/"); 
   },
 
   getEditUser: async (req, res) => {
@@ -349,22 +349,41 @@ module.exports = {
   },
 
   getProductsByCategory: async (req, res) => {
+    let sortOption = req.body// Assuming 'sortOption' is the key you are sending in the POST request
+    console.log('Sort Option:', sortOption);
+    console.log(sortOption);
+    
+    
+    
+    const categoryData = await Category.find();
+    let user = req.session.user;
+    
+    let categoryId = req.query.cat;
+    console.log(categoryId,"232");
     try {
-      let categoryId = req.query.cat;
-      const productData = await Product.find({ category: categoryId }).populate(
-        "category"
-      );
-      const categoryData = await Category.find();
-      let user = req.session.user;
-
-      res.render("shop/categorypage", {
-        productData,
-        user,
-        categoryData,
-        userLayout: true,
-      });
-    } catch (error) {
-      throw new Error("Category Error");
+      if (req.body.sortOption === "price-high-to-low") {
+        const productData = await Product.find({ category: categoryId } )
+          .populate("category")
+          .sort("-productPrice");
+        res.render("shop/categorypage", { productData, user, categoryData });
+      } else if (req.body.sortOption === "price-low-to-high") {
+        console.log(req.body.sortOption);
+        const productData = await Product.find({ category: categoryId })
+          .populate("category")
+          .sort("productPrice");
+        res.render("shop/categorypage", { productData, user, categoryData });
+      } else if (req.body.sortOption === "a-z") {
+        const productData = await Product.find({ category: categoryId })
+          .populate("category")
+          .sort("productName");
+        res.render("shop/categorypage", { productData, user, categoryData });
+      }  else {
+        const productData = await Product.find({ category: categoryId }).populate("category");
+        res.render("shop/categorypage", { productData, user, categoryData });
+      }       
+    }   
+    catch (error) {
+      throw new Error(error,"Category Error");
     }
   },
 

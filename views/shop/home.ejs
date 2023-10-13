@@ -21,6 +21,15 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Then add the toastr.js script -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <style>
     .body {
       background-color: #000000;
@@ -196,6 +205,21 @@
     #carouselExampleControls a:hover{
      color: #fffb04;
     }
+
+    .toast-success {
+      background-color: #4caf50;
+    }
+
+    /* Error message */
+    .toast-error {
+      background-color: #f44336;
+    }
+
+
+    .blur-image {
+    filter: blur(4px); /* You can adjust the blur intensity (4px in this example) */
+}
+
   </style>
 </head>
 
@@ -205,6 +229,10 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
     <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
     <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
       <div class="row">
         <div class="col-md-8">
           <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
@@ -374,7 +402,7 @@
       <div class="row justify-content-center">
         <% } %>
           <div class="col-md-4 col-lg-4 col-xl-4 my-5">
-            <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
+            <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top fixed-image <%= product.productQuantity === 0 ? 'blur-image' : '' %>">
             <div class="card text-black">
               <div class="card-body">
                 <div class="text-center">
@@ -413,19 +441,22 @@
                   </div>
                 </div>
                 <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                  <span>Total</span><span></span>
                 </div>
                 <div class="d-flex justify-content-between total font-weight-bold mt-4">
                   <span class="heart-icon">
-                    <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
-                    <a href="" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
-           
-                  </span>
-                  <span>
-                    <a href="productdetails?productId=<%= product._id %>">
-                      <button type="button" class="btn btn-outline-dark">Shop Now</button>
-                    </a>
-                  </span>
+                    <% if (product.productQuantity > 0) { %>
+                        <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
+                        <a href="" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
+                    <% } %>
+                </span>
+                <span></span>
+                <span>
+                    <% if (product.productQuantity > 0) { %>
+                        <a href="productdetails?productId=<%= product._id %>">
+                            <button type="button" class="btn btn-outline-dark shop-now-button">Shop Now</button>
+                        </a>
+                    <% } %>
+                </span>
                 </div>
               </div>
             </div>
@@ -502,35 +533,16 @@
     </section>
     </div>
   </footer>
-  <!-- Footer -->
 
 
-  <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- Then add the toastr.js script -->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-  <style>
-    /* Success message */
-    .toast-success {
-      background-color: #4caf50;
-    }
 
-    /* Error message */
-    .toast-error {
-      background-color: #f44336;
-    }
-  </style>
 
   <script>
 
     function addToCart(productId) {
       console.log("hi", productId);
+      console.log(response);
       $.ajax({
         url: `/cartload?productId=${productId}`,
         type: 'GET',
@@ -549,17 +561,20 @@
             });
           } else {
             // If there was an error adding the product to the cart, show Toastr error message
-            window.location.href = "/login"; 
-            // toastr.options = {
-            //   closeButton: true,
-            //   positionClass: "toast-bottom-right",
-            //   timeOut: 3000,
-            //   // Add the class for error message
-            //   toastClass: "toast-error"
-            // };
-            // toastr.error("Failed to add product to cart. Please try logging in.", "Error", {
-            //   progressBar: true,
-            // });
+            toastr.options = {
+              closeButton: true,
+              positionClass: "toast-bottom-right",
+              timeOut: 3000,
+              // Add the class for error message
+              toastClass: "toast-error"
+            };
+            toastr.error("Failed to add product to cart. Please try logging in.", "Error", {
+              progressBar: true,
+            });
+            // setTimeout(()=>{
+            //   window.location.href = "/login"; 
+
+            // },1000)
           }
         },
         error: function (error) {
@@ -608,7 +623,7 @@
               // Add the class for error message
               toastClass: "toast-error"
             };
-            toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
+            toastr.error(response.message, "Error", {
               progressBar: true,
             });
           }
@@ -655,6 +670,7 @@
       error: function (error) {
           console.error('Error sending data:', error);
       }
+  })
   });
 </script>
 

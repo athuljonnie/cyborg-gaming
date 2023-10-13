@@ -91,27 +91,7 @@
         }
 
 
-        .heart-icon i {
-            color: black;
-            transition: color 0.3s;
-
-        }
-
-
-        .heart-icon:hover i {
-            color: red;
-        }
-
-
-        .cart-icon-link i {
-            color: black;
-            padding: 15px;
-        }
-
-        .cart-icon-link:hover i {
-            color: blue;
-
-        }
+     
 
         .card-body {
             background-color: #c7c7c7;
@@ -169,6 +149,30 @@
             background-color: #000000;
             font-weight: 600;
         }
+        .fa-heart {
+      color: rgb(255, 255, 255);
+      transition: color 0.3s;
+
+    }
+    .fa-shopping-cart {
+      color: rgb(255, 253, 253);
+      transition: color 0.3s;
+
+    }
+
+    .fa-heart:hover{
+      color: #f44336;
+    }
+ 
+
+    .fa-shopping-cart:hover{
+      color: #05d40f;
+    }
+    .blur-image {
+    filter: blur(4px); /* You can adjust the blur intensity (4px in this example) */
+}
+
+ 
 
     </style>
 </head>
@@ -220,9 +224,11 @@
                             <a class="dropdown-item" href="/allproducts">All Products</a>
                             <div class="dropdown-divider"></div>
                             <% categoryData.forEach((category)=>{ %>
-                              <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                <%= category.CategoryName %>
-                              </a>
+                                <% if (category.isBlocked === false) { %>
+                                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
+                                      <%= category.CategoryName %>
+                                    </a>                   
+                                  <% } %>
                               <% }) %>
             
                           </div>
@@ -233,10 +239,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                    </li>
+                    </li>                   
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -270,24 +273,27 @@
         <% } %>
     </div>
 
-    <div id="heading" style="background-color:rgb(26, 26, 26);width: 100%;  align-items: center; justify-content: right; display: flex; padding-right: 30px;">
+    <!-- <div id="heading" style="background-color:rgb(26, 26, 26);width: 100%;  align-items: center; justify-content: right; display: flex; padding-right: 30px;">
         <div class="radio-inputs">
             <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="a-z">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="a-z" data-catId = "<%= productData[0].category._id %> ">
                 <span class="name">A-Z</span>
             </label>
             <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-high-to-low">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-high-to-low" data-catId = "<%= productData[0].category.CategoryName%>" >
                 <span class="name">High-to-Low</span>
             </label>
             <label class="radio">
-                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-low-to-high">
+                <input type="radio" name="sort-option" class="sort-checkbox" data-sort="price-low-to-high" data-catId = "<%= productData[0].category._id %> ">
                 <span class="name">Low-to-High</span>
             </label>
         </div>
 
 
-    </div>
+    </div> -->
+
+
+
 
     <section style="background-color: rgb(26, 26, 26);">
         <div class="container py-5">
@@ -300,8 +306,8 @@
                             <% const product = productData[j]; %>
                             <% if (product.isBlocked == false) { %>
                             <div class="col-md-4 col-lg-4 col-xl-4 my-5">
-                                <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top" />
-                                <div class="card text-black">
+                              <img src="/uploads/<%= product.productImage[0] %>" alt="Product Image" class="card-img-top fixed-image <%= product.productQuantity === 0 ? 'blur-image' : '' %>">
+                              <div class="card text-black">
                                     <div class="card-body">
                                         <div class="text-center">
                                             <h5 class="card-title">
@@ -325,19 +331,22 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                                            <span>Total</span><span></span>
                                         </div>
                                         <div class="d-flex justify-content-between total font-weight-bold mt-4">
-                                            <span class="heart-icon">
-                                                <a href=""><i class="fas fa-heart"></i></a>
-                                                <a href ="#" onclick="addToCart('<%= product._id %>')" class="cart-icon-link"><i class="fas fa-shopping-cart"></i></a>
-                                            </span>
-                                            <span></span>
-                                            <span>
-                                                <a href="/productdetails?productId=<%= product._id %>">
-                                                    <button type="button" class="btn btn-outline-dark">Shop Now</button>
+                                          <span class="heart-icon">
+                                            <% if (product.productQuantity > 0) { %>
+                                                <a href="" onclick="addToWishlist('<%=product._id%>')"><i class="fas fa-heart"></i></a>
+                                                <a href="" onclick="addToCart('<%= product._id %>')"><i class="fas fa-shopping-cart"></i></a>
+                                            <% } %>
+                                        </span>
+                                        <span></span>
+                                        <span>
+                                            <% if (product.productQuantity > 0) { %>
+                                                <a href="productdetails?productId=<%= product._id %>">
+                                                    <button type="button" class="btn btn-outline-dark shop-now-button">Shop Now</button>
                                                 </a>
-                                            </span>
+                                            <% } %>
+                                        </span>
                                         </div>
                                     </div>
                                 </div>
@@ -364,14 +373,76 @@
     background-color: #f44336;
   }
 </style>
+ <!-- Bootstrap JS -->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <!-- Then add the toastr.js script -->
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+<script>
+
+    function addToWishlist(productId) {
+      console.log("hi", productId);
+      $.ajax({
+        url: `/wishlistload?productId=${productId}`,
+        type: 'GET',
+        success: function (response) {
+          if (response.success) {
+            // If product was successfully added to the cart, show Toastr success message
+            toastr.options = {
+              closeButton: true,
+              positionClass: "toast-bottom-right",
+              timeOut: 3000,
+              // Add the class for success message
+              toastClass: "toast-success"
+            };
+            toastr.success("Product added to Wishlist!", "Success", {
+              progressBar: true,
+            });
+          } else {
+            // If there was an error adding the product to the cart, show Toastr error message
+            toastr.options = {
+              closeButton: true,
+              positionClass: "toast-bottom-right",
+              timeOut: 3000,
+              // Add the class for error message
+              toastClass: "toast-error"
+            };
+            toastr.error(response.message, "Error", {
+              progressBar: true,
+            });
+          }
+        },
+        error: function (error) {
+          // If there was an error with the AJAX request, show Toastr error message
+          toastr.options = {
+            closeButton: true,
+            positionClass: "toast-bottom-right",
+            timeOut: 3000,
+            // Add the class for error message
+            toastClass: "toast-error"
+          };
+          toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
+            progressBar: true,
+          });
+        }
+      });
+    }
+  </script>
 
 <script>
     $('.sort-checkbox').click(function () {
         var selectedOption = $(this).data('sort');
+        var catId = $(this).data('catId');
+        console.log(catId);
+
         console.log('Selected Option:', selectedOption);
         $.ajax({
             type: 'POST',
-            url: 'allproducts',
+       url: '/category/desktop-pcs',
             data: { sortOption: selectedOption },
             success: function (response) {
                 console.log(response);
@@ -384,6 +455,9 @@
         });
     });
 </script>
+
+
+
 
 <script>
 
@@ -436,13 +510,7 @@
   }
 </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Then add the toastr.js script -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+   
 </body>
 
 </html>

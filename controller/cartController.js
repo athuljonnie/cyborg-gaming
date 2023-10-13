@@ -11,6 +11,8 @@ module.exports = {
       if(loggedInUserId){
       let product = await Product.findOne({_id: productId})
 
+  
+     
       console.log(product,"❤️❤️❤️❤️🤷‍♀️🤷‍♀️");
       let price = 0     
         console.log(productId,'😎😎');
@@ -69,6 +71,7 @@ module.exports = {
            offerPrice: price,
             quantity: 1,
           });
+          res.json({success: true})
         }
       } else {
         console.log("not founddddd");
@@ -88,11 +91,12 @@ module.exports = {
       // cartItem.totalAmount = updatedTotalAmount;
       await cartItem.save();
       res.json({ success: true });
-    }}
+    }
+  }
      catch (error) {
       console.log(error);
       if(req.session.user){
-      res.json({ success: false, error: "Error adding product to cart" });
+      res.json({ success: false, message: "Error adding product to cart" });
     }
     }
   },
