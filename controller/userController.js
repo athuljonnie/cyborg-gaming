@@ -68,18 +68,18 @@ module.exports = {
     try {
       const number = req.session.userData.number;
       if (!number) {
-        res.status(400).send("Phone number not found");
-        return;
+      res.status(400).send("Phone number not found");
+      return;
       }
       const verification = await client.verify.v2
         .services(serviceSid)
         .verifications.create({
-          to: `+91${number}`,
-          channel: "sms",
+         to: `+91${number}`,
+         channel: "sms",
         });
-        console.log(verification, 'verification variable');
+      console.log(verification, 'verification variable');
       res.render("shop/userlogin/otp", { number });
-    } catch (err) {
+     } catch (err) {
       console.error("Error generating OTP:", err);
     }
   },

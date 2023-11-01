@@ -334,6 +334,12 @@ letter-spacing: 2px;
                         <th>Date:</th>
                         <td><%= orderData.createdAt%></td>
                     </tr>
+                    <% if (orderData.deliverystatus === "delivered") { %>
+                      <tr>
+                          <th>Delivery Date:</th>
+                          <td id = "deliveryDate"><%= orderData.deliveredAt%></td>
+                      </tr>                     
+                    <% } %>
                     <tr>
                         <th>Total Amount:</th>
                         <td style="color: tomato;">₹ <%= orderData.totalAmount.toFixed(2)%></td>
@@ -368,9 +374,11 @@ letter-spacing: 2px;
                     </button>
                  
                 <% } else if(orderData.deliverystatus === "delivered"){ %>
-                    <button class="btn btn-outline-danger" id="returnButton">
-                  Return this Order
-                    </button> 
+                  <button class="btn btn-outline-danger" id="returnButton">
+                    Return this Order
+                  </button>
+                  <!-- <div id="timer"></div> -->
+                  
                     <% }  else if (orderData.deliverystatus === "return approved") { %>
                       <div style="padding: 20px; margin-bottom: 5px;">
                         <p style="background-color: #00000056; display: inline-block; padding: 10px; color:rgb(220, 154, 0);border-radius: 17px;">
@@ -428,6 +436,60 @@ letter-spacing: 2px;
    <!-- Add this script inside your HTML file -->
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+const deliveredAtString = document.getElementById('deliveryDate').textContent;
+
+// Split the string and create a new Date object
+const parts = deliveredAtString.split(' ');
+const day = parseInt(parts[2], 10);
+const month = parts[1];
+const year = parseInt(parts[3], 10);
+const time = parts[4].split(':');
+const hour = parseInt(time[0], 10);
+const minute = parseInt(time[1], 10);
+const second = parseInt(time[2], 10);
+
+// Convert the month string to a numerical value
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthNumber = monthNames.indexOf(month);
+
+// Create a Date object with the parsed values
+const deliveredAt = new Date(year, monthNumber, day, hour, minute, second);
+
+// Verify the value
+console.log('Delivered At (parsed):', deliveredAt);
+  const returnButton = document.getElementById('returnButton');
+  const timerElement = document.getElementById('timer');
+
+
+
+ function updateTimer() {
+  const currentDate = new Date();
+  const timeDifference = currentDate.getTime() - deliveredAt.getTime();
+  const allowedDaysForReturn = 14;
+  const remainingDays = Math.ceil(timeDifference / 8640000); // 86400000 milliseconds in a day
+
+  if (remainingDays > allowedDaysForReturn) {
+    // Time for returning has expired
+    returnButton.setAttribute('disabled', 'disabled');
+    timerElement.textContent = 'Return period has expired';
+  } else {
+    // Enable the return button
+    returnButton.removeAttribute('disabled');
+    timerElement.textContent = `Days remaining for return: ${remainingDays}`;
+  }
+}
+
+
+  // Call the updateTimer function to initialize and update the timer
+  updateTimer();
+
+  // Use setInterval to update the timer every minute
+  setInterval(updateTimer, 60000);
+</script>
+
 <script>
     $(document).ready(function () {
         // Define a function to handle button click
