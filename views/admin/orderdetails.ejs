@@ -5,9 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel</title>
-  <!-- Bootstrap CSS -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Bootstrap JS -->
+     
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
@@ -106,7 +105,6 @@
 <body>
 
  
-  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -205,7 +203,7 @@
             </div>
 
             <div class="row" id="table">
-              <div class="col-lg-7 text-center"> <!-- Added text-center class -->
+              <div class="col-lg-7 text-center"> 
                   <div class="table-responsive">
                       <table class="table table-bordered">
                           <thead>
@@ -253,7 +251,6 @@
 
 
 
-      <!-- Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
@@ -264,31 +261,26 @@
 
       <script>
         $(document).ready(function () {
-            // Define a function to handle button click
             function handleButtonClick(status) {
-                const orderId = '<%= orderData._id %>'; // Replace with the actual order ID
-                console.log(orderId);
+                const orderId = '<%= orderData._id %>'; 
                 $.ajax({
-                    url: '/admin/approval', // Replace with your actual backend endpoint
-                    method: 'POST', // You can use 'GET' if it's more appropriate
+                    url: '/admin/approval', 
+                    method: 'POST', 
                     data: {
                         orderId: orderId,
-                        status: status // This will indicate 'cancel' or 'return'
+                        status: status 
                     },
                     success: function (response) {
-                        // Handle success response from the server
-                        console.log('Request successful', response);
+                       
                         Swal.fire('approved');
                     },
                     error: function (xhr, status, error) {
-                        // Handle error response from the server
                         console.error('Error:', error);
                         Swal.fire('Error', 'An error occurred', 'error');
                     }
                 });
             }
     
-            // Add a click event listener to the "Cancel" button
             $('#cancelButton').click(function () {
                 Swal.fire({
                     title: 'Confirm Cancellation',
@@ -304,7 +296,6 @@
                 });
             });
     
-            // Add a click event listener to the "Return" button
             $('#returnButton').click(function () {
                 Swal.fire({
                     title: 'Confirm Return',
@@ -319,20 +310,7 @@
                     }
                 });
             });
-            // $('#rejectReturnButton').click(function () {
-            //     Swal.fire({
-            //         title: 'reject Return',
-            //         text: 'Are you sure you want to reject return request?',
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'Yes',
-            //         cancelButtonText: 'No'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             handleButtonClick('rejectedr');
-            //         }
-            //     });
-            // });
+            
            
         });
     </script>

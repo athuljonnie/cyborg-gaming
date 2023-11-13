@@ -166,10 +166,7 @@
             transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
         }
 
-        /* .custom-dropdown-menu {
-width: 200px;
-height: 200px;
-} */
+
 
         .radio-inputs {
             font-family: 'DotGothic16', sans-serif;
@@ -228,7 +225,7 @@ height: 200px;
     }
 
     .blur-image {
-    filter: blur(4px); /* You can adjust the blur intensity (4px in this example) */
+    filter: blur(4px); 
 }
 
 
@@ -244,7 +241,7 @@ height: 200px;
         <div class="container">
       <div class="row">
         <div class="col-md-8">
-          <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
+          <form action="/search" method="GET" id="search-form"> 
             <div class="input-container">
               <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
                 placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
@@ -526,30 +523,25 @@ height: 200px;
       <script>
 
         function addToWishlist(productId) {
-          console.log("hi", productId);
           $.ajax({
             url: `/wishlistload?productId=${productId}`,
             type: 'GET',
             success: function (response) {
               if (response.success) {
-                // If product was successfully added to the cart, show Toastr success message
                 toastr.options = {
                   closeButton: true,
                   positionClass: "toast-bottom-right",
                   timeOut: 3000,
-                  // Add the class for success message
                   toastClass: "toast-success"
                 };
                 toastr.success("Product added to Wishlist!", "Success", {
                   progressBar: true,
                 });
               } else {
-                // If there was an error adding the product to the cart, show Toastr error message
                 toastr.options = {
                   closeButton: true,
                   positionClass: "toast-bottom-right",
                   timeOut: 3000,
-                  // Add the class for error message
                   toastClass: "toast-error"
                 };
                 toastr.error(response.message, "Error", {
@@ -562,12 +554,10 @@ height: 200px;
               }
             },
             error: function (error) {
-              // If there was an error with the AJAX request, show Toastr error message
               toastr.options = {
                 closeButton: true,
                 positionClass: "toast-bottom-right",
                 timeOut: 3000,
-                // Add the class for error message
                 toastClass: "toast-error"
               };
               toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
@@ -581,13 +571,11 @@ height: 200px;
     <script>
         $('.sort-checkbox').click(function () {
             var selectedOption = $(this).data('sort');
-            console.log('Selected Option:', selectedOption);
             $.ajax({
                 type: 'POST',
                 url: 'allproducts',
                 data: { sortOption: selectedOption },
                 success: function (response) {
-                    console.log(response);
                     $('body').empty();
                     $('body').html(response);
                 },
@@ -604,30 +592,25 @@ height: 200px;
   <script>
 
     function addToCart(productId) {
-     console.log("hi",productId);
       $.ajax({
         url: `/cartload?productId=${productId}`,
         type: 'GET',
         success: function (response) {
           if (response.success) {
-            // If product was successfully added to the cart, show Toastr success message
             toastr.options = {
               closeButton: true,
               positionClass: "toast-bottom-right",
               timeOut: 3000,
-              // Add the class for success message
               toastClass: "toast-success"
             };
             toastr.success("Product added to cart!", "Success", {
               progressBar: true,
             });
           } else {
-            // If there was an error adding the product to the cart, show Toastr error message
             toastr.options = {
               closeButton: true,
               positionClass: "toast-bottom-right",
               timeOut: 3000,
-              // Add the class for error message
               toastClass: "toast-error"
             };
             toastr.error("Failed to add product to cart. Please try again.", "Error", {
@@ -640,12 +623,10 @@ height: 200px;
           }
         },
         error: function (error) {
-          // If there was an error with the AJAX request, show Toastr error message
           toastr.options = {
             closeButton: true,
             positionClass: "toast-bottom-right",
             timeOut: 3000,
-            // Add the class for error message
             toastClass: "toast-error"
           };
           toastr.error("Failed to add product to cart. Please try again.", "Error", {
@@ -661,20 +642,16 @@ height: 200px;
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search-input");
 
-  // Add an event listener to the form for when it's submitted
   searchForm.addEventListener("submit", function (event) {
     
     event.preventDefault();
 
-    // Get the search term from the input field
     const searchTerm = searchInput.value;
-    console.log(searchTerm);
   $.ajax({
-      type: 'GET', // Use 'GET' if your server-side route is a GET request
-      url: '/search', // Adjust the URL to match your server's route
-      data: { searchTerm: searchTerm }, // Send the search term as data
+      type: 'GET', 
+      url: '/search', 
+      data: { searchTerm: searchTerm }, 
       success: function (response) {
-          console.log(response);
           $('body').empty();
           $('body').html(response);
       },
@@ -688,11 +665,9 @@ height: 200px;
 
   <script>
     document.getElementById("search-form").addEventListener("submit", function (e) {
-      var searchTerm = document.getElementById("search-input").value.trim(); // Get the search term
-      console.log(searchTerm);
-      // Redirect to the search results page with the search term as a query parameter
+      var searchTerm = document.getElementById("search-input").value.trim(); 
       if (!searchTerm) {
-        e.preventDefault(); // Prevent form submission if search term is empty
+        e.preventDefault(); 
       }
     });
   </script>
@@ -702,7 +677,6 @@ height: 200px;
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
         integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <!-- Then add the toastr.js script -->
       <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 

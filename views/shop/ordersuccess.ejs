@@ -59,9 +59,8 @@
       </div>
       <script>
         setTimeout(function() {
-    window.location.href = '/orders'; // Replace '/orders' with the URL of the orders page
-    }, 5000);
-        // Function to update the countdown timer
+    window.location.href = '/orders'; 
+    }, 5000);      
         function updateTimer() {
           const countdown = document.getElementById("countdown");
           let seconds = parseInt(countdown.innerText);
@@ -69,13 +68,12 @@
           if (seconds > 0) {
             seconds--;
             countdown.innerText = seconds;
-            setTimeout(updateTimer, 1000); // Update the timer every second (1000 milliseconds)
+            setTimeout(updateTimer, 1000); 
           } else {
-            window.location.href = "/orders"; // Redirect when the timer reaches 0
+            window.location.href = "/orders";
           }
         }
         
-        // Start the timer when the page loads
         window.onload = function() {
           updateTimer();
         };

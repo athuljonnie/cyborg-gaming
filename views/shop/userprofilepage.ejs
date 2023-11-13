@@ -1,4 +1,3 @@
-<!-- user_profile.ejs -->
 
 <!DOCTYPE html>
 <html>
@@ -13,22 +12,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <!-- Toastr JS -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <!-- Bootstrap CSS -->
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <!-- Font Awesome Icons -->
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
    
     <style>
-        /* Custom CSS for dark theme */
+
         body {
     background-image: url('/shop/img/profilebg.png');
     background-color: #212020;
     color: #fff;
-    background-size: cover; /* Set the background image to cover the entire body */
-    background-repeat: no-repeat; /* Prevent image from repeating */
-    background-attachment: fixed; /* Optionally, fix the background image */
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
     font-family: 'DotGothic16', sans-serif;
 }
 
@@ -47,7 +46,7 @@ cursor: pointer;
 
         #navbar1 {
             background-color: #000000 !important;
-            /* Set the background color to pitch black */
+        
             font-family: 'DotGothic16', sans-serif;
         }
 
@@ -127,26 +126,24 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
         }
         .card {
     position: relative;
-    overflow: hidden; /* Ensure the image stays within the card */
+    overflow: hidden;
 }
 
 .profile-image {
     position: absolute;
-    top: 10px; /* Adjust the top position as needed */
-    right: 10px; /* Adjust the right position as needed */
-    width: 60px; /* Set the desired width for the profile image */
-    height: 60px; /* Set the desired height for the profile image */
-    border-radius: 50%; /* Create a circular shape for the image (optional) */
-    border: 2px solid #fff; /* Add a border around the image (optional) */
-    z-index: 1; /* Make sure the image is above card content */
+    top: 10px;
+    right: 10px; 
+    width: 60px; 
+    height: 60px;
+    border-radius: 50%; 
+    border: 2px solid #fff;
+    z-index: 1;
 }
 
 .list-group-item{
     background: rgba( 0, 0, 0, 0.4 );
-/* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
 backdrop-filter: blur( 10.5px );
 -webkit-backdrop-filter: blur( 10.5px );
-/* border-radius: 10px; */
 border: 1px solid rgba( 255, 255, 255, 0.18 );
 color: #ffffff; 
 font-family: 'DotGothic16', sans-serif;
@@ -157,7 +154,6 @@ letter-spacing: 2px;
     cursor: pointer;
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -171,7 +167,6 @@ letter-spacing: 2px;
     background-color: rgba(0, 0, 0, 0.9);
 }
 
-/* Enlarged Image */
 .modal-content {
     margin: auto;
     display: block;
@@ -180,9 +175,8 @@ letter-spacing: 2px;
 }
 
 
-/* Style for the modal container */
 .modal {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   z-index: 1;
   left: 0;
@@ -193,11 +187,9 @@ letter-spacing: 2px;
   overflow: auto;
 }
 
-/* Style for the modal content */
 .modal-content {
   background-color: #00000042;
   margin: 15% auto;
-  /* padding: 20px; */
   width: 80%;
   max-width: 600px;
   border-radius: 5px;
@@ -205,7 +197,6 @@ letter-spacing: 2px;
   text-align: center;
 }
 
-/* Style for the close button */
 .close {
   color: #aaa;
   float: right;
@@ -219,17 +210,16 @@ letter-spacing: 2px;
   text-decoration: none;
   cursor: pointer;
 }
-/* Add styles for even and odd transactions */
 .transaction-item.even {
-  background-color: #ffffff5f; /* Light background color for even rows */
-  border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
-  padding: 10px; /* Add some padding for spacing */
+  background-color: #ffffff5f; 
+  border-bottom: 1px solid #ddd; 
+  padding: 10px;
 }
 
 .transaction-item.odd {
-  background-color: #ffffff5f; /* White background color for odd rows */
-  border-bottom: 1px solid #000000; /* Add a bottom border for separation */
-  padding: 10px; /* Add some padding for spacing */
+  background-color: #ffffff5f; 
+  border-bottom: 1px solid #000000; 
+  padding: 10px;
 }
 
 
@@ -287,9 +277,9 @@ letter-spacing: 2px;
                                 <i class="fas fa-user"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <% if (userData) { %>
+                                <% if (user) { %>
                                     <a class="dropdown-item" href="">
-                                        <%= userData.username %>
+                                        <%= user.username %>
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="orders">My Orders</a>
@@ -311,7 +301,6 @@ letter-spacing: 2px;
 
 
 
-        <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
         <div class="py-5" >
             <div class="container">
@@ -319,17 +308,16 @@ letter-spacing: 2px;
                 <div class="col-md-6">
                   <div class="card cardtransparent">
                     <img src="/shop/img/profile.jpg" class="profile-image" alt="Profile Image" id="profileImage">
-                    <!-- Modal for Enlarged Image -->
 
 
 
                     <div class="card-body " style="letter-spacing: 2px;">
                       <h3 class="card-title" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><b>User Details</b></h3>
-                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Name: <%= userData.username %></h6>
-                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Email: <%= userData.email %></h6>
-                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">contact: <%= userData.number %></h6>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Name: <%= user.username %></h6>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">Email: <%= user.email %></h6>
+                      <h6 class="card-subtitle my-2" style="font-family: 'DotGothic16', sans-serif; color: #ffffff;">contact: <%= user.number %></h6>
                       
-                      <a href="editUser?userId=<%= userData._id %>" class="card-link" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><u> Edit Profile</u></a>
+                      <a href="editUser?userId=<%= user._id %>" class="card-link" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><u> Edit Profile</u></a>
                       <a href="changepassword" class="card-link" style="font-family: 'DotGothic16', sans-serif; color: #ffcc00;"><u>Change Password</u></a>
                     </div>
                   </div>
@@ -381,7 +369,6 @@ letter-spacing: 2px;
                         <% if (!wallet) { %>
                             <h6 class="card-subtitle my-2 text-danger">Wallet Not Found !!!</h6>
                             <p class="card-text" style="background-color: #00000079; border-radius: 17px; padding: 10px;  letter-spacing: 2px;">Creating a Wallet benefits in faster cashback for your cancellations and returns</p>
-                            <!-- <button class ="btn btn-success">Create Wallet</button> -->
                         <% } else if(wallet.wallet === 0){ %>
                             <h6 class="card-subtitle my-2 text-danger" style="background-color: #00000064; padding: 10px; border-radius: 12px; letter-spacing: 2px; ">Your balance: <%= wallet.wallet%><br><span id="openModal" style="color: #ffd500;">Transaction History</span></h6>
                            
@@ -433,24 +420,20 @@ letter-spacing: 2px;
 
 
             
-    <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Then add the toastr.js script -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
-        // Function to format date (e.g., "2023-09-29" to "29 Sep 2023")
         const formatDate = (timestamp) => {
           const date = new Date(timestamp);
           const options = { year: 'numeric', month: 'short', day: 'numeric' };
           return date.toLocaleDateString(undefined, options);
         };
       
-        // Function to format time (e.g., "14:30:00" to "2:30 PM")
         const formatTime = (timestamp) => {
           const date = new Date(timestamp);
           const options = { hour: 'numeric', minute: 'numeric', hour12: true };
@@ -460,22 +443,18 @@ letter-spacing: 2px;
 
 
 <script>
-    // Get the modal and trigger element
 let modal = document.getElementById("myModal");
 const span = document.getElementById("openModal");
 const closeBtn = document.getElementsByClassName("close")[0];
 
-// Function to open the modal
 span.onclick = function () {
   modal.style.display = "block";
 };
 
-// Function to close the modal when clicking the close button
 closeBtn.onclick = function () {
   modal.style.display = "none";
 };
 
-// Function to close the modal when clicking anywhere outside the modal
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
@@ -485,10 +464,8 @@ window.onclick = function (event) {
 </script>
 
 <script>
-   // Initialize Clipboard.js
 new ClipboardJS('.copy-button');
 
-// Add an event listener to show a tooltip when the copy operation is successful
 document.querySelectorAll('.copy-button').forEach(function (btn) {
     btn.addEventListener('click', function () {
         var tooltip = document.createElement('span');
@@ -504,38 +481,29 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
 </script>
 
    <script>
-        // Get a reference to the "Redeem" button and the coupon card
         const redeemButton = document.getElementById('redeemButton');
         const couponCard = document.getElementById('couponCard');
     
-        // Add a click event listener to the button
         redeemButton.addEventListener('click', function (event) {
-            // Prevent the default button behavior
             event.preventDefault();
     
-            // Show the coupon card
             couponCard.style.display = 'block';
     
-            // You can populate the coupon card with coupon data here
-            // For example, by modifying the content of the card's innerHTML
-
+           
         });
     </script>
 
 
            <script>
-            // Get references to the profile image and the modal
 const profileImage = document.getElementById('profileImage');
 const modal = document.getElementById('imageModal');
 const enlargedImage = document.getElementById('enlargedImage');
 
-// When the profile image is clicked, display the modal with the enlarged image
 profileImage.addEventListener('click', () => {
     modal.style.display = 'block';
     enlargedImage.src = profileImage.src;
 });
 
-// When the user clicks the close button or anywhere outside the modal, close the modal
 modal.addEventListener('click', (event) => {
     if (event.target === modal || event.target.classList.contains('close')) {
         modal.style.display = 'none';

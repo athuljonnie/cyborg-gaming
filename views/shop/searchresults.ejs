@@ -14,9 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
@@ -26,12 +24,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
         integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Then add the toastr.js script -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .body {
@@ -182,10 +177,7 @@
             transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
         }
 
-        /* .custom-dropdown-menu {
-width: 200px;
-height: 200px;
-} */
+
 
         .radio-inputs {
             font-family: 'DotGothic16', sans-serif;
@@ -234,7 +226,7 @@ height: 200px;
     }
 
     .blur-image {
-    filter: blur(4px); /* You can adjust the blur intensity (4px in this example) */
+    filter: blur(4px); 
 }
 
 
@@ -249,7 +241,7 @@ height: 200px;
         <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
         <div class="row">
             <div class="col-md-8">
-              <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
+              <form action="/search" method="GET" id="search-form"> 
                 <div class="input-container">
                   <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
                     placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
@@ -492,27 +484,21 @@ height: 200px;
           </div>
     
           <section class="mb-4 text-center">
-            <!-- Facebook -->
+           
             <a class="btn btn-outline-warning btn-floating m-1" href="#" role="button"><i
                 class="fab fa-facebook-f"></i></a>
     
-            <!-- Twitter -->
             <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
     
-            <!-- Google -->
             <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
     
-            <!-- Instagram -->
             <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
     
-            <!-- Linkedin -->
             <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i
                 class="fab fa-linkedin-in"></i></a>
     
-            <!-- Github -->
             <a class="btn btn-outline-warning btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
           </section>
-          <!-- Section: Social media -->
         </div>
         <section class="">
           <form action="/signup" method="get">
@@ -529,8 +515,7 @@ height: 200px;
       <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
 
-      <!-- Bootstrap JS (Optional) -->
-      <!-- Bootstrap JS (optional if you need to add JavaScript functionality) -->
+   
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
@@ -545,10 +530,8 @@ height: 200px;
             type: 'POST',
             url: 'search',
             success: function (response) {
-                console.log(response);
                 $('body').empty();
                 $('body').html(response);
-                console.log(response);
             },
             error: function (error) {
                 console.error('Error sending data:', error);
@@ -614,13 +597,11 @@ height: 200px;
 <script>
     $('.sort-checkbox').click(function () {
         var selectedOption = $(this).data('sort');
-        console.log('Selected Option:', selectedOption);
         $.ajax({
             type: 'POST',
             url: 'allproducts',
             data: { sortOption: selectedOption },
             success: function (response) {
-                console.log(response);
                 $('body').empty();
                 $('body').html(response);
             },
@@ -634,30 +615,25 @@ height: 200px;
 <script>
 
     function addToWishlist(productId) {
-      console.log("hi", productId);
       $.ajax({
         url: `/wishlistload?productId=${productId}`,
         type: 'GET',
         success: function (response) {
           if (response.success) {
-            // If product was successfully added to the cart, show Toastr success message
             toastr.options = {
               closeButton: true,
               positionClass: "toast-bottom-right",
               timeOut: 3000,
-              // Add the class for success message
               toastClass: "toast-success"
             };
             toastr.success("Product added to Wishlist!", "Success", {
               progressBar: true,
             });
           } else {
-            // If there was an error adding the product to the cart, show Toastr error message
             toastr.options = {
               closeButton: true,
               positionClass: "toast-bottom-right",
               timeOut: 3000,
-              // Add the class for error message
               toastClass: "toast-error"
             };
             toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
@@ -666,12 +642,10 @@ height: 200px;
           }
         },
         error: function (error) {
-          // If there was an error with the AJAX request, show Toastr error message
           toastr.options = {
             closeButton: true,
             positionClass: "toast-bottom-right",
             timeOut: 3000,
-            // Add the class for error message
             toastClass: "toast-error"
           };
           toastr.error("Failed to add product to Wishlist. Please try again.", "Error", {
@@ -687,20 +661,16 @@ height: 200px;
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search-input");
 
-  // Add an event listener to the form for when it's submitted
   searchForm.addEventListener("submit", function (event) {
     
     event.preventDefault();
 
-    // Get the search term from the input field
     const searchTerm = searchInput.value;
-    console.log(searchTerm);
   $.ajax({
-      type: 'GET', // Use 'GET' if your server-side route is a GET request
-      url: '/search', // Adjust the URL to match your server's route
-      data: { searchTerm: searchTerm }, // Send the search term as data
+      type: 'GET',
+      url: '/search', 
+      data: { searchTerm: searchTerm }, 
       success: function (response) {
-          console.log(response);
           $('body').empty();
           $('body').html(response);
       },
@@ -713,11 +683,9 @@ height: 200px;
 
   <script>
     document.getElementById("search-form").addEventListener("submit", function (e) {
-      var searchTerm = document.getElementById("search-input").value.trim(); // Get the search term
-      console.log(searchTerm);
-      // Redirect to the search results page with the search term as a query parameter
+      var searchTerm = document.getElementById("search-input").value.trim(); 
       if (!searchTerm) {
-        e.preventDefault(); // Prevent form submission if search term is empty
+        e.preventDefault(); 
       }
     });
   </script>

@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Product</title>
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
@@ -44,7 +43,6 @@
 </head>
 
 <body>
-  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <a href="/admin" class="navbar-brand">
       <img src="/shop/img/ll.png" alt="Logo">
@@ -68,10 +66,8 @@
         </li>
       </ul>
     </div>
-    <!-- Add any additional navbar elements you need -->
   </nav>
 
-  <!-- Content -->
   <div class="container">
     <h1>Edit Product</h1>
     <% if (productData.length === 0) { %>
@@ -140,7 +136,6 @@
    
      
       <% } %>
-      <!-- Add more form fields for other product attributes as needed -->
       <% if (productData) { %>
    
         <div class="text-center pt-4">
@@ -154,7 +149,6 @@
     </form>
   </div>
 
-  <!-- Bootstrap JS -->
   
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>

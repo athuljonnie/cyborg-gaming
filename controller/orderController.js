@@ -151,21 +151,17 @@ module.exports = {
           res.json({ codSuccess: true });
         } else if (paymentMethod === "wallet") {
           const cart = await Cart.findOne({ user: loggedInUserId });
-          // wallet.wallet = wallet.wallet-newOrder.totalAmount;
 
-          // Check if the wallet balance is sufficient for the purchase
           const purchaseAmount = newOrder.totalAmount;
           if (wallet.wallet >= purchaseAmount) {
             const newBalance = wallet.wallet - purchaseAmount;
-            // Subtract the purchase amount from the wallet balance
 
-            // Create a transaction entry for the purchase
             const transactionData = {
-              amount: -purchaseAmount, // Use a negative value to represent a deduction
+              amount: -purchaseAmount,
               description: "Purchase",
             };
 
-            // Push the transaction into the wallet's transactions array
+
             await Wallet.updateOne(
               { _id: wallet._id },
               {
@@ -205,7 +201,6 @@ module.exports = {
             }
             for (const cartProduct of cart.products) {
               const product = await Product.findById(cartProduct.productId);
-              console.log(product,'products');
               if (!product) {
                 return res.status(404).json({ error: "Product not found" });
               }
@@ -266,8 +261,7 @@ module.exports = {
               });
             }
           });
-          // await newOrder.save();
-          // await Cart.deleteOne({ user: loggedInUserId });
+
         } else {
           console.log("error occured");
         }
@@ -488,27 +482,22 @@ module.exports = {
   cancelOrReturn: async (req, res) => {
     // try {
     const orderId = req.body.orderId;
-    // const order = await Order.findById(orderId).populate('products.productId');
     const status = req.body.status;
     let returnReason = req.body.returnReason;
     try {
       const loggedInUserId = req.session.user;
 
-      // Check if a wallet already exists for the user
       const userWallet = await Wallet.findOne({ user: loggedInUserId });
 
       if (!userWallet) {
-        // Create a new wallet if it doesn't exist
         const newWallet = new Wallet({
           user: loggedInUserId,
           wallet: 0,
         });
 
-        // Save the new wallet to the database
         await newWallet.save();
       }
 
-      // Redirect to the 'account' page
     } catch (error) {
       console.log(error);
     }
@@ -555,7 +544,6 @@ module.exports = {
   cancelOrReturnApproval: async (req, res) => {
     try {
       let status = req.body.status;
-      console.log(status,'status');
       let orderId = req.body.orderId;
       const orderToUpdate = await Order.findOne({ _id: orderId });
       let userId = orderToUpdate.userId;
@@ -580,8 +568,8 @@ module.exports = {
             const walletToUpdate = await Wallet.findOne({ user: userId });
             if (walletToUpdate) {
               const transactionData = {
-                amount: orderToUpdate.totalAmount, // The transaction amount
-                description: "Refund", // Description of the transaction (optional)
+                amount: orderToUpdate.totalAmount,
+                description: "Refund",
               };
               walletToUpdate.wallet += orderToUpdate.totalAmount;
               walletToUpdate.transactions.push(transactionData);
@@ -595,14 +583,12 @@ module.exports = {
             const productToUpdate = await Product.findById(productId);
 
             if (productToUpdate) {
-              // Update the productQuantity field by adding the quantity from the order
+
               productToUpdate.productQuantity += quantityToAdd;
 
-              // Save the updated product
+
               await productToUpdate.save();
-              console.log(
-                `Product quantity updated for ${productToUpdate.productName}`
-              );
+
             }
           }
           return res.status(200).json({ success: true });
@@ -639,10 +625,10 @@ module.exports = {
             const productToUpdate = await Product.findById(productId);
 
             if (productToUpdate) {
-              // Update the productQuantity field by adding the quantity from the order
+
               productToUpdate.productQuantity += quantityToAdd;
 
-              // Save the updated product
+
               await productToUpdate.save();
               console.log(
                 `Product quantity updated for ${productToUpdate.productName}`
@@ -651,22 +637,7 @@ module.exports = {
           }
           return res.status(200).json({ success: true });
         });
-      // }else if( status === "rejectedr" &&
-      // orderToUpdate.returnrequest === true){
-      //   console.log('rejectedr');
-      //   Order.updateOne(
-      //     { _id: orderId },
-      //     {
-      //       $set: {
-      //         returnapproval: false,
-      //         orderstatus: "return rejected",
-      //         deliverystatus: "NA",
-      //         returnrequest: false,
-      //       },
-      //     }
-      //   ).then(()=>{
-      //     console.log('rejected return request');
-      //   })
+
       }
     } catch (error) {
       console.log(error);

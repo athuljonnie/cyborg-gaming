@@ -110,85 +110,82 @@ module.exports = {
           $limit: 1,
         },
       ]);
-   
 
 
-const categories = categoryCounts.map(category => category.CategoryName);
-const counts = categoryCounts.map(category => category.count);
-console.log(categories,'categories');
-const products = await Product.find()
-.populate('category', 'category');
+
+      const categories = categoryCounts.map(category => category.CategoryName);
+      const counts = categoryCounts.map(category => category.count);
+      const products = await Product.find()
+        .populate('category', 'category');
 
 
-const codTotalAmount = codOrders.length > 0 ? codOrders[0].totalAmount : 0;
-const razorpayTotalAmount = razorpayOrders.length > 0 ? razorpayOrders[0].totalAmount : 0;
-const walletTotalAmount = walletOrders.length > 0 ? walletOrders[0].totalAmount : 0;
+      const codTotalAmount = codOrders.length > 0 ? codOrders[0].totalAmount : 0;
+      const razorpayTotalAmount = razorpayOrders.length > 0 ? razorpayOrders[0].totalAmount : 0;
+      const walletTotalAmount = walletOrders.length > 0 ? walletOrders[0].totalAmount : 0;
 
 
-const totalRevenue = codTotalAmount + razorpayTotalAmount;
+      const totalRevenue = codTotalAmount + razorpayTotalAmount;
 
-const numberOfDays = Math.ceil((Date.now() - orders[0].createdAt) / (1000 * 60 * 60 * 24));
-  
+      const numberOfDays = Math.ceil((Date.now() - orders[0].createdAt) / (1000 * 60 * 60 * 24));
 
-  
-    const approvalRequests = await Order.find({
-      $or: [{ returnrequest: true }, { cancellationrequest: true } ],
-    })   
-    console.log(approvalRequests,"🫂🫂🫂🫂🫂");
-    const requestCount = await Order.countDocuments({
-      $or: [{ returnrequest: true }, { cancellationrequest: true }],
-    });
-    
-    console.log(requestCount);
-const dailyRevenue = totalRevenue / numberOfDays;
 
-const numberOfProducts = orders.reduce((count, order) => {
-const deliveredProducts = order.products.filter(product => product.orderstatus === 'delivered');
-return count + deliveredProducts.length;
-  }, 0);
 
-const totalCustomers = await User.countDocuments();
-const totalOrder =  await Order.countDocuments();
-const totalOrders = totalOrder +1 ;
+      const approvalRequests = await Order.find({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      })
+      const requestCount = await Order.countDocuments({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      });
 
-const monthlyRevenue = calculateMonthlyRevenue(orders);
-console.log(monthlyRevenue);
-if(!req.session.admin){
-    res.redirect('login')
-}else{
-res.render('admin/adminHome', {
-    adminLayout: true,
-    totalRevenue,
-    totalOrders,
-    dailyRevenue,
-    numberOfProducts,
-    totalCustomers,
-    codTotalAmount,
-    razorpayTotalAmount,
-    walletTotalAmount,
-    order: orders,
-    monthlyRevenue,
-    categories,
-    counts,
-    productCounts,
-    products,
-    approvalRequests,
-    requestCount
-  });
+
+      const dailyRevenue = totalRevenue / numberOfDays;
+
+      const numberOfProducts = orders.reduce((count, order) => {
+        const deliveredProducts = order.products.filter(product => product.orderstatus === 'delivered');
+        return count + deliveredProducts.length;
+      }, 0);
+
+      const totalCustomers = await User.countDocuments();
+      const totalOrder = await Order.countDocuments();
+      const totalOrders = totalOrder + 1;
+
+      const monthlyRevenue = calculateMonthlyRevenue(orders);
+      if (!req.session.admin) {
+        res.redirect('login')
+      } else {
+        res.render('admin/adminHome', {
+          adminLayout: true,
+          totalRevenue,
+          totalOrders,
+          dailyRevenue,
+          numberOfProducts,
+          totalCustomers,
+          codTotalAmount,
+          razorpayTotalAmount,
+          walletTotalAmount,
+          order: orders,
+          monthlyRevenue,
+          categories,
+          counts,
+          productCounts,
+          products,
+          approvalRequests,
+          requestCount
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    function calculateMonthlyRevenue(orders) {
+      const monthlyRevenue = new Array(12).fill(0);
+
+      orders.forEach((order) => {
+        const month = order.createdAt.getMonth();
+        monthlyRevenue[month] += order.totalAmount;
+      });
+
+      return monthlyRevenue;
+    }
+  },
 }
-} catch (error) {
-    console.log(error);
-  }
-
-  function calculateMonthlyRevenue(orders) {
-    const monthlyRevenue = new Array(12).fill(0);
-  
-    orders.forEach((order) => {
-      const month = order.createdAt.getMonth();
-      monthlyRevenue[month] += order.totalAmount;
-    });
-  
-    return monthlyRevenue;
-  }
-},
-};

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 
 const transactionSchema = new mongoose.Schema({
-  // Define fields for each transaction entry
   amount: {
     type: Number,
   },

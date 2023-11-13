@@ -18,8 +18,7 @@ const UserSchema = new mongoose.Schema({
    number: {
       type: String,
       required: true,
-      // unique:true,
-      // sparse: true,
+
     },
     isActive: {
       type: Boolean,
@@ -32,6 +31,5 @@ const UserSchema = new mongoose.Schema({
   });
 
 
-//Export the model
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

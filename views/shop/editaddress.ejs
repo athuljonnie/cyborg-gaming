@@ -1,14 +1,11 @@
-<!-- address_form.ejs -->
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Edit Address</title>
-    <!-- Bootstrap CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Custom CSS for dark theme */
         body {
             background-color: #222;
             color: #fff;
@@ -63,17 +60,14 @@
                 <input type="number" class="form-control" name="number" required value="<%= addressToEdit.number %>">
             </div>
 
-            <!-- Dropdown to Choose Address Type -->
             <div class="mb-3">
                 <label for="addressType" class="form-label">Address Type</label>
                 <select class="form-select" name="type" required>
                     <option value="Home">Home</option>
                     <option value="Office">Office</option>
-                    <!-- Add more address types here if needed -->
                 </select>
             </div>
 
-            <!-- Submit Button -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Save Address</button>
             </div>
@@ -83,7 +77,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
@@ -94,7 +87,6 @@
             addressForm.addEventListener("submit", function (event) {
                 event.preventDefault();
 
-                // Validate Full Name
                 const fullname = document.querySelector('input[name="fullname"]');
 const fullnameValue = fullname.value.trim();
 
@@ -104,7 +96,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
     return;
 }
 
-                // Validate State
                 const state = document.querySelector('input[name="state"]');
                 if (!/^[A-Za-z]+$/.test(state.value.trim())) {
                     alert("State must contain only alphabetic characters");
@@ -112,7 +103,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                     return;
                 }
 
-                // Validate House
                 const house = document.querySelector('input[name="house"]');
                 if (house.value.trim() === "") {
                     alert("House is required");
@@ -120,7 +110,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                     return;
                 }
 
-                // Validate City
                 const city = document.querySelector('input[name="city"]');
                 if (!/^[A-Za-z]+$/.test(city.value.trim())) {
                     alert("City must contain only alphabetic characters");
@@ -129,7 +118,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                 }
 
 
-                // Validate ZIP Code
                 const zip = document.querySelector('input[name="zip"]');
                 const zipValue = zip.value.trim();
 
@@ -139,7 +127,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                     return;
                 }
 
-                // Validate Email
                 const email = document.querySelector('input[name="email"]');
                 if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email.value.trim())) {
                     alert("Invalid Email");
@@ -147,7 +134,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                     return;
                 }
 
-                // Validate Number
                 const number = document.querySelector('input[name="number"]');
                 const numberValue = number.value.trim();
 
@@ -157,7 +143,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
                     return;
                 }
 
-                // If all validations pass, you can submit the form
                 this.submit();
                 console.log(object);
                 window.history.back();
@@ -165,48 +150,6 @@ if (!/^[A-Za-z\s]+$/.test(fullnameValue)) {
         });
     </script>
 
-    <!-- <script>
-        const addressForm = document.getElementById('addressForm');
     
-        addressForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the default form submission
-    
-            const formData = $(this).serialize(); // Serialize the form data
-             console.log(formData);
-            // Now you can use the formData to make your fetch request or perform any other actions
-            fetch('/address', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Failed to save address');
-                }
-            })
-            .then(data => {
-                console.log(data);
-                toastr.success('Address saved successfully!', 'Success');
-                window.location.href = '/precheckout'; // Redirect after successful address submission
-            })
-            .catch(error => {
-                console.error(error);
-                toastr.error('Error saving address. Please try again later.', 'Error');
-            });
-        });
-    </script> -->
-
-    <!-- <script>
-        document.getElementById('addressForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-    
-            // Perform your form submission logic here
-            // For example, make an AJAX request or handle form validation
-    
-            // After successful form submission or validation, navigate back to the previous page
-            window.history.back();
-        });
-    </script> -->
 </body>
 </html>

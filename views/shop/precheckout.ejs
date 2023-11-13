@@ -7,7 +7,6 @@
   <title>Checkout Page</title>
   <meta charset="UTF-8">
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +16,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
 
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <style>
     body {
 
-      /* background-image: url('/shop/img/8481.jpg'); */
+     
       background-color: #232323;
       background-repeat: no-repeat;
       background-size: cover;
@@ -124,13 +120,11 @@
 
     .address-card p b {
       color: #f90;
-      /* Custom color for bold text (e.g., Name, Residential Address, etc.) */
     }
 
     .btn {
 
       margin-right: 10px;
-      /* Add some space between buttons */
     }
 
     #payment {
@@ -169,18 +163,14 @@
       margin: 50px;
       padding:100px;
     }
-    
-    /* Example CSS to increase the button size */
 .larger-button {
-  width: 150px; /* Adjust the width as needed */
-  height: 40px; /* Adjust the height as needed */
-  /* Additional styling properties as needed */
+  width: 150px; 
+  height: 40px; 
 }
 #hero{
   margin-top: 40px;
 }
 
-    /* Other styles... */
   </style>
 </head>
 
@@ -234,7 +224,6 @@
  
   <div class="row" style=" background-color: #00000058; padding: 20px; border-radius: 17px " id="hero">
 
-      <!-- Saved Addresses Table -->
  
       <div class="col-md-12">
         <h4 class="mb-3" style="font-family: 'DotGothic16', sans-serif; color: #f90;">Saved Addresses:</h4>
@@ -281,12 +270,10 @@
         </table>
         <div id="buttons" class="mt-4">
           <a href="address" class="btn btn-outline-light me-3">Add Address</a>
-          <!-- Proceed to Payment Button -->
         </div>
         
       </div>
       
-      <!-- Cart Table -->
       <div class="col-md-6" >
         <h4 class="mb-3" style="font-family: 'DotGothic16', sans-serif; color: #f90;">Your Cart:</h4>
         <% if (cartItems.length) { %>
@@ -434,7 +421,6 @@
         <% } %>
         <div class="payment" style="background-color: #0000007e; width: fit-content; padding: 10px; border-radius: 17px; margin-right: 20px;">
           <h4 class="mb-3">Payment Options:</h4>
-          <!-- Your payment options content here -->
           <div class="mb-3">
             <label class="d-flex align-items-center">
               <input type="radio" name="paymentMethod" value="cod">
@@ -474,8 +460,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
 
-  <!-- Bootstrap JS (Optional) -->
-  <!-- Bootstrap JS (optional if you need to add JavaScript functionality) -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
@@ -486,7 +471,7 @@
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <script>
-    // Get the wallet balance and total amount
+   
    
 </script>
 
@@ -494,10 +479,10 @@
 
 
   <script>
-    // Initialize Clipboard.js
+   
 new ClipboardJS('.copy-button');
 
-// Add an event listener to show a tooltip when the copy operation is successful
+
 document.querySelectorAll('.copy-button').forEach(function (btn) {
     btn.addEventListener('click', function () {
         var tooltip = document.createElement('span');
@@ -517,7 +502,6 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
       $("#couponForm").submit(function (event) {
         event.preventDefault();
         var formData = $(this).serialize();
-        console.log(formData);
   
         $.ajax({
           url: "/checkCoupon",
@@ -541,30 +525,25 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
   const walletRadioButton = document.querySelector('input[name="paymentMethod"][value="wallet"]');
   const walletCard = document.getElementById('walletCard');
 
-  // Function to hide the wallet card
   function hideWalletCard() {
       walletCard.style.display = 'none';
   }
 
-  // Function to show the wallet card and check for insufficient balance
   function showWalletCard() {
       const walletBalance = <%= wallet ? wallet.wallet.toFixed(2) : 0 %>;
       const totalAmount = <%= cartItems.length ? cartItems[0].totalAmount.toFixed(2) : 0 %>;
     
-      // Check if the wallet balance is less than the total amount
       if (walletBalance < totalAmount) {
-          // Display a message to the user
           walletCard.style.display = 'block';
           walletCard.innerHTML =  'Wallet balance: ₹'+' ' + '<span style = "color: gold">'+ walletBalance.toFixed(2) + '</span><span style="color: red;"><br>Insufficient balance for this purchase.</span>';
-          walletCard.style.backgroundColor = '#00000058'; // You can change the color to indicate an issue.
+          walletCard.style.backgroundColor = '#00000058';
       } else {
           walletCard.style.display = 'block';
           walletCard.innerHTML =  'Wallet balance: ₹'+' ' + '<span style = "color: gold">'+ walletBalance.toFixed(2) + '</span>';
-          walletCard.style.backgroundColor = '#00000058'; // You can change the color to indicate a sufficient balance.
+          walletCard.style.backgroundColor = '#00000058'; 
       }
   }
 
-  // Add event listener to the wallet radio button
   walletRadioButton.addEventListener('change', function () {
       if (this.checked) {
           showWalletCard();
@@ -573,7 +552,6 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
       }
   });
 
-  // Add event listeners for other payment methods (assuming you have unique IDs for them)
   const otherPaymentMethod1 = document.querySelector('input[name="paymentMethod"][value="razorpay"]');
   const otherPaymentMethod2 = document.querySelector('input[name="paymentMethod"][value="cod"]');
   
@@ -593,7 +571,7 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
         data: formData,
 
         success: (response) => {
-          console.log(response, "response😊😊😊🐲🐲🐲🐲🐲😊");
+          console.log(response);
           if (response.codSuccess) {
             console.log("Redirecting to home now");
 
@@ -629,7 +607,6 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
             });
             const data = await response.json();
             if (data.success) {
-              console.log('Default address updated');
             }
           } catch (error) {
             console.error('Error updating default address', error);
@@ -658,13 +635,10 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
             body: JSON.stringify({ addressId, paymentMethod }),
           });
 
-          console.log("??????????????????????");
+      
           const responseData = await response.json();
-          console.log(responseData);
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"); // Parse response JSON data
           
-          console.log(paymentMethod);
-          console.log(responseData.order, "order", responseData.newOrder, "🫂🫂🫂🫂------------> new order we created", responseData.totalAmount);
+       
 
           if (paymentMethod === "razorpay") {
             razorpayPayment(responseData.newOrder, responseData.order,responseData.totalAmount);
@@ -676,7 +650,7 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
          else if (response.ok) {
             toastr.success('Order placed successfully!', 'Success');
             setTimeout(function() {
-             window.location.href = '/ordersuccess'; // Redirect to the ordersuccess page
+             window.location.href = '/ordersuccess'; 
            }, 1500); 
           
         
@@ -697,8 +671,7 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
 
 
     function razorpayPayment(newOrder,order,price){
-      console.log("LLLLLLLLLLLLLLLLLLL");
-      console.log(order, 'razorpaypayment');
+     
       var options = {
         key: "rzp_test_T7Y9hT7EceVVNL",
         amount: price,
@@ -708,16 +681,10 @@ document.querySelectorAll('.copy-button').forEach(function (btn) {
         image: "https://example.com/your_logo",
         order_id: newOrder.id,
         handler: function (response) {
-          //alert(hello)
-          console.log("Handler function executed");
-          console.log("??????????????????????????????????????????????????????????");
-          console.log("Response:", response);
+        
+         
            verifyPayment(newOrder,order, price,response);
-          // try {
-           
-          // } catch (error) {
-          //   console.error("Error in verifyPayment:", error);
-          // }
+    
         } ,
     "prefill": {
         "name": "Gaurav Kumar",
@@ -747,57 +714,10 @@ rzp1.on('payment.failed', function (response){
     }
 
 
-    // function razorpayPayment(newOrder, price) {
-    // console.log(newOrder)
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      
-    //   console.log("razor function");
-    //   var options = {
-    //     key: "rzp_test_T7Y9hT7EceVVNL",
-    //     amount: price,
-    //     currency: "INR",
-    //     name: "Cyborg Gaming",
-    //     description: "Test Transaction",
-    //     image: "https://example.com/your_logo",
-    //     order_id: newOrder.id,
-    //     handler: function (response) {
-    //       //alert(hello)
-    //       console.log("Handler function executed");
-    //       console.log("??????????????????????????????????????????????????????????");
-    //       console.log("Response:", response);
-    //       verifyPayment(response,newOrder, price);
-    //       try {
-           
-    //       } catch (error) {
-    //         console.error("Error in verifyPayment:", error);
-    //       }
-    //     },
-
-    //     prefill: {
-    //       name: "User",
-    //       email: "user@example.com",
-    //       contact: "000000000",
-    //     },
-    //     notes: {
-    //       address: "Razorpay Corporate Office",
-    //     },
-    //     theme: {
-    //       color: "#243247",
-    //     },
-    //   };
-    //   console.log(options, "🤷‍♀️🤷‍♀️🤷‍♀️");
-    //   var rzp1 = new Razorpay(options);
-
-    //   rzp1.on("payment.failed", function (response) {
-        
-    //   });
-    //   rzp1.open();
-    // }
+    
 
     function verifyPayment(newOrder,order, price, response) {
-      console.log("verifyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-      console.log("verifying payment"  , newOrder ,order,price);
-      console.log(newOrder, price);
+     
       $.ajax({
         url: "/verify-payment",
         data: {

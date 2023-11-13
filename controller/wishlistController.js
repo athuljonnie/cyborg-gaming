@@ -7,7 +7,6 @@ module.exports = {
   getWishList: async (req, res) => {
     try {
       const loggedInUserId = req.session.user;
-      console.log("One moree");
       const categoryData = await Category.find();
       const wishlistItems = await Wishlist.find({
         user: loggedInUserId,
@@ -15,7 +14,6 @@ module.exports = {
         path: "products.productId",
         model: "Product",
       });
-      console.log(wishlistItems.length, "Wishlist Items");
       if (!loggedInUserId) {
         res.redirect("/login");
       } else {
@@ -58,7 +56,6 @@ module.exports = {
       const exist = wishlistItem.products.filter(
         (doc) => doc.productId.toString() === productId
       );
-      console.log(exist);
 
       if (exist.length > 0) {
         return res
@@ -77,11 +74,11 @@ module.exports = {
           },
         }
       )
-      if(newItem.acknowledged){
+      if (newItem.acknowledged) {
         return res.status(200).json({ success: true })
       }
 
-     
+
     } catch (error) {
       console.log(error);
       res.json({ success: false, error: "Error adding product to Wishlist" });
@@ -94,7 +91,6 @@ module.exports = {
       const loggedInUserId = req.session.user;
 
       const wishlist = await Wishlist.findOne({ user: loggedInUserId });
-      console.log(wishlist);
       if (!wishlist) {
         return res.json({ success: false, error: "Wishlist not found" });
       }

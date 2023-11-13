@@ -21,15 +21,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage }); 
+const upload = multer({ storage });
 
 const adminRedirection = (req, res, next) => {
-  if(req.session.admin){
-   next()
-  }else{
-   res.redirect("/admin/login")
+  if (req.session.admin) {
+    next()
+  } else {
+    res.redirect("/admin/login")
   }
- };
+};
 
 router.get("/", isloggedInadmin, dashboardcontroller.dashBoard);
 
@@ -41,40 +41,36 @@ router.get("/logout", isloggedInadmin, adminController.AdminlogoutGet);
 
 router.get("/products", isloggedInadmin, adminController.Products);
 
-router.get("/addproducts",adminRedirection, isloggedInadmin, adminController.AddProductsGet);
+router.get("/addproducts", adminRedirection, isloggedInadmin, adminController.AddProductsGet);
 
-router.post("/addproducts",adminRedirection,  upload.array("productImage", 3), async (req, res) => {
-  // if (!req.files || req.files.length === 0) {
-  //   return res.status(400).send("No files uploaded");
-  // }
+router.post("/addproducts", adminRedirection, upload.array("productImage", 3), async (req, res) => {
 
-  console.log(req.body, "🐲🐲");
 
-  // Process and store uploaded images using sharp
+
+
   const uploadedImages = [];
   for (const file of req.files) {
     const uploadedImage = file.path;
 
-    // Use sharp to crop/resize the image
+
     const croppedImage = `public/uploads/ropped-${file.filename}`;
     try {
       await sharp(uploadedImage)
-        .resize(400, 400) // Crop/resize to 200x200 pixels
+        .resize(400, 400)
         .toFile(croppedImage);
       uploadedImages.push(croppedImage);
     } catch (err) {
       console.error("Error processing image:", err);
     }
-      console.log(uploadedImages,'uploadedImages');
-    }
 
-    function removePathPrefix(imagesArray) {
-      return imagesArray.map(image => image.replace('public/uploads/', ''));
-    }
+  }
 
-    const sanitizedImages = removePathPrefix(uploadedImages);
+  function removePathPrefix(imagesArray) {
+    return imagesArray.map(image => image.replace('public/uploads/', ''));
+  }
 
-console.log(sanitizedImages);
+  const sanitizedImages = removePathPrefix(uploadedImages);
+
 
   const newProduct = new Product({
     productName: req.body.productName,
@@ -89,7 +85,6 @@ console.log(sanitizedImages);
 
   try {
     const savedProduct = await newProduct.save();
-    console.log("Product added to the database:", savedProduct);
     res.json({ success: true });
   } catch (err) {
     console.error("Error saving product:", err);
@@ -98,7 +93,7 @@ console.log(sanitizedImages);
 });
 
 
-router.get("/editproducts",adminRedirection,  isloggedInadmin, adminController.getEditProducts);
+router.get("/editproducts", adminRedirection, isloggedInadmin, adminController.getEditProducts);
 
 router.post("/editproducts/:productId", adminRedirection, isloggedInadmin, upload.array("productImage", 3), async (req, res) => {
   try {
@@ -110,20 +105,18 @@ router.post("/editproducts/:productId", adminRedirection, isloggedInadmin, uploa
     }
 
     const uploadedImages = [];
-  for (const file of req.files) {
-    const uploadedImage = file.path;
+    for (const file of req.files) {
+      const uploadedImage = file.path;
 
-    // Use sharp to crop/resize the image
-    const croppedImage = `public/uploads/ropped-${file.filename}`;
-    try {
-      await sharp(uploadedImage)
-        .resize(400, 400) // Crop/resize to 200x200 pixels
-        .toFile(croppedImage);
-      uploadedImages.push(croppedImage);
-    } catch (err) {
-      console.error("Error processing image:", err);
-    }
-      console.log(uploadedImages,'uploadedImages');
+      const croppedImage = `public/uploads/ropped-${file.filename}`;
+      try {
+        await sharp(uploadedImage)
+          .resize(400, 400)
+          .toFile(croppedImage);
+        uploadedImages.push(croppedImage);
+      } catch (err) {
+        console.error("Error processing image:", err);
+      }
     }
 
     function removePathPrefix(imagesArray) {
@@ -144,7 +137,7 @@ router.post("/editproducts/:productId", adminRedirection, isloggedInadmin, uploa
     await productData.save();
 
     console.log("Product updated:", productData);
-    res.redirect("/admin/products"); // Redirect to the product list page after updating.
+    res.redirect("/admin/products");
 
   } catch (error) {
     console.error("Error updating product:", error);
@@ -184,7 +177,7 @@ router.get('/orderdetails', adminOrderController.getOrderDetails);
 
 router.get("/users", isloggedInadmin, adminController.getAllUsers);
 
-router.get('/coupon' , couponController.coupon);
+router.get('/coupon', couponController.coupon);
 
 router.post('/createCoupon', couponController.createCoupon);
 
@@ -198,11 +191,12 @@ router.get('/removeOffer', offerController.getRemoveOffers);
 
 router.get('/removeCatOffer', offerController.removeCatOffers);
 
-router.post('/approval',  orderController.cancelOrReturnApproval);
+router.post('/approval', orderController.cancelOrReturnApproval);
 
 router.get('/removecoupon', couponController.removeCoupon);
 
 router.get('/salesReport', adminRedirection, salesController.salesReport)
 
 router.get('/salesReport/search', salesController.getSalesReport);
+
 module.exports = router;

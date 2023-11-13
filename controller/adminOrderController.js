@@ -7,16 +7,9 @@ const Order = require('../models/orderModel');
 module.exports = {
   getOrders: async (req, res) => {
     try {
-      const userOrders = await Order.find().populate({path:"userId"})
-      userOrders.forEach((order) => {
-        if (order.userId) {
-          console.log(order.userId.username);
-        } else {
-          console.log('userId is not populated for order', order._id);
-        }
-      });
+      const userOrders = await Order.find().populate({ path: "userId" })
       res.render("admin/orderspage", { userOrders, adminLayout: true });
-      userOrders.forEach((order) => {});
+      userOrders.forEach((order) => { });
     } catch (error) {
       throw new Error(error);
     }
@@ -25,9 +18,9 @@ module.exports = {
   updateOrderStatus: async (req, res) => {
     const orderId = req.params.orderId;
     const newStatus = req.body.deliverystatus;
-    console.log(orderId);
-    const currentDate= new Date();
-        try {
+
+    const currentDate = new Date();
+    try {
       await Order.updateOne(
         { _id: orderId },
         { $set: { deliverystatus: newStatus, deliveredAt: currentDate } }
@@ -42,8 +35,8 @@ module.exports = {
 
   getOrderDetails: async (req, res) => {
     const orderId = req.query.orderId;
-    const orderData = await Order.findById(orderId).populate({path: "userId"});
-    console.log(orderData);
-    res.render("admin/orderdetails", { orderData , adminLayout: true});
+    const orderData = await Order.findById(orderId).populate({ path: "userId" });
+
+    res.render("admin/orderdetails", { orderData, adminLayout: true });
   },
 };

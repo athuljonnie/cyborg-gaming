@@ -220,7 +220,7 @@
                 </div>
               </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-heart"></i></a>
+                    <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
                 </li>
                
                 <li class="nav-item">
@@ -240,7 +240,10 @@
                         <% if (user) { %>
                           <a class="dropdown-item" href="account"><%= user.username %></a>
                           <div class="dropdown-divider"></div>
-              
+                            
+                          <a class="dropdown-item" href="orders"> Your Orders</a>
+                          <div class="dropdown-divider"></div>
+
                      
                         <a class="dropdown-item" href="logout">X Log Out X</a>
                         <% } else { %>

@@ -160,18 +160,14 @@
   <script src="sweetalert2.all.min.js"></script>
   <script defer>
     function handleSignupForm(event) {
-      // Prevent form submission
       event.preventDefault();
 
-      // Reset error messages
       resetErrorMessages();
 
-      // Validate form fields
       var usernameInput = document.getElementById("username");
       var emailInput = document.getElementById("email");
       var numberInput = document.getElementById("number");
      
-      // Check if username is empty
       if (usernameInput.value.trim() === "") {
         displayErrorMessage("usernameError", "Please enter your username");
         return;
@@ -183,38 +179,29 @@
         return;
       }
 
-      // Check if email is empty
       if (emailInput.value.trim() === "") {
         displayErrorMessage("emailError", "Please enter your email");
         return;
       }
 
-      // Check if email is valid
       var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
       if (!emailRegex.test(emailInput.value)) {
         displayErrorMessage("emailError", "Please enter a valid email address");
         return;
       }
 
-      // Check if number is empty
       if (numberInput.value.trim() === "") {
         displayErrorMessage("numberError", "Please enter your mobile number");
         return;
       }
 
-      // Check if number contains exactly 10 digits
       var numberRegex = /^(?=\d{10}$)(?!(\d)\1{4,})/;
       if (!numberRegex.test(numberInput.value)) {
         displayErrorMessage("numberError", "Please enter a valid mobile number");
         return;
       }
 
-      // Check if password is empty
-     
-
-      // Check password strength
-     
-      // Submit the form if all validations pass
+      
       event.target.submit();
     }
 

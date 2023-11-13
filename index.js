@@ -6,6 +6,7 @@ const dotenv = require("dotenv").config();
 const PORT = 4000 || process.env.PORT;
 const userRouter = require("./routes/userRoute");
 const session = require("express-session");
+const expressLayouts = require('express-ejs-layouts');
 const adminRouter = require("../cyborg/routes/adminRoute");
 const multer = require("multer");
 const fs = require('fs');
@@ -38,7 +39,9 @@ app.set('layout', 'layouts/layout');
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
-// app.use('/', authRouter);
+app.use(expressLayouts);
+
+
 app.use("/admin", adminRouter);
 app.use("/", userRouter);
 

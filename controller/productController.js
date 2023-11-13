@@ -12,7 +12,6 @@ module.exports = {
     try {
       const categoryData = await Category.find();
       let user = req.session.user;
-      console.log(req.body.sortOption, "🫂🫂");
 
       if (req.body.sortOption === "price-high-to-low") {
         const products = await Product.find()
@@ -20,7 +19,6 @@ module.exports = {
           .sort("-productPrice");
         res.render("shop/allproducts", { products, user, categoryData });
       } else if (req.body.sortOption === "price-low-to-high") {
-        console.log(req.body.sortOption);
         const products = await Product.find()
           .populate("category")
           .sort("productPrice");
@@ -38,28 +36,27 @@ module.exports = {
       throw new Error("Cant find Products");
     }
   },
-  
+
 
   getSearch: async (req, res) => {
     try {
       const searchTerm = req.query.searchTerm;
       const regexPattern = new RegExp(searchTerm, "i");
-      
+
       let categoryData = await Category.find({
         $text: { $search: searchTerm },
       });
-      
+
       let productsByTextSearch = await Product.find({
         $text: { $search: searchTerm },
       }).populate("category");
-      
+
       let productsByRegexSearch = await Product.find({
         productDescription: { $regex: regexPattern },
       }).populate("category");
-      
-      // Combine the results as needed
+
       let products = [...productsByTextSearch, ...productsByRegexSearch];
-      
+
       let user = req.session.user;
       res.render("shop/searchresults", {
         categoryData,
@@ -70,6 +67,6 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-    
-},
+
+  },
 }

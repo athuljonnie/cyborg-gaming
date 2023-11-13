@@ -5,27 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
 
-    <link rel="stylesheet" href="../../public/AddOnStyles/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <!-- Font Awesome Icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   
     <style>
         body{
-            /* margin: 40px; */
+         
     
     margin-bottom: 40 px;
-            /* filter: blur(1px); */
+          
             background-image: url('/shop/img/8481.jpg');         
             color: rgb(220, 154, 0);
             font-family: 'DotGothic16', sans-serif;
@@ -34,10 +20,6 @@
         .borderless td, .borderless th {
     border: none;
 }
-
-
-
-
 h1,
         h2,
         h3 {
@@ -48,8 +30,7 @@ h1,
 
 
         #navbar1 {
-            background-color: #000000 !important;
-            /* Set the background color to pitch black */
+            background-color: #000000 !important;            
             font-family: 'DotGothic16', sans-serif;
         }
 
@@ -129,26 +110,24 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
         }
         .card {
     position: relative;
-    overflow: hidden; /* Ensure the image stays within the card */
+    overflow: hidden; 
 }
 
 .profile-image {
     position: absolute;
-    top: 10px; /* Adjust the top position as needed */
-    right: 10px; /* Adjust the right position as needed */
-    width: 60px; /* Set the desired width for the profile image */
-    height: 60px; /* Set the desired height for the profile image */
-    border-radius: 50%; /* Create a circular shape for the image (optional) */
-    border: 2px solid #fff; /* Add a border around the image (optional) */
-    z-index: 1; /* Make sure the image is above card content */
+    top: 10px;
+    right: 10px;
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%; 
+    border: 2px solid #fff; 
+    z-index: 1;
 }
 
 .list-group-item{
     background: rgba( 0, 0, 0, 0.4 );
-/* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
 backdrop-filter: blur( 10.5px );
 -webkit-backdrop-filter: blur( 10.5px );
-/* border-radius: 10px; */
 border: 1px solid rgba( 255, 255, 255, 0.18 );
 color: #ffffff; 
 font-family: 'DotGothic16', sans-serif;
@@ -160,117 +139,12 @@ letter-spacing: 2px;
 }
     </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
-        <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-8">
-              <form action="/search" method="GET" id="search-form"> <!-- Add the form element -->
-                <div class="input-container">
-                  <input type="text" class="form-control search-input" id="search-input" name="searchTerm"
-                    placeholder="Explore" aria-label="Search" aria-describedby="basic-addon2">
-                </div>
-              </div>
-              <div class="col-md-4">
-                
-                <div class="input-group-append">
-                  <button class="btn btn-outline-warning" type="submit">Search</button>
-                </div>
-              </form> 
-              
-            </div>
-          </div>
-        </div>
-    
-    
-    
-    
-        <div class="collapse navbar-collapse" id="navbarNav">
-    
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-    
-                </li>
-    
-              </ul>
-            </ul>
-    
-    
-            <ul class="navbar-nav ml-auto">
-    
-              <li class="nav-item">
-                <div class="dropdown show">
-                  <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-expanded="false">
-                    Categories
-                  </a>
-    
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="/allproducts">All Products</a>
-                    <div class="dropdown-divider"></div>
-                    <% categoryData.forEach((category)=>{ %>
-                      <% if (category.isBlocked === false) { %>
-                        <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                          <%= category.CategoryName %>
-                        </a>                   
-                      <% } %>
-                      <% }) %>
-    
-                  </div>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
-              </li>
-    
-              <li class="nav-item">
-                <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
-              </li>
-    
-    
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-user"></i>
-                </a>
-    
-    
-    
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                  <% if (user) { %>
-                    <a class="dropdown-item" href="account">
-                      <%= user.username %>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="orders">
-                     my Orders
-                    </a>
-                    <div class="dropdown-divider"></div>
-    
-    
-                    <a class="dropdown-item" href="logout">X Log Out X</a>
-                    <% } else { %>
-                      <a class="dropdown-item" href="login">Sign In</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="signup">Create an Account</a>
-                      <% } %>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-    
-      </nav>
-    
-    
+<body>    
     <div class="container mt-4" style="text-decoration: solid; font-size: 16px;">
         <h2 style="padding: 10px;">Ordered Products</h2>
         <div class="row">
             <% orderData.products.forEach(function(product) { %>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4" >
                 <div class="card" style="border-radius: 17px; background-color: rgba(0, 0, 0, 0.351);  ">
                     <div class="bg-image hover-overlay ripple ripple-surface ripple-surface-light"
                         data-mdb-ripple-color="light">
@@ -281,7 +155,7 @@ letter-spacing: 2px;
                             <div class="mask"></div>
                         </a>
                     </div>
-                    <div class="card-body pb-0">
+                    <div class="card-body pb-0" style="background-color: #0000002a;">
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p><a href="#!" style="color:rgb(220, 154, 0) ;"><%= product.productId.productName %></a></p>
@@ -300,7 +174,7 @@ letter-spacing: 2px;
                         </div>
                     </div>
                     <hr class="my-0" />
-                    <div class="card-body pb-0">
+                    <div class="card-body pb-0" style="background-color: #0000002a;">
                         <div class="d-flex justify-content-between">
                             <p><a href="#!" class="text-light">₹  <%=product.productId.productPrice%></a></p>
 
@@ -308,10 +182,10 @@ letter-spacing: 2px;
                       
                     </div>
                     <hr class="my-0" />
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: #0000002a;">
                         <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
                           <a href="productdetails?productId=<%= product.productId._id %>">
-                            <button type="button" class="btn btn-outline-dark shop-now-button">Shop Now</button>
+                            <button type="button" class="btn btn-outline-warning shop-now-button">Shop Now</button>
                         </a>
                           </div>
                     </div>
@@ -376,9 +250,7 @@ letter-spacing: 2px;
                 <% } else if(orderData.deliverystatus === "delivered"){ %>
                   <button class="btn btn-outline-danger" id="returnButton">
                     Return this Order
-                  </button>
-                  <!-- <div id="timer"></div> -->
-                  
+                  </button>                  
                     <% }  else if (orderData.deliverystatus === "return approved") { %>
                       <div style="padding: 20px; margin-bottom: 5px;">
                         <p style="background-color: #00000056; display: inline-block; padding: 10px; color:rgb(220, 154, 0);border-radius: 17px;">
@@ -386,7 +258,7 @@ letter-spacing: 2px;
                             <% if (orderData.paymentMethod === 'razorpay') { %>
                               Your purchase amount will be reflected in your eWallet shorlty                             
                             <% } %>
-                         <!-- <span style=" color: red;">  Ignore if your payment method was Cash on Delivery.</span>  -->
+                        
                         </p>
                     </div>
                   <% }   else if (orderData.deliverystatus === "cancellation approved") { %>
@@ -429,19 +301,14 @@ letter-spacing: 2px;
        
     </div>
 
-    <!-- Include Bootstrap JS (jQuery and Popper.js are required) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-   <!-- Add this script inside your HTML file -->
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
 
 const deliveredAtString = document.getElementById('deliveryDate').textContent;
 
-// Split the string and create a new Date object
+
 const parts = deliveredAtString.split(' ');
 const day = parseInt(parts[2], 10);
 const month = parts[1];
@@ -451,15 +318,14 @@ const hour = parseInt(time[0], 10);
 const minute = parseInt(time[1], 10);
 const second = parseInt(time[2], 10);
 
-// Convert the month string to a numerical value
+
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const monthNumber = monthNames.indexOf(month);
 
-// Create a Date object with the parsed values
+
 const deliveredAt = new Date(year, monthNumber, day, hour, minute, second);
 
-// Verify the value
-console.log('Delivered At (parsed):', deliveredAt);
+
   const returnButton = document.getElementById('returnButton');
   const timerElement = document.getElementById('timer');
 
@@ -469,53 +335,51 @@ console.log('Delivered At (parsed):', deliveredAt);
   const currentDate = new Date();
   const timeDifference = currentDate.getTime() - deliveredAt.getTime();
   const allowedDaysForReturn = 14;
-  const remainingDays = Math.ceil(timeDifference / 8640000); // 86400000 milliseconds in a day
+  const remainingDays = Math.ceil(timeDifference / 8640000); 
 
   if (remainingDays > allowedDaysForReturn) {
-    // Time for returning has expired
+
     returnButton.setAttribute('disabled', 'disabled');
     timerElement.textContent = 'Return period has expired';
   } else {
-    // Enable the return button
+   
     returnButton.removeAttribute('disabled');
     timerElement.textContent = `Days remaining for return: ${remainingDays}`;
   }
 }
 
 
-  // Call the updateTimer function to initialize and update the timer
   updateTimer();
 
-  // Use setInterval to update the timer every minute
+  
   setInterval(updateTimer, 60000);
 </script>
 
 <script>
     $(document).ready(function () {
-        // Define a function to handle button click
+        
         function handleButtonClick(status) {
-            const orderId = '<%= orderData._id %>'; // Replace with the actual order ID
+            const orderId = '<%= orderData._id %>'; 
             $.ajax({
-                url: '/cancelOrReturn', // Replace with your actual backend endpoint
-                method: 'POST', // You can use 'GET' if it's more appropriate
+                url: '/cancelOrReturn', 
+                method: 'POST', 
                 data: {
                     orderId: orderId,
-                    status: status // This will indicate 'cancel' or 'return'
+                    status: status 
                 },
                 success: function (response) {
-                    // Handle success response from the server
-                    console.log('Request successful', response);
+                  
                     Swal.fire('Requested for approval.');
                 },
                 error: function (xhr, status, error) {
-                    // Handle error response from the server
+                    
                     console.error('Error:', error);
                     Swal.fire('Error', 'An error occurred', 'error');
                 }
             });
         }
 
-        // Add a click event listener to the "Cancel" button
+        
         $('#cancelButton').click(function () {
             Swal.fire({
                 title: 'Confirm Cancellation',
@@ -531,8 +395,6 @@ console.log('Delivered At (parsed):', deliveredAt);
             });
         });
 
-     // Add a click event listener to the "Return" button
-// Add a click event listener to the "Return" button
 $('#returnButton').click(async function () {
   const { value: returnReason } = await Swal.fire({
     title: 'Reason for return',
@@ -544,7 +406,7 @@ $('#returnButton').click(async function () {
       'Missing or Damaged Components': 'Missing or Damaged Components',
       'Change of Mind': 'Change of Mind',
       'Incorrect Specifications': 'Incorrect Specifications',
-      // Add more options as needed
+     
     },
     inputPlaceholder: 'Select a reason',
     showCancelButton: true,
@@ -556,12 +418,11 @@ $('#returnButton').click(async function () {
   });
 
   if (returnReason) {
-    console.log(returnReason);
-    const orderId = '<%= orderData._id %>'; // Replace with your actual order ID
-    const status = 'returnrequest'; // Or any other status you want to send
+    const orderId = '<%= orderData._id %>'; 
+    const status = 'returnrequest'; 
 
     $.ajax({
-      url: '/cancelOrReturn', // Replace with your actual URL
+      url: '/cancelOrReturn',
       type: 'POST',
       data: {
         orderId: orderId,
@@ -569,11 +430,11 @@ $('#returnButton').click(async function () {
         returnReason: returnReason
       },
       success: function (response) {
-        // Handle success response
+        
         Swal.fire('Reason submitted successfully!', 'success');
       },
       error: function (error) {
-        // Handle error response
+       
         Swal.fire('Error', 'Failed to submit reason', 'error');
       },
     });

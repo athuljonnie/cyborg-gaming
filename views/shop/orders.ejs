@@ -5,22 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Cart</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
   
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
 
@@ -42,7 +27,6 @@
 
         #navbar1 {
             background-color: #000000 !important;
-            /* Set the background color to pitch black */
             font-family: 'DotGothic16', sans-serif;
         }
 
@@ -165,71 +149,9 @@
     <body id="hero">
 
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar1">
-            <a class="navbar-brand" href="/"><img src="/shop/img/ll.png"></a>
-            <div class="container">
-          
-                    <ul class="navbar-nav ml-auto">
-                      <li class="nav-item">
-                        <div class="dropdown show">
-                          <a class="btn dropdown-toggle text-light" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                            aria-expanded="false">
-                            Categories
-                          </a>
-            
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="/allproducts">All Products</a>
-                            <div class="dropdown-divider"></div>
-                            <% categoryData.forEach((category)=>{ %>
-                                <% if (category.isBlocked === false) { %>
-                                    <a class="dropdown-item" href="/category/desktop-pcs?cat=<%=category._id %>">
-                                      <%= category.CategoryName %>
-                                    </a>                   
-                                  <% } %>
-                              <% }) %>
-            
-                          </div>
-                        </div>
-                      </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="wishlist"><i class="fas fa-heart"></i></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="cart"><i class="fas fa-shopping-cart"></i></a>
-                        </li>
-                     
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <% if (user) { %>
-                                <a class="dropdown-item" href="account"><%= user.username %></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="orders">
-                                  my Orders
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout">X Log Out X</a>
-                                
-    
-                                <% } else { %>
-                                <a class="dropdown-item" href="login">Sign In</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="signup">Sign Up</a>
-                                <% } %>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-          </nav>
 
 
 
-
-        <!-- <img src="user_avatar.jpg" alt="User Avatar" width="100" height="100"> -->
 
         <% if (!userOrders) { %>
             <h4 style="color: #f3af02;   font-family: 'DotGothic16', sans-serif;">No orders </h4>
@@ -295,37 +217,14 @@
                     </table>
                 </div>
 
-                <!-- <a href="deleteOrder?orderId=<%#= order._id %>" class="btn btn-outline-danger">
-                    cancel order
-                    </a> -->
 
 
 
 
 
-
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <!-- Bootstrap JS -->
-                <!-- Bootstrap JS -->
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-                    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-                    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-                <!-- Then add the toastr.js script -->
-                <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 
                 <script>
-                    // Toggle sidebar when the button is clicked
                     document.getElementById('toggleSidebar').addEventListener('click', function () {
                         const sidebar = document.getElementById('sidebar');
                         const content = document.getElementById('content');

@@ -5,9 +5,17 @@ const Category = require('../models/categoryModels');
 module.exports = {
     getOffers: async(req,res) => {
         try {
+          const approvalRequests = await Order.find({
+            $or: [{ returnrequest: true }, { cancellationrequest: true } ],
+          })   
+          const requestCount = await Order.countDocuments({
+            $or: [{ returnrequest: true }, { cancellationrequest: true }],
+          });
+      
             const categories = await Category.find();
             const product = await Product.find().populate('category');
-            res.render('admin/offerManagement',{adminLayout :true , product, categories})
+            res.render('admin/offerManagement',{adminLayout :true , product, categories,approvalRequests,
+              requestCount})
 
           } catch (error) {
             console.log(error);
@@ -21,22 +29,17 @@ module.exports = {
             const endDate = new Date(req.body.productstopdate);
             const productId = req.body.product;
             
-    console.log(req.body, "get product offer details here");
 
     const product = await Product.findById(productId);
-    console.log(product);
 
     if (!product) {
       return res.render('error');
     }
-    console.log("product.productPrice:", product.productPrice);
-    console.log("percentage:", percentage);
+
     const offerPric = product.productPrice - (product.productPrice * percentage) / 100;
-    console.log("offerPrice:", offerPric);
     const currentDate = new Date();
 
     if (currentDate < startDate || currentDate > endDate) {
-    //   return res.render('error');
     }
 
     product.offerStart = startDate;
@@ -75,9 +78,7 @@ module.exports = {
     getRemoveOffers: async(req, res) =>{
         try {
             const productId = req.query.productId
-            console.log(productId);
             const product = await Product.findById(productId)
-            console.log(product,"😃");
             product.offer = false;
             product.offerPercentage = 0;
             product.offerStart = null;
@@ -98,8 +99,6 @@ module.exports = {
       const stopDate = req.body.categorystopdate;
       const categoryId = req.body.category;
   
-      console.log(req.body, "get category offer details here❤️❤️❤️❤️❤️");
-  
       const category = await Category.findById(categoryId);
       if (!category) {
         return res.render('error');
@@ -110,9 +109,9 @@ module.exports = {
       
       category.catofferPercentage = percentage;
 
-  console.log(category,"note😃😃😃😃");
+
       const products = await Product.find({ category: categoryId });
-    //   console.log(products, "👀👀👀");
+   
       const currentDate = new Date();
       if (currentDate < new Date(startDate) || currentDate > new Date(stopDate)) {
         return res.render('error');
@@ -159,7 +158,6 @@ module.exports = {
     removeCatOffers: async(req, res) => {
       try{
         const categoryId = req.query.categoryId
-        console.log(categoryId);
         const category = await Category.findById(categoryId);
         category.offer = false
         category.catofferPercentage = 0;

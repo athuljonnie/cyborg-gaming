@@ -68,25 +68,23 @@ module.exports = {
     try {
       const number = req.session.userData.number;
       if (!number) {
-      res.status(400).send("Phone number not found");
-      return;
+        res.status(400).send("Phone number not found");
+        return;
       }
       const verification = await client.verify.v2
         .services(serviceSid)
         .verifications.create({
-         to: `+91${number}`,
-         channel: "sms",
+          to: `+91${number}`,
+          channel: "sms",
         });
-      console.log(verification, 'verification variable');
       res.render("shop/userlogin/otp", { number });
-     } catch (err) {
+    } catch (err) {
       console.error("Error generating OTP:", err);
     }
   },
 
   postVerify: async (req, res) => {
     const otp = req.body.otp;
-    console.log(otp);
     const number = req.query.number;
     client.verify.v2
       .services(serviceSid)
@@ -142,7 +140,6 @@ module.exports = {
         );
         if (isPasswordMatch) {
           req.session.user = validUser;
-          console.log(typeof req.session.user, "user session");
           res.redirect("/");
           return { status: true, user: validUser };
         } else {
@@ -170,7 +167,6 @@ module.exports = {
   changePassword: async (req, res) => {
     const userId = req.session.user._id;
     const { currentPassword, newPassword, confirmPassword } = req.body;
-    console.log(req.body);
     try {
       const user = await User.findById(userId);
 
@@ -178,7 +174,7 @@ module.exports = {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Verify if the current password is correct
+
       const isPasswordMatch = await bcrypt.compare(
         currentPassword,
         user.password
@@ -188,18 +184,17 @@ module.exports = {
         return res.status(401).json({ error: "Current password is incorrect" });
       }
 
-      // Check if the new password and confirm password match
+
       if (newPassword !== confirmPassword) {
         return res.status(400).json({ error: "New passwords do not match" });
       }
 
-      // Hash the new password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      // Update the user's password
+
       user.password = hashedPassword;
 
-      // Save the updated user
+
       await user.save();
 
       res.redirect("account");
@@ -231,7 +226,6 @@ module.exports = {
               channel: "sms",
             })
             .then((verification) => {
-              //  res.render('user/otp',{other:true,number,otpErr :req.session.otpErr })
               res.render("shop/userlogin/forgotpassword", { number, email });
             });
         } else {
@@ -240,7 +234,6 @@ module.exports = {
       }
     } catch (err) {
       console.error("Error generating OTP:", err);
-      // Handle the error, e.g., render an error page or redirect to a failure page
     }
   },
 
@@ -274,8 +267,8 @@ module.exports = {
       })
       .then(async (verification) => {
         if (verification.valid === true) {
-          console.log("otp valid");
-          console.log(req.query.email);
+
+
           let email = req.query.email;
           res.render("shop/userlogin/newpassword", { email });
         } else {
@@ -298,7 +291,7 @@ module.exports = {
 
   logOutGet: async (req, res) => {
     req.session.user = false;
-    res.redirect("/"); 
+    res.redirect("/");
   },
 
   getEditUser: async (req, res) => {
@@ -325,12 +318,10 @@ module.exports = {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Update user information
       user.username = username;
       user.email = email;
       user.number = number;
 
-      // Save the updated user
       await user.save();
 
       res.redirect("account");
@@ -350,24 +341,22 @@ module.exports = {
 
   getProductsByCategory: async (req, res) => {
     let sortOption = req.body// Assuming 'sortOption' is the key you are sending in the POST request
-    console.log('Sort Option:', sortOption);
-    console.log(sortOption);
-    
-    
-    
+
+
+
     const categoryData = await Category.find();
     let user = req.session.user;
-    
+
     let categoryId = req.query.cat;
-    console.log(categoryId,"232");
+
     try {
       if (req.body.sortOption === "price-high-to-low") {
-        const productData = await Product.find({ category: categoryId } )
+        const productData = await Product.find({ category: categoryId })
           .populate("category")
           .sort("-productPrice");
         res.render("shop/categorypage", { productData, user, categoryData });
       } else if (req.body.sortOption === "price-low-to-high") {
-        console.log(req.body.sortOption);
+
         const productData = await Product.find({ category: categoryId })
           .populate("category")
           .sort("productPrice");
@@ -377,13 +366,13 @@ module.exports = {
           .populate("category")
           .sort("productName");
         res.render("shop/categorypage", { productData, user, categoryData });
-      }  else {
+      } else {
         const productData = await Product.find({ category: categoryId }).populate("category");
         res.render("shop/categorypage", { productData, user, categoryData });
-      }       
-    }   
+      }
+    }
     catch (error) {
-      throw new Error(error,"Category Error");
+      throw new Error(error, "Category Error");
     }
   },
 
@@ -410,36 +399,36 @@ module.exports = {
   precheckout: async (req, res) => {
     try {
       const loggedInUserId = req.session.user._id;
-      // let price = req.query.totalPrice;
+
       const wallet = await Wallet.findOne({ user: loggedInUserId });
-      // Fetch the user's cart items
+
       const cartItems = await Cart.find({ user: loggedInUserId }).populate({
         path: "products.productId",
         model: "Product",
       });
 
-      // Iterate through each cart item and calculate its total amount 
+
       for (const cartItem of cartItems) {
-        console.log(cartItem.totalAmount,"totalAmount beeofre updating");
+        console.log(cartItem.totalAmount, "totalAmount beeofre updating");
         if (cartItem.cartOffer === true) {
           let totalPrice = cartItem.offerPrice;
           cartItem.totalAmount = totalPrice;
           await cartItem.save();
-        } 
+        }
       }
 
       console.log("Total prices updated successfully");
       const coupons = await Coupon.find();
 
       try {
-        // Get the current date
+
         const currentDate = new Date();
-    
-        // Find and delete coupons that have expired
+
+
         const deletedCoupons = await Coupon.deleteMany({
-          expirationDate: { $lte: currentDate }, // Find coupons where the expirationDate is less than or equal to the current date
+          expirationDate: { $lte: currentDate },
         });
-    
+
         if (deletedCoupons.deletedCount > 0) {
           console.log(`Deleted ${deletedCoupons.deletedCount} expired coupons.`);
         } else {
@@ -448,8 +437,8 @@ module.exports = {
       } catch (error) {
         console.error('Error deleting expired coupons:', error);
       }
-        
-      
+
+
       const user = await User.findById({ _id: loggedInUserId });
       const categoryData = await Category.find();
       const addressData = await Address.findOne({ userId: loggedInUserId });
@@ -469,7 +458,6 @@ module.exports = {
 
   updateDefaultAddress: async (req, res) => {
     const addressId = req.body.addressId;
-    console.log(addressId, "address Id");
     try {
       const deliveryAddress = await Address.findOne({
         "addresses._id": addressId,
@@ -479,7 +467,6 @@ module.exports = {
           (address) => address._id.toString() === addressId
         );
         if (selectedAddress) {
-          console.log(selectedAddress);
         }
       }
     } catch (error) {
@@ -491,21 +478,17 @@ module.exports = {
     try {
       const loggedInUserId = req.session.user;
 
-      // Check if a wallet already exists for the user
       const userWallet = await Wallet.findOne({ user: loggedInUserId });
 
       if (!userWallet) {
-        // Create a new wallet if it doesn't exist
         const newWallet = new Wallet({
           user: loggedInUserId,
           wallet: 0,
         });
 
-        // Save the new wallet to the database
         await newWallet.save();
       }
 
-      // Redirect to the 'account' page
       res.redirect("account");
     } catch (error) {
       console.log(error);

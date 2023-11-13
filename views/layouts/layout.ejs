@@ -10,13 +10,13 @@
   <% if (locals.adminLayout) { %>
     <%- include ('../partials/adminLink') %>
       <% } else if(locals.userLayout){ %>
-  <%- include ('../partials/userLink') %>
+  <%- include ('../partials/userlinks') %>
      <% } %>
 
 
   <% if (locals.adminLayout) { %>
   <%- include ('../partials/admin-navbar') %>
-    <% } else if(locals.userLayout) { %>
+    <% } else if(locals.userLayout){ %>
 <%- include ('../partials/usernavbar') %>
      <%} %>
 
@@ -31,11 +31,6 @@
 <% } %>
 
 
-<!-- SCRIPT -->
-<% if (locals.adminLayout) { %>
-  <%- include ('../partials/adminScript') %>
-    <% } else { %>
-<%- include ('../partials/userScript') %>
-   <% } %>
+
 </body>
 </html>

@@ -145,5 +145,4 @@ router.get('/generateInvoice', redirection, orderController.generateInvoice);
 
 router.post('/checkCoupon', redirection, couponController.checkCoupon);
 
-// router.get('/downloadInvoice', orderController.InvoiceDownload);
 module.exports = router;

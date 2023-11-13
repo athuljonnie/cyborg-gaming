@@ -10,7 +10,8 @@ const User = require("../models/userModel");
 const multer = require("multer");
 const sharp = require("sharp");
 const { error } = require("toastr");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const Order = require("../models/orderModel")
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,41 +25,6 @@ const upload = multer({ storage });
 
 module.exports = {
 
-  adminSignupGet: async (req, res) => {
-    try {
-      res.render("admin/adminsignup");
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  adminSignupPost: async (req, res) => {
-    try {
-      const {admin, email,password} = req.body;
-      const existingAdmin = await Admin.findOne({email});
-      if(existingAdmin){
-      res.redirect("login")
-      }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      req.session.adminData = {
-        admin,
-        email,
-        password: hashedPassword,
-      };
-      
-      const newAdmin = new Admin({
-        admin,
-        email,
-        password
-      })
-
-      await newAdmin.save();
-      res.redirect('/admin')
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
   AdminloginPage: (req, res) => {
     if (req.session.admin) {
       res.redirect("/admin");
@@ -67,26 +33,26 @@ module.exports = {
     }
   },
 
-  AdminLoginPost: async(req, res) => {
-    const {email, password} = req.body 
+  AdminLoginPost: async (req, res) => {
+    const { email, password } = req.body
     try {
-    const validAdmin = await Admin.findOne({email: req.body.email});
-    console.log(validAdmin);
-    if(!validAdmin){
-      console.log("hello");
-        return res.render("admin/adminlogin", {error: "invalid email or password"});
-    }
+      const validAdmin = await Admin.findOne({ email: req.body.email });
 
-    if (validAdmin.password === req.body.password) {
-      req.session.admin = validAdmin;
-      res.redirect("/admin");
-      return { admin: validAdmin };
-    } else {
-      return res.render("admin/adminlogin");
+      if (!validAdmin) {
+
+        return res.render("admin/adminlogin", { error: "invalid email or password" });
+      }
+
+      if (validAdmin.password === req.body.password) {
+        req.session.admin = validAdmin;
+        res.redirect("/admin");
+        return { admin: validAdmin };
+      } else {
+        return res.render("admin/adminlogin");
+      }
+    } catch (error) {
+      console.log(error);
     }
-   } catch (error) {
-    console.log(error);
-   }
   },
 
   AdminlogoutGet: (req, res) => {
@@ -94,17 +60,37 @@ module.exports = {
     res.redirect("/admin/login");
   },
 
-  // ________category______________
+
 
   Category: async (req, res) => {
     let categoryData = await Category.find();
-    res.render("admin/category", { categoryData,adminLayout: true});
+    const approvalRequests = await Order.find({
+      $or: [{ returnrequest: true }, { cancellationrequest: true }],
+    })
+    const requestCount = await Order.countDocuments({
+      $or: [{ returnrequest: true }, { cancellationrequest: true }],
+    });
+
+    res.render("admin/category", {
+      categoryData, approvalRequests,
+      requestCount
+    });
   },
 
   AddCategoryGet: async (req, res) => {
     let categoryData = await Category.find();
+    const approvalRequests = await Order.find({
+      $or: [{ returnrequest: true }, { cancellationrequest: true }],
+    })
+    const requestCount = await Order.countDocuments({
+      $or: [{ returnrequest: true }, { cancellationrequest: true }],
+    });
+
     if (req.session.admin) {
-      res.render("admin/addCategories", { categoryData, adminLayout: true});
+      res.render("admin/addCategories", {
+        categoryData, approvalRequests,
+        requestCount
+      });
     }
   },
 
@@ -205,12 +191,22 @@ module.exports = {
     }
   },
 
-  // ______products____________
+
 
   Products: async (req, res) => {
     if (req.session.admin) {
+      const approvalRequests = await Order.find({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      })
+      const requestCount = await Order.countDocuments({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      });
+
       let productData = await Product.find().populate("category");
-      res.render("admin/products", { productData, adminLayout: true });
+      res.render("admin/products", {
+        productData, approvalRequests,
+        requestCount
+      });
     }
   },
 
@@ -220,7 +216,17 @@ module.exports = {
       const categoryData = {
         categories,
       };
-      res.render("admin/addProducts", { categoryData, adminLayout: true });
+      const approvalRequests = await Order.find({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      })
+      const requestCount = await Order.countDocuments({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      });
+
+      res.render("admin/addProducts", {
+        categoryData, approvalRequests,
+        requestCount
+      });
     } catch (error) {
       console.error("Error fetching categories:", error);
       res.status(500).send("Error fetching categories");
@@ -233,12 +239,22 @@ module.exports = {
       const productData = await Product.findById(productId).populate(
         "category"
       );
+      const approvalRequests = await Order.find({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      })
+      const requestCount = await Order.countDocuments({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      });
+
       const categoryData = await Category.find();
       if (!productData) {
         throw new Error("Product not found");
       }
-      console.log(productData);
-      res.render("admin/editProducts", { productData, categoryData , adminLayout: true});
+
+      res.render("admin/editProducts", {
+        productData, categoryData, approvalRequests,
+        requestCount
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -274,26 +290,35 @@ module.exports = {
     }
   },
 
-  deleteProducts: async(req, res) => {
+  deleteProducts: async (req, res) => {
     try {
-    const productId = req.query.productId;
-    console.log(productId,'🫂🫂');
-    const product = await Product.deleteOne({_id:productId});
-    if(!product) {
-      throw new Error("product not found");
-    }  
-    res.redirect("/admin/products")
+      const productId = req.query.productId;
+      const product = await Product.deleteOne({ _id: productId });
+      if (!product) {
+        throw new Error("product not found");
+      }
+      res.redirect("/admin/products")
     } catch (error) {
       console.log(error);
     }
   },
 
-  // _________users_______
+
 
   getAllUsers: async (req, res) => {
     try {
       let userData = await User.find();
-      res.render("admin/users", { userData, adminLayout: true });
+      const approvalRequests = await Order.find({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      })
+      const requestCount = await Order.countDocuments({
+        $or: [{ returnrequest: true }, { cancellationrequest: true }],
+      });
+
+      res.render("admin/users", {
+        userData, approvalRequests,
+        requestCount
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -303,7 +328,7 @@ module.exports = {
     try {
       const userId = req.query.userId;
       const user = await User.findById(userId);
-      // console.log(userId);
+
       if (!user) {
         throw new Error("User not Found!");
       }
@@ -319,7 +344,6 @@ module.exports = {
     try {
       const userId = req.query.userId;
       const user = await User.findById(userId);
-      console.log(userId);
       if (!user) {
         throw new Error("User not Found!");
       }
